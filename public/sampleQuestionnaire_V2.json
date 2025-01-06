@@ -92,6 +92,10 @@
                 "SM": "Impact des médias sociaux sur la santé mentale",
                 "US": "Urbanisation et villes durables",
                 "VR": "Réalité virtuelle dans l'éducation"
+              },
+              "q5": {
+                "0": "Oui",
+                "1": "Non"
               }
             }
           },
@@ -129,6 +133,10 @@
                 "SM": "Social Media Impact on Mental Health",
                 "US": "Urbanization and Sustainable Cities",
                 "VR": "Virtual Reality in Education"
+              },
+              "q5": {
+                "0": "Yes",
+                "1": "No"
               }
             }
           }
@@ -161,7 +169,7 @@
               "US",
               "VR"
             ],
-            "q5": ["Yes", "No"]
+            "q5": ["0", "1"]
           }
         },
         "format": {

@@ -1,6 +1,5 @@
 import { Root, Bundle, Dependency, Presentation } from './type';
 import metadataJson from '../public/sampleQuestionnaire_V2.json';
-import { Children } from 'react';
 
 // Normalize entry codes in dependencies
 const normalizeEntryCodes = (dependencies: Dependency[]): void => {
@@ -16,10 +15,10 @@ const normalizeEntryCodes = (dependencies: Dependency[]): void => {
   });
 };
 
-// Normalize entry codes in the metadata
+// Normalize entry codes in the JSON input file
 normalizeEntryCodes(metadataJson.oca_bundle.dependencies);
 
-// Convert metadata to a typed Root object
+// Convert JSON file to a typed Root object
 const metadata: Root = metadataJson as Root;
 
 // Find a bundle or dependency by `capture_base`
@@ -36,6 +35,7 @@ const findBundleByCaptureBase = (
     return dependency;
   }
 
+  //todo: This can be a potential bug! Optimize this code
   // Handle cases where the capture_base points to a "d" reference (indirect linking via "refs")
   const referenceDependency = dependencies.find((dep) => dep.d === captureBase);
   if (referenceDependency) {
@@ -64,6 +64,8 @@ const getInteractionTypes = (
 
   return interactions;
 };
+
+
 
 // Parse parent-child relationships
 const parseRelationships = (
@@ -116,6 +118,9 @@ const parseRelationships = (
   return relationships;
 };
 
+
+
+
 // Extract labels, options, and types using `capture_base`
 const getLabelsOptionsAndTypes = (
   captureBase: string,
@@ -132,12 +137,12 @@ const getLabelsOptionsAndTypes = (
   const labels = entity.overlays?.label?.find((label: any) => label.language === 'eng')?.attribute_labels || {};
 
   // Normalize options (entry codes) and consider entry_code_order
-  const options = entity.overlays?.entry_code?.attribute_entry_codes
+  const entryOverlay = entity.overlays?.entry?.find((entry: any) => entry.language === 'eng');
+  const options = entryOverlay?.attribute_entries
     ? Object.fromEntries(
-        Object.entries(entity.overlays.entry_code.attribute_entry_codes).map(([key, value]) => [
-          key,
-          value || [], // Replace undefined with empty array
-        ])
+        Object.entries(entryOverlay.attribute_entries).map(
+          ([key, value]) => [key, Object.values(value)] // Use values (labels) instead of keys (codes)
+        )
       )
     : {};
 
