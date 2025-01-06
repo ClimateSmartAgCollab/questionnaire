@@ -1,0 +1,110 @@
+{
+  "steps": [
+    {
+      "id": "Step 1",
+      "name": "Introduction",
+      "parent": null,
+      "fields": [
+        {
+          "label": "q1: What is your name?",
+          "section": "Section 1: Name",
+          "type": "Text"
+        },
+        {
+          "label": "q2: Enter a date",
+          "section": "Section 2: Year",
+          "type": "DateTime"
+        },
+        {
+          "label": "q3: What is your favourite colour?",
+          "type": "enum",
+          "options": {
+            "001": "Red",
+            "002": "Green",
+            "003": "Blue",
+            "004": "Yellow",
+            "005": "Orange"
+          }
+        },
+        {
+          "label": "q4: Select which research fields apply.",
+          "type": "enum",
+          "options": {
+            "5G": "5G Networks and Telecommunications",
+            "AI": "Artificial Intelligence and Ethics",
+            "AIH": "AI in Healthcare Diagnostics",
+            "BA": "Blockchain Applications in Finance",
+            "BL": "Biodiversity Loss and Conservation Efforts",
+            "CC": "Climate Change and Global Warming",
+            "CG": "CRISPR and Genetic Engineering",
+            "CT": "Cybersecurity Threats and Solutions",
+            "DP": "Data Privacy and Protection",
+            "FRW": "The Future of Remote Work",
+            "MLPA": "Machine Learning in Predictive Analytics",
+            "NB": "Neuroscience and Brain Mapping",
+            "QC": "Quantum Computing Advancements",
+            "RA": "Robotics and Automation in Industry",
+            "RE": "Renewable Energy Technologies",
+            "RES": "Renewable Energy Storage Systems",
+            "SE": "Space Exploration and Mars Colonization",
+            "SM": "Social Media Impact on Mental Health",
+            "US": "Urbanization and Sustainable Cities",
+            "VR": "Virtual Reality in Education"
+          }
+        },
+        { "label": "q5: Yes or no?", "type": "Boolean" },
+        {
+          "label": "q6: Write a paragraph explaining your reasoning.",
+          "type": "Text"
+        },
+        {
+          "label": "q7: Name the Authors.",
+          "type": "reference",
+          "ref": "Step 2"
+        }
+      ]
+    },
+    {
+      "id": "Step 2",
+      "name": "Authors",
+      "parent": "Step 1",
+      "fields": [
+        { "label": "First name", "type": "Text" },
+        { "label": "Last name", "type": "Text" },
+        {
+          "label": "Identifier",
+          "type": "reference",
+          "ref": "Step 3"
+        }
+      ]
+    },
+    {
+      "id": "Step 3",
+      "name": "Identifier",
+      "parent": "Step 2",
+      "fields": [
+        {
+          "label": "Identifier",
+          "type": "enum",
+          "options": {
+            "Google": "ID Google Scholar",
+            "ISNI": "ISNI",
+            "ORCiD": "ORCiD",
+            "ResearcherID": "ResearcherID",
+            "Scopus": "ID Auteur Scopus"
+          },
+          "ref": ""
+        },
+        { "label": "value", "type": "Text" }
+      ]
+    },
+    {
+      "id": "Step 4",
+      "name": "Last Page",
+      "parent": null,
+      "fields": [
+        { "label": "Any other explanation?", "type": "Text", "ref": "" }
+      ]
+    }
+  ]
+}
