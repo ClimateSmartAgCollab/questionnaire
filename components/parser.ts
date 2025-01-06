@@ -35,7 +35,6 @@ const findBundleByCaptureBase = (
     return dependency;
   }
 
-  //todo: This can be a potential bug! Optimize this code
   // Handle cases where the capture_base points to a "d" reference (indirect linking via "refs")
   const referenceDependency = dependencies.find((dep) => dep.d === captureBase);
   if (referenceDependency) {
@@ -64,8 +63,6 @@ const getInteractionTypes = (
 
   return interactions;
 };
-
-
 
 // Parse parent-child relationships
 const parseRelationships = (
@@ -118,45 +115,53 @@ const parseRelationships = (
   return relationships;
 };
 
-
-
-
-// Extract labels, options, and types using `capture_base`
+// Extract labels, options, and types for all languages using `capture_base`
 const getLabelsOptionsAndTypes = (
   captureBase: string,
   bundle: Bundle,
   dependencies: Dependency[]
-): { labels: Record<string, string>; options: Record<string, string[]>; types: Record<string, any> } => {
+): {
+  labels: Record<string, Record<string, string>>;
+  options: Record<string, Record<string, string[]>>;
+  types: Record<string, any>;
+} => {
   const entity = findBundleByCaptureBase(captureBase, bundle, dependencies);
 
   if (!entity) {
     return { labels: {}, options: {}, types: {} };
   }
 
-  // Use English labels (eng) for rendering
-  const labels = entity.overlays?.label?.find((label: any) => label.language === 'eng')?.attribute_labels || {};
+  const labels: Record<string, Record<string, string>> = {};
+  const options: Record<string, Record<string, string[]>> = {};
+  const types: Record<string, any> = {};
 
-  // Normalize options (entry codes) and consider entry_code_order
-  const entryOverlay = entity.overlays?.entry?.find((entry: any) => entry.language === 'eng');
-  const options = entryOverlay?.attribute_entries
-    ? Object.fromEntries(
-        Object.entries(entryOverlay.attribute_entries).map(
-          ([key, value]) => [key, Object.values(value)] // Use values (labels) instead of keys (codes)
-        )
-      )
-    : {};
-
-  // Reorder options based on entry_code_order if it exists
-  const interaction = getInteractionTypes(captureBase, bundle, dependencies);
-  Object.keys(options).forEach((key) => {
-    if (interaction[key]?.entry_code_order) {
-      options[key] = interaction[key].entry_code_order.map(
-        (entry: string) => options[key].find((opt: string) => opt === entry) || entry
-      );
-    }
+  // Collect labels for all languages
+  (entity.overlays?.label || []).forEach((labelOverlay: any) => {
+    const lang = labelOverlay.language;
+    labels[lang] = labelOverlay.attribute_labels || {};
   });
 
-  return { labels, options, types: interaction };
+  // Collect options for all languages
+  (entity.overlays?.entry || []).forEach((entryOverlay: any) => {
+    const lang = entryOverlay.language;
+    options[lang] = Object.fromEntries(
+      Object.entries(entryOverlay.attribute_entries || {}).map(([key, value]) => [
+        key,
+        Object.values(value as { [key: string]: string }),
+      ])
+    );
+  });
+
+  // Collect types for all fields
+  const interaction = metadata.extensions?.form.find(
+    (form) => form.capture_base === captureBase
+  )?.interaction?.[0]?.arguments || {};
+  Object.keys(interaction).forEach((key) => {
+    types[key] = interaction[key];
+  });
+
+  return { labels, options, types };
+  
 };
 
 // Extract metadata (name and description) for each step
@@ -164,19 +169,26 @@ const getStepMeta = (
   captureBase: string,
   bundle: Bundle,
   dependencies: Dependency[]
-): { stepName: string; description: string } => {
+): { names: Record<string, string>; descriptions: Record<string, string> } => {
   const entity = findBundleByCaptureBase(captureBase, bundle, dependencies);
 
   if (!entity) {
-    return { stepName: 'Unnamed Step', description: '' };
+    return { names: {}, descriptions: {} };
   }
 
-  const meta = entity.overlays?.meta?.find((meta: any) => meta.language === 'eng');
-  const stepName = meta?.name || 'Unnamed Step';
-  const description = meta?.description || '';
+  const meta = entity.overlays?.meta || [];
+  const names: Record<string, string> = {};
+  const descriptions: Record<string, string> = {};
 
-  return { stepName, description };
+  meta.forEach((metaOverlay: any) => {
+    names[metaOverlay.language] = metaOverlay.name || 'Unnamed Step';
+    descriptions[metaOverlay.language] = metaOverlay.description || '';
+  });
+
+  return { names, descriptions };
 };
+
+
 
 // Main parser function to convert JSON into form structure
 export const parseJsonToFormStructure = (): any[] => {
@@ -195,9 +207,9 @@ export const parseJsonToFormStructure = (): any[] => {
 
     Object.entries(relationships).forEach(([captureBase, relationship]) => {
       const { labels, options, types } = getLabelsOptionsAndTypes(captureBase, bundle, dependencies);
-      const { stepName, description } = getStepMeta(captureBase, bundle, dependencies);
+      const { names, descriptions } = getStepMeta(captureBase, bundle, dependencies);
 
-      const fields = Object.keys(labels).map((fieldId) => {
+      const fields = Object.keys(labels['eng'] || {}).map((fieldId) => {
         const conformance = bundle.overlays?.conformance?.attribute_conformance?.[fieldId];
         const entryCodes = bundle.overlays?.entry_code?.attribute_entry_codes?.[fieldId];
         const characterEncoding = bundle.overlays?.character_encoding?.attribute_character_encoding?.[fieldId];
@@ -205,14 +217,19 @@ export const parseJsonToFormStructure = (): any[] => {
 
         let field = {
           id: fieldId,
-          label: labels[fieldId],
-          type: types[fieldId]?.type || (options[fieldId] ? 'enum' : 'textarea'),
-          options: options[fieldId] || [],
-          ref: relationship.children[0] || null,
+          labels,
+          options,
+          type: types[fieldId]?.type || (options['eng'][fieldId] ? 'enum' : 'textarea'),
           orientation: types[fieldId]?.orientation || null,
           value: types[fieldId]?.value || null,
+          ref: null, // Initialize ref
         };
-
+      
+        // Populate `ref` for reference fields
+        if (field.type === 'reference' && relationship.children.length > 0) {
+          field.ref = relationship.children[0]; // Assign the first child as the reference
+        }
+      
         // Check conformance
         if (conformance === 'M' && !field.value) {
           console.warn(`Mandatory field missing: ${fieldId}`);
@@ -242,8 +259,8 @@ export const parseJsonToFormStructure = (): any[] => {
 
       allSteps.push({
         id: captureBase,
-        name: stepName,
-        description,
+        names,
+        descriptions,
         parent: relationship.parent,
         fields,
       });
