@@ -59,12 +59,12 @@ const NavigationItem = React.memo(
     visitedSteps,
     onNavigate,
   }: {
-    step: Step;
-    currentStep: number;
-    visitedSteps: Set<string>;
-    onNavigate: (index: number) => void;
+    step: Step
+    currentStep: number
+    visitedSteps: Set<string>
+    onNavigate: (index: number) => void
   }) => {
-    const stepIndex = steps.findIndex((s) => s.id === step.id);
+    const stepIndex = steps.findIndex((s) => s.id === step.id)
 
     return (
       <li>
@@ -73,10 +73,10 @@ const NavigationItem = React.memo(
           onClick={() => onNavigate(stepIndex)}
           className={`w-full rounded px-4 py-2 text-left ${
             currentStep === stepIndex
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-800"
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-200 text-gray-800'
           }`}
-          aria-current={currentStep === stepIndex ? "step" : undefined}
+          aria-current={currentStep === stepIndex ? 'step' : undefined}
         >
           {step.name}
         </button>
@@ -97,10 +97,9 @@ const NavigationItem = React.memo(
           </ul>
         )}
       </li>
-    );
+    )
   }
-);
-
+)
 
 export default function Form() {
   if (!steps || steps.length === 0) {
@@ -156,32 +155,62 @@ export default function Form() {
     }
   }, [currentStep, parentSteps, steps, onNavigate])
 
+  const validateField = useCallback((field: Field, value: string): boolean => {
+    const { options, value: preValue } = field
+
+    // Conformance validation
+    if (field.type === 'mandatory' && !value) {
+      return false
+    }
+
+    // Entry Code validation
+    if (options && !Object.keys(options).includes(value)) {
+      return false
+    }
+
+    return true
+  }, [])
+
   const finishHandler = useCallback(() => {
     const currentStepData: Record<string, any> = {}
 
     steps[currentStep]?.fields.forEach((field: Field) => {
-      const input = document.querySelector(`[name="${field.label}"]`) as HTMLInputElement | null
+      const input = document.querySelector(
+        `[name="${field.label}"]`
+      ) as HTMLInputElement | null
 
       if (field.type === 'textarea' || field.type === 'DateTime' || field.type === 'dropdown') {
-        currentStepData[field.label] = input?.value || ''
+        const value = input?.value || ''
+        if (!validateField(field, value)) {
+          console.warn(`Validation failed for field ${field.label}`)
+        }
+        currentStepData[field.label] = value
       } else if (field.type === 'radio') {
         const selectedRadio = document.querySelector(
           `input[name="${field.label}"]:checked`
         ) as HTMLInputElement | null
-        currentStepData[field.label] = selectedRadio?.value || ''
+        const value = selectedRadio?.value || ''
+        if (!validateField(field, value)) {
+          console.warn(`Validation failed for field ${field.label}`)
+        }
+        currentStepData[field.label] = value
       } else if (field.type === 'select') {
-        currentStepData[field.label] = input?.value || ''
+        const value = input?.value || ''
+        if (!validateField(field, value)) {
+          console.warn(`Validation failed for field ${field.label}`)
+        }
+        currentStepData[field.label] = value
       }
     })
 
     setFormData((prevData) => ({
       ...prevData,
-      [steps[currentStep]?.id]: currentStepData
+      [steps[currentStep]?.id]: currentStepData,
     }))
 
     console.log('Form Data:', formData)
     alert('Form submitted successfully!')
-  }, [currentStep, steps, formData])
+  }, [currentStep, steps, formData, validateField])
 
   const cancelHandler = useCallback(() => {
     const currentParent = steps.find(

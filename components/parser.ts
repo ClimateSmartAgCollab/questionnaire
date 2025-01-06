@@ -184,21 +184,56 @@ export const parseJsonToFormStructure = (): any[] => {
   }
 
   const allSteps: any[] = [];
+
   presentations.forEach((presentation) => {
     const relationships = parseRelationships(bundle, dependencies, presentation);
 
     Object.entries(relationships).forEach(([captureBase, relationship]) => {
       const { labels, options, types } = getLabelsOptionsAndTypes(captureBase, bundle, dependencies);
       const { stepName, description } = getStepMeta(captureBase, bundle, dependencies);
-      const fields = Object.keys(labels).map((fieldId) => ({
-        id: fieldId,
-        label: labels[fieldId],
-        type: types[fieldId]?.type || (options[fieldId] ? 'enum' : 'textarea'),
-        options: options[fieldId] || [],
-        ref: relationship.children[0] || null,
-        orientation: types[fieldId]?.orientation || null,
-        value: types[fieldId]?.value || null,
-      }));
+
+      const fields = Object.keys(labels).map((fieldId) => {
+        const conformance = bundle.overlays?.conformance?.attribute_conformance?.[fieldId];
+        const entryCodes = bundle.overlays?.entry_code?.attribute_entry_codes?.[fieldId];
+        const characterEncoding = bundle.overlays?.character_encoding?.attribute_character_encoding?.[fieldId];
+        const format = bundle.overlays?.format?.attribute_formats?.[fieldId];
+
+        let field = {
+          id: fieldId,
+          label: labels[fieldId],
+          type: types[fieldId]?.type || (options[fieldId] ? 'enum' : 'textarea'),
+          options: options[fieldId] || [],
+          ref: relationship.children[0] || null,
+          orientation: types[fieldId]?.orientation || null,
+          value: types[fieldId]?.value || null,
+        };
+
+        // Check conformance
+        if (conformance === 'M' && !field.value) {
+          console.warn(`Mandatory field missing: ${fieldId}`);
+          field.value = ''; // Default value for missing mandatory fields
+        }
+
+        // Validate entry codes
+        if (entryCodes && !entryCodes.includes(field.value)) {
+          console.warn(`Entry code mismatch for field ${fieldId}: ${field.value}`);
+          field.value = entryCodes[0]; // Default to the first valid entry code
+        }
+
+        // Validate character encoding
+        if (characterEncoding && !new RegExp(characterEncoding).test(field.value)) {
+          console.warn(`Character encoding mismatch for field ${fieldId}: ${field.value}`);
+          field.value = ''; // Clear value if encoding doesn't match
+        }
+
+        // Validate format
+        if (format && !new RegExp(format).test(field.value)) {
+          console.warn(`Format mismatch for field ${fieldId}: ${field.value}`);
+          field.value = ''; // Clear value if format doesn't match
+        }
+
+        return field;
+      });
 
       allSteps.push({
         id: captureBase,
