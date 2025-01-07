@@ -7,7 +7,7 @@ import React from 'react'
 
 // Parse steps dynamically
 const parsedSteps = parseJsonToFormStructure()
-
+console.log('Parsed Steps:', parsedSteps)
 // Define TypeScript types
 interface Field {
   id: string
