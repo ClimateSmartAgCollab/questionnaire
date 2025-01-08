@@ -224,8 +224,31 @@ export default function Form() {
       [parsedSteps[currentStep]?.id]: currentStepData
     }))
 
+    // Check if the current step has a parent and save the data there
+    const currentParent = parsedSteps.find(
+      step => step.id === parsedSteps[currentStep]?.parent
+    )
+
+    if (currentParent) {
+      setFormData(prevData => ({
+        ...prevData,
+        [currentParent.id]: {
+          ...(prevData[currentParent.id] || {}),
+          [parsedSteps[currentStep]?.id]: currentStepData // Save child data in the parent
+        }
+      }))
+    }
+
     console.log('Form Data:', formData)
-    alert('Form submitted successfully!')
+    // Navigate back to the parent or to the first step
+    if (currentParent) {
+      const parentIndex = parsedSteps.findIndex(
+        step => step.id === currentParent.id
+      )
+      setCurrentStep(parentIndex)
+    } else {
+      setCurrentStep(0)
+    }
   }, [currentStep, parsedSteps, formData, validateField])
 
   const cancelHandler = useCallback(() => {
@@ -328,27 +351,50 @@ export default function Form() {
                     </div>
                   )}
                   {field.type === 'reference' && field.ref && (
-                    <button
-                      type='button'
-                      onClick={() => {
-                        const targetIndex = parsedSteps.findIndex(
-                          s => s.id === field.ref
-                        )
-                        if (targetIndex >= 0) {
-                          onNavigate(targetIndex)
-                        } else {
-                          console.warn(
-                            `Reference step not found for field: ${field.id}`
+                    <div>
+                      {/* Button to navigate to the child step */}
+                      <button
+                        type='button'
+                        onClick={() => {
+                          const targetIndex = parsedSteps.findIndex(
+                            s => s.id === field.ref
                           )
-                        }
-                      }}
-                      className='mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
-                    >
-                      Go to{' '}
-                      {parsedSteps.find(s => s.id === field.ref)?.names[
-                        language
-                      ] || 'Child Step'}
-                    </button>
+                          if (targetIndex >= 0) {
+                            onNavigate(targetIndex)
+                          } else {
+                            console.warn(
+                              `Reference step not found for field: ${field.id}`
+                            )
+                          }
+                        }}
+                        className='mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
+                      >
+                        +{' '}
+                        {parsedSteps.find(s => s.id === field.ref)?.names[
+                          language
+                        ] || 'Child Step'}
+                      </button>
+
+                      {/* Display the data from the child step if available */}
+                      {formData[field.ref] && (
+                        <div className='mt-4 rounded border bg-gray-100 p-4'>
+                          <h4 className='text-lg font-semibold'>
+                            {parsedSteps.find(s => s.id === field.ref)?.names[
+                              language
+                            ] || 'Child Step Data'}
+                          </h4>
+                          <ul className='mt-2 list-disc space-y-1 pl-4 text-gray-700'>
+                            {Object.entries(formData[field.ref]).map(
+                              ([key, value]) => (
+                                <li key={key}>
+                                  <strong>{key}:</strong> {String(value)}
+                                </li>
+                              )
+                            )}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
                   )}
 
                   {field.type === 'select' && (
