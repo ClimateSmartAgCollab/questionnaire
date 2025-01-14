@@ -2,50 +2,79 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { parseJsonToFormStructure } from './parser'
 import React from 'react'
+import { parseJsonToFormStructure } from './parser'
 
-// Parse steps dynamically
 const parsedSteps = parseJsonToFormStructure()
-console.log('Parsed Steps:', parsedSteps)
-// Define TypeScript types
+
 interface Field {
   id: string
   labels: Record<string, Record<string, string>> // Multilingual labels
   options: Record<string, Record<string, string[]>> // Multilingual options
   type: string
-  orientation?: 'vertical' | 'horizontal' // For `radio` and `dropdown`
-  value?: string // Pre-selected value
-  ref?: string // For references to other steps
+  orientation?: 'vertical' | 'horizontal'
+  value?: string
+  ref?: string
 }
 
-interface Step {
-  id: string
-  names: Record<string, string> // Multilingual step names
-  descriptions: Record<string, string> // Multilingual step descriptions
+interface Section {
+  sectionKey: string
+  sectionLabel: Record<string, string>
   fields: Field[]
-  parent?: string | null
-  children?: Step[]
 }
 
-// Build the step tree from flat data
+interface Page {
+  pageKey: string
+  pageLabel: Record<string, string>
+  sections: Section[]
+  captureBase: string
+}
+
+export interface Step {
+  id: string
+  names: Record<string, string>
+  descriptions: Record<string, string>
+  parent?: string | null
+  pages: Page[]
+  children?: Step[] // used by the buildStepTree if you want a hierarchical nav
+}
+
+// -----------------------------------------------------------------------------
+// 1. Build Step Tree Based on 'reference' Fields
+// -----------------------------------------------------------------------------
 function buildStepTree(steps: Step[]): Step[] {
   const stepMap: Record<string, Step> = {}
   const rootSteps: Step[] = []
 
+  // Initialize the map
   steps.forEach(step => {
     stepMap[step.id] = { ...step, children: [] }
   })
 
+  // Populate children based on 'reference' fields
   steps.forEach(step => {
-    step.fields
-      .filter(field => field.type === 'reference' && field.ref)
-      .forEach(field => {
-        const child = stepMap[field.ref!]
-        if (child) stepMap[step.id].children!.push(child)
+    step.pages.forEach(page => {
+      page.sections.forEach(section => {
+        section.fields
+          .filter(field => field.type === 'reference' && field.ref)
+          .forEach(field => {
+            const child = stepMap[field.ref!]
+            if (child) stepMap[step.id].children!.push(child)
+          })
       })
+    })
+  })
 
-    if (!steps.some(s => s.fields.some(f => f.ref === step.id))) {
+  // Identify root steps (ones not referenced by any other step)
+  steps.forEach(step => {
+    const isReferenced = steps.some(s =>
+      s.pages.some(page =>
+        page.sections.some(section =>
+          section.fields.some(f => f.ref === step.id)
+        )
+      )
+    )
+    if (!isReferenced) {
       rootSteps.push(stepMap[step.id])
     }
   })
@@ -53,59 +82,44 @@ function buildStepTree(steps: Step[]): Step[] {
   return rootSteps
 }
 
-// Recursive component to render navigation
-const NavigationItem = React.memo(
-  ({
-    step,
-    currentStep,
-    visitedSteps,
-    onNavigate,
-    language
-  }: {
-    step: Step
-    currentStep: number
-    visitedSteps: Set<string>
-    onNavigate: (index: number) => void
-    language: string
-  }) => {
-    const stepIndex = parsedSteps.findIndex(s => s.id === step.id)
+// -----------------------------------------------------------------------------
+// 2. Determine Which Steps Are "Parents" and Which Are "Children"
+//    - Parent steps = NOT referenced by anyone (root steps).
+//    - Child steps  = referenced by another step's 'reference' field.
+// -----------------------------------------------------------------------------
+function getParentSteps(steps: Step[]): Step[] {
+  // Steps not referenced by anyone
+  const rootStepIds = new Set<string>(steps.map(s => s.id))
 
-    return (
-      <li>
-        <button
-          type='button'
-          onClick={() => onNavigate(stepIndex)}
-          className={`w-full rounded px-4 py-2 text-left ${
-            currentStep === stepIndex
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-200 text-gray-800'
-          }`}
-          aria-current={currentStep === stepIndex ? 'step' : undefined}
-        >
-          {step.names[language] || step.names['eng']}
-        </button>
+  // Remove from rootStepIds any step that is referenced
+  steps.forEach(step => {
+    step.pages.forEach(page => {
+      page.sections.forEach(section => {
+        section.fields.forEach(field => {
+          if (field.type === 'reference' && field.ref) {
+            // This step is a child, so it's not a parent
+            rootStepIds.delete(field.ref)
+          }
+        })
+      })
+    })
+  })
 
-        {visitedSteps.has(step.id) && step.children!.length > 0 && (
-          <ul className='ml-4 mt-2 space-y-2'>
-            {step
-              .children!.filter(child => visitedSteps.has(child.id))
-              .map(child => (
-                <NavigationItem
-                  key={child.id}
-                  step={child}
-                  currentStep={currentStep}
-                  visitedSteps={visitedSteps}
-                  onNavigate={onNavigate}
-                  language={language}
-                />
-              ))}
-          </ul>
-        )}
-      </li>
+  return steps.filter(step => rootStepIds.has(step.id))
+}
+
+function getReferencingStep(childId: string, steps: Step[]): Step | undefined {
+  return steps.find(step =>
+    step.pages.some(page =>
+      page.sections.some(section =>
+        section.fields.some(field => field.ref === childId)
+      )
     )
-  }
-)
-
+  )
+}
+// -----------------------------------------------------------------------------
+// 3. The Main Form Component
+// -----------------------------------------------------------------------------
 export default function Form() {
   if (!parsedSteps || parsedSteps.length === 0) {
     return <div>Loading form structure...</div>
@@ -118,13 +132,13 @@ export default function Form() {
   )
   const [formData, setFormData] = useState<Record<string, any>>({})
 
+  // Build the step tree (optional) for your nav
   const stepTree = useMemo(() => buildStepTree(parsedSteps), [parsedSteps])
 
-  const parentSteps = useMemo(
-    () => parsedSteps.filter(step => !step.parent),
-    [parsedSteps]
-  )
+  // Determine which steps are parents
+  const parentSteps = useMemo(() => getParentSteps(parsedSteps), [parsedSteps])
 
+  // Function to navigate by array index in 'parsedSteps'
   const onNavigate = useCallback(
     (index: number) => {
       setCurrentStep(index)
@@ -137,152 +151,131 @@ export default function Form() {
     [parsedSteps]
   )
 
+  // Go to next parent in the parentSteps array
   const goToNextParent = useCallback(() => {
-    const currentParentIndex = parentSteps.findIndex(
-      step => step.id === parsedSteps[currentStep]?.id
-    )
-    if (
-      currentParentIndex >= 0 &&
-      currentParentIndex < parentSteps.length - 1
-    ) {
-      const nextStepIndex = parsedSteps.findIndex(
-        step => step.id === parentSteps[currentParentIndex + 1]?.id
-      )
-      onNavigate(nextStepIndex)
+    const currentStepId = parsedSteps[currentStep]?.id
+    const currentParentIndex = parentSteps.findIndex(step => step.id === currentStepId)
+    if (currentParentIndex >= 0 && currentParentIndex < parentSteps.length - 1) {
+      const nextParentId = parentSteps[currentParentIndex + 1]?.id
+      const nextStepIndex = parsedSteps.findIndex(s => s.id === nextParentId)
+      if (nextStepIndex >= 0) onNavigate(nextStepIndex)
     }
   }, [currentStep, parentSteps, parsedSteps, onNavigate])
 
+  // Go to previous parent in the parentSteps array
   const goToPreviousParent = useCallback(() => {
-    const currentParentIndex = parentSteps.findIndex(
-      step => step.id === parsedSteps[currentStep]?.id
-    )
+    const currentStepId = parsedSteps[currentStep]?.id
+    const currentParentIndex = parentSteps.findIndex(step => step.id === currentStepId)
     if (currentParentIndex > 0) {
-      const previousStepIndex = parsedSteps.findIndex(
-        step => step.id === parentSteps[currentParentIndex - 1]?.id
-      )
-      onNavigate(previousStepIndex)
+      const previousParentId = parentSteps[currentParentIndex - 1]?.id
+      const previousStepIndex = parsedSteps.findIndex(s => s.id === previousParentId)
+      if (previousStepIndex >= 0) onNavigate(previousStepIndex)
     }
   }, [currentStep, parentSteps, parsedSteps, onNavigate])
 
+  // Simple validation example
   const validateField = useCallback(
     (field: Field, value: string): boolean => {
-      const { options } = field
+      // If you have advanced validation, put it here...
+      // E.g. if (field.type === 'mandatory' && !value) return false;
 
-      // Conformance validation
-      if (field.type === 'mandatory' && !value) {
-        return false
+      // If the field has enumerated options, ensure value is in that list
+      if (field.options[language] && field.options[language][field.id]) {
+        const allowed = field.options[language][field.id]
+        if (allowed.length > 0 && !allowed.includes(value)) return false
       }
-
-      // Entry Code validation
-      if (options[language] && !options[language][field.id]?.includes(value)) {
-        return false
-      }
-
       return true
     },
     [language]
   )
 
+  // Finish handling for a child step
   const finishHandler = useCallback(() => {
+    const stepObj = parsedSteps[currentStep]
+    if (!stepObj) return
+
     const currentStepData: Record<string, any> = {}
 
-    parsedSteps[currentStep]?.fields.forEach((field: Field) => {
-      const input = document.querySelector(
-        `[name="${field.id}"]`
-      ) as HTMLInputElement | null
+    // Collect data from pages → sections → fields
+    stepObj.pages.forEach((page: Page) => {
+      page.sections.forEach(section => {
+        section.fields.forEach(field => {
+          let value = ''
+          if (field.type === 'radio') {
+            const selectedRadio = document.querySelector(
+              `input[name="${field.id}"]:checked`
+            ) as HTMLInputElement | null
+            value = selectedRadio?.value || ''
+          } else {
+            const input = document.querySelector(
+              `[name="${field.id}"]`
+            ) as HTMLInputElement | HTMLTextAreaElement | null
+            value = input?.value || ''
+          }
 
-      if (
-        field.type === 'textarea' ||
-        field.type === 'DateTime' ||
-        field.type === 'dropdown'
-      ) {
-        const value = input?.value || ''
-        if (!validateField(field, value)) {
-          console.warn(`Validation failed for field ${field.id}`)
-        }
-        currentStepData[field.id] = value
-      } else if (field.type === 'radio') {
-        const selectedRadio = document.querySelector(
-          `input[name="${field.id}"]:checked`
-        ) as HTMLInputElement | null
-        const value = selectedRadio?.value || ''
-        if (!validateField(field, value)) {
-          console.warn(`Validation failed for field ${field.id}`)
-        }
-        currentStepData[field.id] = value
-      } else if (field.type === 'select') {
-        const value = input?.value || ''
-        if (!validateField(field, value)) {
-          console.warn(`Validation failed for field ${field.id}`)
-        }
-        currentStepData[field.id] = value
-      }
+          // Validate
+          if (!validateField(field, value)) {
+            console.warn(`Validation failed for field ${field.id}`)
+          }
+          currentStepData[field.id] = value
+        })
+      })
     })
 
+    // Update global form data
     setFormData(prevData => ({
       ...prevData,
-      [parsedSteps[currentStep]?.id]: currentStepData
+      [stepObj.id]: currentStepData
     }))
 
-    // Check if the current step has a parent and save the data there
-    const currentParent = parsedSteps.find(
-      step => step.id === parsedSteps[currentStep]?.parent
-    )
-
-    if (currentParent) {
-      setFormData(prevData => ({
-        ...prevData,
-        [currentParent.id]: {
-          ...(prevData[currentParent.id] || {}),
-          [parsedSteps[currentStep]?.id]: currentStepData // Save child data in the parent
-        }
-      }))
-    }
-
-    console.log('Form Data:', formData)
-    // Navigate back to the parent or to the first step
-    if (currentParent) {
-      const parentIndex = parsedSteps.findIndex(
-        step => step.id === currentParent.id
+    const referencingStep = getReferencingStep(stepObj.id, parsedSteps)
+    // If found, navigate back to that referencing step
+    if (referencingStep) {
+      const referencingStepIndex = parsedSteps.findIndex(
+        s => s.id === referencingStep.id
       )
-      setCurrentStep(parentIndex)
+      setCurrentStep(referencingStepIndex)
     } else {
+      // 6. Otherwise, default to the first step or some fallback
       setCurrentStep(0)
     }
+    // In your current structure, 'parent' is always null, so the "official" parent
+    // logic won't work by default. If you do want to nest data, you'd do it here:
+    // If there's a parent, store data nested under the parent's ID.
+    // Example:
+    // const currentParent = parsedSteps.find(s => s.id === stepObj.parent)
+    // if (currentParent) { ... }
+
+    // For now, let's just log everything and go to the first step after finishing
+    console.log('Updated Form Data:', {
+      ...formData,
+      [stepObj.id]: currentStepData
+    })
   }, [currentStep, parsedSteps, formData, validateField])
 
+  // Cancel → also go back to first step or do custom logic
   const cancelHandler = useCallback(() => {
-    const currentParent = parsedSteps.find(
-      step => step.id === parsedSteps[currentStep]?.parent
-    )
+    setCurrentStep(0)
+  }, [])
 
-    if (currentParent) {
-      const parentIndex = parsedSteps.findIndex(
-        step => step.id === currentParent.id
-      )
-      setCurrentStep(parentIndex)
-    } else {
-      setCurrentStep(0)
-    }
-  }, [currentStep, parsedSteps])
+  // Helper to check if a step is a "parent step"
+  const isParentStep = (step: Step) => parentSteps.some(p => p.id === step.id)
 
   return (
     <section className='relative flex min-h-screen'>
+      {/* Main content area */}
       <div className='flex-1 p-8 pr-80'>
         <h1 className='mb-6 text-3xl font-bold'>Dynamic Form</h1>
 
         {/* Language Selector */}
         <div className='mb-6 flex items-center space-x-4'>
-          <label
-            htmlFor='language'
-            className='text-sm font-medium text-gray-700'
-          >
+          <label htmlFor='language' className='text-sm font-medium text-gray-700'>
             Language:
           </label>
           <select
             id='language'
             value={language}
-            onChange={e => setLanguage(e.target.value)} // Change the language dynamically
+            onChange={e => setLanguage(e.target.value)}
             className='block w-40 rounded border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
           >
             <option value='eng'>English</option>
@@ -290,147 +283,151 @@ export default function Form() {
           </select>
         </div>
 
+        {/* Render the current step's content */}
         {parsedSteps.map((step, index) =>
           currentStep === index ? (
-            <motion.div
-              key={step.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
+            <motion.div key={step.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <h2 className='mb-4 text-2xl font-semibold'>
                 {step.names[language] || step.names['eng']}
               </h2>
               {step.descriptions[language] && (
-                <p className='mb-4 text-gray-600'>
-                  {step.descriptions[language]}
-                </p>
+                <p className='mb-4 text-gray-600'>{step.descriptions[language]}</p>
               )}
 
-              {step.fields.map((field: Field) => (
-                <div key={field.id} className='mb-4'>
-                  <label className='block text-sm font-medium'>
-                    {field.labels[language][field.id] ||
-                      field.labels['eng'][field.id]}
-                  </label>
+              {/* For each page → section → field */}
+              {step.pages.map((page: Page) => (
+                <div key={page.pageKey} className='mb-8'>
+                  {page.pageLabel[language] && (
+                    <h3 className='text-xl font-semibold'>
+                      {page.pageLabel[language] || page.pageLabel['eng']}
+                    </h3>
+                  )}
+                  {page.sections.map(section => (
+                    <div key={section.sectionKey} className='mb-6'>
+                      {section.sectionLabel[language] && (
+                        <h4 className='text-lg font-medium'>
+                          {section.sectionLabel[language] ||
+                            section.sectionLabel['eng']}
+                        </h4>
+                      )}
 
-                  {/* Render field types */}
-                  {field.type === 'textarea' && (
-                    <textarea
-                      name={field.id}
-                      defaultValue={field.value || ''}
-                      className='w-full rounded border p-2'
-                    />
-                  )}
-                  {field.type === 'DateTime' && (
-                    <input
-                      name={field.id}
-                      type='datetime-local'
-                      defaultValue={field.value || ''}
-                      className='w-full rounded border p-2'
-                    />
-                  )}
-                  {field.type === 'radio' && (
-                    <div
-                      className={`flex ${
-                        field.orientation === 'vertical'
-                          ? 'flex-col'
-                          : 'flex-row space-x-4'
-                      }`}
-                    >
-                      {field.options[language]?.[field.id]?.map((option, i) => (
-                        <label key={i} className='flex items-center space-x-2'>
-                          <input
-                            type='radio'
-                            name={field.id}
-                            value={option}
-                            defaultChecked={field.value === option}
-                          />
-                          <span>{option}</span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
-                  {field.type === 'reference' && field.ref && (
-                    <div>
-                      {/* Button to navigate to the child step */}
-                      <button
-                        type='button'
-                        onClick={() => {
-                          const targetIndex = parsedSteps.findIndex(
-                            s => s.id === field.ref
-                          )
-                          if (targetIndex >= 0) {
-                            onNavigate(targetIndex)
-                          } else {
-                            console.warn(
-                              `Reference step not found for field: ${field.id}`
-                            )
-                          }
-                        }}
-                        className='mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
-                      >
-                        +{' '}
-                        {parsedSteps.find(s => s.id === field.ref)?.names[
-                          language
-                        ] || 'Child Step'}
-                      </button>
+                      {section.fields.map((field: Field) => (
+                        <div key={field.id} className='mb-4'>
+                          {/* Field Label */}
+                          <label className='block text-sm font-medium mb-1'>
+                            {field.labels[language]?.[field.id] ||
+                              field.labels['eng']?.[field.id]}
+                          </label>
 
-                      {/* Display the data from the child step if available */}
-                      {formData[field.ref] && (
-                        <div className='mt-4 rounded border bg-gray-100 p-4'>
-                          <h4 className='text-lg font-semibold'>
-                            {parsedSteps.find(s => s.id === field.ref)?.names[
-                              language
-                            ] || 'Child Step Data'}
-                          </h4>
-                          <ul className='mt-2 list-disc space-y-1 pl-4 text-gray-700'>
-                            {Object.entries(formData[field.ref]).map(
-                              ([key, value]) => (
-                                <li key={key}>
-                                  <strong>{key}:</strong> {String(value)}
-                                </li>
-                              )
-                            )}
-                          </ul>
+                          {/* Different Field Types */}
+                          {field.type === 'textarea' && (
+                            <textarea
+                              name={field.id}
+                              defaultValue={field.value || ''}
+                              className='w-full rounded border p-2'
+                            />
+                          )}
+                          {field.type === 'DateTime' && (
+                            <input
+                              name={field.id}
+                              type='datetime-local'
+                              defaultValue={field.value || ''}
+                              className='w-full rounded border p-2'
+                            />
+                          )}
+                          {field.type === 'radio' && (
+                            <div
+                              className={`flex ${
+                                field.orientation === 'vertical'
+                                  ? 'flex-col'
+                                  : 'flex-row space-x-4'
+                              }`}
+                            >
+                              {field.options[language]?.[field.id]?.map((option, i) => (
+                                <label key={i} className='flex items-center space-x-2'>
+                                  <input
+                                    type='radio'
+                                    name={field.id}
+                                    value={option}
+                                    defaultChecked={field.value === option}
+                                  />
+                                  <span>{option}</span>
+                                </label>
+                              ))}
+                            </div>
+                          )}
+                          {(field.type === 'select' || field.type === 'dropdown') && (
+                            <select
+                              name={field.id}
+                              defaultValue={field.value || ''}
+                              className='w-full rounded border p-2'
+                            >
+                              {field.options[language]?.[field.id]?.map((option, i) => (
+                                <option key={i} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
+                          )}
+
+                          {/* Reference Field → navigate to child */}
+                          {field.type === 'reference' && field.ref && (
+                            <div>
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  const targetIndex = parsedSteps.findIndex(
+                                    s => s.id === field.ref
+                                  )
+                                  if (targetIndex >= 0) {
+                                    onNavigate(targetIndex)
+                                  } else {
+                                    console.warn(
+                                      `Reference step not found for field: ${field.id}`
+                                    )
+                                  }
+                                }}
+                                className='mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
+                              >
+                                +{' '}
+                                {parsedSteps.find(s => s.id === field.ref)?.names[language] ||
+                                  'Child Step'}
+                              </button>
+
+                              {/* Display child data if it exists in formData */}
+                              {formData[field.ref] && (
+                                <div className='mt-4 rounded border bg-gray-100 p-4'>
+                                  <h4 className='text-lg font-semibold'>
+                                    {
+                                      parsedSteps.find(s => s.id === field.ref)?.names[
+                                        language
+                                      ]
+                                    }
+                                  </h4>
+                                  <ul className='mt-2 list-disc space-y-1 pl-4 text-gray-700'>
+                                    {Object.entries(formData[field.ref]).map(
+                                      ([key, val]) => (
+                                        <li key={key}>
+                                          <strong>{key}:</strong> {String(val)}
+                                        </li>
+                                      )
+                                    )}
+                                  </ul>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  )}
-
-                  {field.type === 'select' && (
-                    <select
-                      name={field.id}
-                      defaultValue={field.value || ''}
-                      className='w-full rounded border p-2'
-                    >
-                      {(field.options[language]?.[field.id] || []).map(
-                        (option, i) => (
-                          <option key={i} value={option}>
-                            {option}
-                          </option>
-                        )
-                      )}
-                    </select>
-                  )}
-
-                  {field.type === 'dropdown' && (
-                    <select
-                      name={field.id}
-                      defaultValue={field.value || ''}
-                      className='w-full rounded border p-2'
-                    >
-                      {field.options[language]?.[field.id]?.map((option, i) => (
-                        <option key={i} value={option}>
-                          {option}
-                        </option>
                       ))}
-                    </select>
-                  )}
+                    </div>
+                  ))}
                 </div>
               ))}
 
+              {/* Bottom Navigation Buttons */}
               <div className='mt-8 flex justify-between'>
-                {parentSteps.some(p => p.id === step.id) && (
+                {isParentStep(step) ? (
+                  // If it's a parent step
                   <>
                     <button
                       type='button'
@@ -454,8 +451,8 @@ export default function Form() {
                       Next
                     </button>
                   </>
-                )}
-                {!parentSteps.some(p => p.id === step.id) && (
+                ) : (
+                  // If it's a child (referenced) step
                   <>
                     <button
                       type='button'
@@ -479,6 +476,7 @@ export default function Form() {
         )}
       </div>
 
+      {/* Sidebar Navigation using the step tree */}
       <nav className='fixed bottom-0 right-0 top-0 hidden w-72 overflow-y-auto bg-gray-100 p-6 shadow-md lg:block'>
         <h2 className='mb-4 text-xl font-semibold'>Pages</h2>
         <ul className='space-y-4'>
@@ -497,3 +495,60 @@ export default function Form() {
     </section>
   )
 }
+
+// -----------------------------------------------------------------------------
+// 4. NavigationItem Component for Recursive Parent-Child Navigation
+// -----------------------------------------------------------------------------
+const NavigationItem = React.memo(
+  ({
+    step,
+    currentStep,
+    visitedSteps,
+    onNavigate,
+    language
+  }: {
+    step: Step
+    currentStep: number
+    visitedSteps: Set<string>
+    onNavigate: (index: number) => void
+    language: string
+  }) => {
+    // Find the top-level index of this step in parsedSteps
+    const stepIndex = parsedSteps.findIndex(s => s.id === step.id)
+
+    return (
+      <li>
+        <button
+          type='button'
+          onClick={() => onNavigate(stepIndex)}
+          className={`w-full rounded px-4 py-2 text-left ${
+            currentStep === stepIndex
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-200 text-gray-800'
+          }`}
+          aria-current={currentStep === stepIndex ? 'step' : undefined}
+        >
+          {step.names[language] || step.names['eng']}
+        </button>
+
+        {/* If the user visited this step and it has children, show them if also visited */}
+        {visitedSteps.has(step.id) && step.children && step.children.length > 0 && (
+          <ul className='ml-4 mt-2 space-y-2'>
+            {step.children
+              .filter(child => visitedSteps.has(child.id))
+              .map(child => (
+                <NavigationItem
+                  key={child.id}
+                  step={child}
+                  currentStep={currentStep}
+                  visitedSteps={visitedSteps}
+                  onNavigate={onNavigate}
+                  language={language}
+                />
+              ))}
+          </ul>
+        )}
+      </li>
+    )
+  }
+)

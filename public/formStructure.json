@@ -1,110 +1,525 @@
-{
-  "steps": [
-    {
-      "id": "Step 1",
-      "name": "Introduction",
-      "parent": null,
-      "fields": [
-        {
-          "label": "q1: What is your name?",
-          "section": "Section 1: Name",
-          "type": "Text"
-        },
-        {
-          "label": "q2: Enter a date",
-          "section": "Section 2: Year",
-          "type": "DateTime"
-        },
-        {
-          "label": "q3: What is your favourite colour?",
-          "type": "enum",
-          "options": {
-            "001": "Red",
-            "002": "Green",
-            "003": "Blue",
-            "004": "Yellow",
-            "005": "Orange"
-          }
-        },
-        {
-          "label": "q4: Select which research fields apply.",
-          "type": "enum",
-          "options": {
-            "5G": "5G Networks and Telecommunications",
-            "AI": "Artificial Intelligence and Ethics",
-            "AIH": "AI in Healthcare Diagnostics",
-            "BA": "Blockchain Applications in Finance",
-            "BL": "Biodiversity Loss and Conservation Efforts",
-            "CC": "Climate Change and Global Warming",
-            "CG": "CRISPR and Genetic Engineering",
-            "CT": "Cybersecurity Threats and Solutions",
-            "DP": "Data Privacy and Protection",
-            "FRW": "The Future of Remote Work",
-            "MLPA": "Machine Learning in Predictive Analytics",
-            "NB": "Neuroscience and Brain Mapping",
-            "QC": "Quantum Computing Advancements",
-            "RA": "Robotics and Automation in Industry",
-            "RE": "Renewable Energy Technologies",
-            "RES": "Renewable Energy Storage Systems",
-            "SE": "Space Exploration and Mars Colonization",
-            "SM": "Social Media Impact on Mental Health",
-            "US": "Urbanization and Sustainable Cities",
-            "VR": "Virtual Reality in Education"
-          }
-        },
-        { "label": "q5: Yes or no?", "type": "Boolean" },
-        {
-          "label": "q6: Write a paragraph explaining your reasoning.",
-          "type": "Text"
-        },
-        {
-          "label": "q7: Name the Authors.",
-          "type": "reference",
-          "ref": "Step 2"
-        }
-      ]
+[
+  {
+    "id": "EDuVx14Ljlbm05tJg4Y6ef8PoG37bOflZdsk4fuIdken",
+    "names": {
+      "fra": "exemple_de_questionnaire",
+      "eng": "sample_questionnaire"
     },
-    {
-      "id": "Step 2",
-      "name": "Authors",
-      "parent": "Step 1",
-      "fields": [
-        { "label": "First name", "type": "Text" },
-        { "label": "Last name", "type": "Text" },
-        {
-          "label": "Identifier",
-          "type": "reference",
-          "ref": "Step 3"
-        }
-      ]
+    "descriptions": {
+      "fra": "Un exemple de questionnaire pour le développement du DRT.",
+      "eng": "A sample questionnaire for the development of the DRT."
     },
-    {
-      "id": "Step 3",
-      "name": "Identifier",
-      "parent": "Step 2",
-      "fields": [
-        {
-          "label": "Identifier",
-          "type": "enum",
-          "options": {
-            "Google": "ID Google Scholar",
-            "ISNI": "ISNI",
-            "ORCiD": "ORCiD",
-            "ResearcherID": "ResearcherID",
-            "Scopus": "ID Auteur Scopus"
+    "parent": null,
+    "pages": [
+      {
+        "pageKey": "page-1",
+        "pageLabel": {
+          "eng": "Page 1: Introduction",
+          "fra": "Page 1: Introduction"
+        },
+        "sections": [
+          {
+            "sectionKey": "section-1",
+            "sectionLabel": {
+              "eng": "Section 1: name",
+              "fra": "Section 1: nom"
+            },
+            "fields": [
+              {
+                "id": "q1",
+                "labels": {
+                  "fra": {
+                    "q1": "Quel est ton nom?"
+                  },
+                  "eng": {
+                    "q1": "What is your name?"
+                  }
+                },
+                "options": {
+                  "fra": {},
+                  "eng": {}
+                },
+                "type": "textarea",
+                "orientation": null,
+                "value": "",
+                "ref": null
+              }
+            ]
           },
-          "ref": ""
+          {
+            "sectionKey": "section-2",
+            "sectionLabel": {
+              "eng": "Section 2: Date",
+              "fra": "Section 2: Date"
+            },
+            "fields": [
+              {
+                "id": "q2",
+                "labels": {
+                  "fra": {
+                    "q2": "Entrez une date"
+                  },
+                  "eng": {
+                    "q2": "Enter a date"
+                  }
+                },
+                "options": {
+                  "fra": {},
+                  "eng": {}
+                },
+                "type": "DateTime",
+                "orientation": null,
+                "value": "",
+                "ref": null
+              }
+            ]
+          },
+          {
+            "sectionKey": "q3",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q3",
+                "labels": {
+                  "fra": {
+                    "q3": "Quelle est ta couleur préférée ?"
+                  },
+                  "eng": {
+                    "q3": "What is your favourite colour?"
+                  }
+                },
+                "options": {
+                  "fra": {
+                    "q3": [
+                      "Rouge",
+                      "Vert",
+                      "Bleu",
+                      "Jaune",
+                      "Orange"
+                    ]
+                  },
+                  "eng": {
+                    "q3": [
+                      "Red",
+                      "Green",
+                      "Blue",
+                      "Yellow",
+                      "Orange"
+                    ]
+                  }
+                },
+                "type": "radio",
+                "orientation": "vertical",
+                "value": "",
+                "ref": null
+              }
+            ]
+          },
+          {
+            "sectionKey": "q4",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q4",
+                "labels": {
+                  "fra": {
+                    "q4": "Sélectionnez les domaines de recherche qui s'appli"
+                  },
+                  "eng": {
+                    "q4": "Select which research fields apply."
+                  }
+                },
+                "options": {
+                  "fra": {
+                    "q4": [
+                      "Réseaux 5G et télécommunications",
+                      "Intelligence artificielle et éthique",
+                      "IA dans les diagnostics de santé",
+                      "Applications de la blockchain en finance",
+                      "Perte de biodiversité et efforts de conservation",
+                      "Changement climatique et réchauffement global",
+                      "CRISPR et génie génétique",
+                      "Menaces et solutions en cybersécurité",
+                      "Protection et confidentialité des données",
+                      "L'avenir du travail à distance",
+                      "Apprentissage automatique en analyse prédictive",
+                      "Neurosciences et cartographie cérébrale",
+                      "Avancées en calcul quantique",
+                      "Robotiques et automatisation dans l'industrie",
+                      "Technologies des énergies renouvelables",
+                      "Systèmes de stockage d'énergie renouvelable",
+                      "Exploration spatiale et colonisation de Mars",
+                      "Impact des médias sociaux sur la santé mentale",
+                      "Urbanisation et villes durables",
+                      "Réalité virtuelle dans l'éducation"
+                    ]
+                  },
+                  "eng": {
+                    "q4": [
+                      "5G Networks and Telecommunications",
+                      "Artificial Intelligence and Ethics",
+                      "AI in Healthcare Diagnostics",
+                      "Blockchain Applications in Finance",
+                      "Biodiversity Loss and Conservation Efforts",
+                      "Climate Change and Global Warming",
+                      "CRISPR and Genetic Engineering",
+                      "Cybersecurity Threats and Solutions",
+                      "Data Privacy and Protection",
+                      "The Future of Remote Work",
+                      "Machine Learning in Predictive Analytics",
+                      "Neuroscience and Brain Mapping",
+                      "Quantum Computing Advancements",
+                      "Robotics and Automation in Industry",
+                      "Renewable Energy Technologies",
+                      "Renewable Energy Storage Systems",
+                      "Space Exploration and Mars Colonization",
+                      "Social Media Impact on Mental Health",
+                      "Urbanization and Sustainable Cities",
+                      "Virtual Reality in Education"
+                    ]
+                  }
+                },
+                "type": "select",
+                "orientation": null,
+                "value": "",
+                "ref": null
+              }
+            ]
+          },
+          {
+            "sectionKey": "q5",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q5",
+                "labels": {
+                  "fra": {
+                    "q5": "Oui ou non ?"
+                  },
+                  "eng": {
+                    "q5": "Yes or no?"
+                  }
+                },
+                "options": {
+                  "fra": {
+                    "q5": [
+                      "Oui",
+                      "Non"
+                    ]
+                  },
+                  "eng": {
+                    "q5": [
+                      "Yes",
+                      "No"
+                    ]
+                  }
+                },
+                "type": "radio",
+                "orientation": "vertical",
+                "value": "",
+                "ref": null
+              }
+            ]
+          },
+          {
+            "sectionKey": "q6",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q6",
+                "labels": {
+                  "fra": {
+                    "q6": "Écrivez un paragraphe expliquant votre raisonnemen"
+                  },
+                  "eng": {
+                    "q6": "Write a paragraph explaining your reasoning."
+                  }
+                },
+                "options": {
+                  "fra": {},
+                  "eng": {}
+                },
+                "type": "textarea",
+                "orientation": null,
+                "value": "",
+                "ref": null
+              }
+            ]
+          }
+        ],
+        "captureBase": "EDuVx14Ljlbm05tJg4Y6ef8PoG37bOflZdsk4fuIdken"
+      },
+      {
+        "pageKey": "page-2",
+        "pageLabel": {
+          "eng": "Page 2: Authors",
+          "fra": "Page 2: Auteurs"
         },
-        { "label": "value", "type": "Text" }
-      ]
+        "sections": [
+          {
+            "sectionKey": "q7",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q7",
+                "labels": {
+                  "fra": {
+                    "q7": "Nommer les auteurs."
+                  },
+                  "eng": {
+                    "q7": "Name the Authors."
+                  }
+                },
+                "options": {
+                  "fra": {},
+                  "eng": {}
+                },
+                "type": "reference",
+                "orientation": null,
+                "value": "",
+                "ref": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh"
+              }
+            ]
+          }
+        ],
+        "captureBase": "EDuVx14Ljlbm05tJg4Y6ef8PoG37bOflZdsk4fuIdken"
+      }
+    ]
+  },
+  {
+    "id": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+    "names": {
+      "eng": "person",
+      "fra": "personne"
     },
-    {
-      "id": "Step 4",
-      "name": "Last Page",
-      "parent": null,
-      "fields": [
-        { "label": "Any other explanation?", "type": "Text", "ref": "" }
-      ]
-    }
-  ]
-}
+    "descriptions": {
+      "eng": "Details about person",
+      "fra": "Détails sur la personne"
+    },
+    "parent": null,
+    "pages": [
+      {
+        "pageKey": "page-1",
+        "pageLabel": {
+          "eng": "Page 1: Author Details",
+          "fra": "Page 1: Détails des auteurs"
+        },
+        "sections": [
+          {
+            "sectionKey": "q1",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q1",
+                "labels": {
+                  "eng": {
+                    "q1": "First name"
+                  },
+                  "fra": {
+                    "q1": "Prénom"
+                  }
+                },
+                "options": {},
+                "type": "textarea",
+                "orientation": null,
+                "value": "",
+                "ref": null
+              }
+            ]
+          },
+          {
+            "sectionKey": "q2",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q2",
+                "labels": {
+                  "eng": {
+                    "q2": "Last name"
+                  },
+                  "fra": {
+                    "q2": "Nom de famille"
+                  }
+                },
+                "options": {},
+                "type": "textarea",
+                "orientation": null,
+                "value": "",
+                "ref": null
+              }
+            ]
+          }
+        ],
+        "captureBase": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh"
+      },
+      {
+        "pageKey": "page-2",
+        "pageLabel": {
+          "eng": "Page 2: IDs",
+          "fra": "Page 2: IDs"
+        },
+        "sections": [
+          {
+            "sectionKey": "q3",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q3",
+                "labels": {
+                  "eng": {
+                    "q3": "Identifier"
+                  },
+                  "fra": {
+                    "q3": "Identifiant"
+                  }
+                },
+                "options": {},
+                "type": "reference",
+                "orientation": null,
+                "value": "",
+                "ref": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD"
+              }
+            ]
+          }
+        ],
+        "captureBase": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh"
+      }
+    ]
+  },
+  {
+    "id": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+    "names": {
+      "eng": "identifier",
+      "fra": "identifiant"
+    },
+    "descriptions": {
+      "eng": "Identifiers for people.",
+      "fra": "Identifiants pour les personnes."
+    },
+    "parent": null,
+    "pages": [
+      {
+        "pageKey": "page-1",
+        "pageLabel": {
+          "eng": "Page 1: Identifier",
+          "fra": "Page 1: Identifiant"
+        },
+        "sections": [
+          {
+            "sectionKey": "q1",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q1",
+                "labels": {
+                  "eng": {
+                    "q1": "Identifier"
+                  },
+                  "fra": {
+                    "q1": "Identifiant"
+                  }
+                },
+                "options": {
+                  "fra": {
+                    "q1": [
+                      "ID Google Scholar",
+                      "ISNI",
+                      "ORCiD",
+                      "ResearcherID",
+                      "ID Auteur Scopus"
+                    ]
+                  },
+                  "eng": {
+                    "q1": [
+                      "Google Scholar ID",
+                      "ISNI",
+                      "ORCiD",
+                      "ResearcherID",
+                      "Scopus Author ID"
+                    ]
+                  }
+                },
+                "type": "dropdown",
+                "orientation": "vertical",
+                "value": "",
+                "ref": null
+              }
+            ]
+          },
+          {
+            "sectionKey": "q2",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q2",
+                "labels": {
+                  "eng": {
+                    "q2": "value"
+                  },
+                  "fra": {
+                    "q2": "valeur"
+                  }
+                },
+                "options": {
+                  "fra": {},
+                  "eng": {}
+                },
+                "type": "textarea",
+                "orientation": null,
+                "value": "",
+                "ref": null
+              }
+            ]
+          }
+        ],
+        "captureBase": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD"
+      }
+    ]
+  },
+  {
+    "id": "EBw5K6SvNSe2Mi5OkttQhLZuj8Mz6JNQbBQO76tD",
+    "names": {
+      "eng": "Explain",
+      "fra": "Explain in fra"
+    },
+    "descriptions": {
+      "eng": "Explain",
+      "fra": "Explain in french."
+    },
+    "parent": null,
+    "pages": [
+      {
+        "pageKey": "page-1",
+        "pageLabel": {
+          "eng": "Page 1: Last Page",
+          "fra": "Page 1: Dernière page"
+        },
+        "sections": [
+          {
+            "sectionKey": "q1",
+            "sectionLabel": {},
+            "fields": [
+              {
+                "id": "q1",
+                "labels": {
+                  "eng": {
+                    "q1": "explain"
+                  },
+                  "fra": {
+                    "q1": "explain in french"
+                  }
+                },
+                "options": {},
+                "type": "textarea",
+                "orientation": null,
+                "value": "",
+                "ref": null
+              }
+            ]
+          }
+        ],
+        "captureBase": "EBw5K6SvNSe2Mi5OkttQhLZuj8Mz6JNQbBQO76tD"
+      }
+    ]
+  }
+]

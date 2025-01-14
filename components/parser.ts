@@ -75,9 +75,9 @@ const parseRelationships = (
   const refsSeen: Set<string> = new Set()
 
   const addRelationships = (captureBase: string, parentRef: string | null) => {
-    if (refsSeen.has(captureBase)) {
-      return // Skip already processed IDs
-    }
+    
+    // Avoid re-processing the same capture base
+    if (refsSeen.has(captureBase)) return
     refsSeen.add(captureBase)
 
     const entity = findBundleByCaptureBase(captureBase, bundle, dependencies)
@@ -86,16 +86,21 @@ const parseRelationships = (
       return
     }
 
-    // Extract `refs` attributes from capture_base
-    const childRefs = Object.values(
-      entity.capture_base.attributes || {}
-    ).flatMap(attr => {
+    
+    // 'childRefs' will collect all capture_bases that this entity references
+    const childRefs: string[] = []
+
+    // For example, you might store references as "refs:SOME_ID" in attributes
+    // Adjust this logic to match your data
+    Object.values(entity.capture_base.attributes || {}).forEach(attr => {
       if (typeof attr === 'string' && attr.startsWith('refs:')) {
+        // Extract the reference ID and find the matching dependency
         const refId = attr.replace('refs:', '')
         const refEntity = dependencies.find(dep => dep.d === refId)
-        return refEntity ? refEntity.capture_base.d : []
+        if (refEntity) {
+          childRefs.push(refEntity.capture_base.d)
+        }
       }
-      return []
     })
 
     // Ensure children are processed and relationships are updated
@@ -192,6 +197,54 @@ const getStepMeta = (
   return { names, descriptions }
 }
 
+// Parse pages and sections from the presentation
+const parsePresentation = (
+  presentation: Presentation,
+  labels: Record<string, Record<string, string>>,
+  fields: any[]
+) => {
+  const getAllLabels = (labels: Record<string, Record<string, string>>, key: string) => {
+    const result: Record<string, string> = {};
+    Object.keys(labels).forEach(lang => {
+      result[lang] = labels[lang]?.[key] || '';
+    });
+    return result;
+  };
+
+  const pages = presentation.page_order.map(pageKey => {
+    const page = presentation.pages.find(p => p.named_section === pageKey);
+    if (!page) return null;
+
+    const sections = (page.attribute_order || []).map(sectionOrField => {
+      if (typeof sectionOrField === 'string') {
+        return {
+          sectionKey: sectionOrField,
+          sectionLabel: {}, // No label for standalone fields
+          fields: fields.filter(f => f.id === sectionOrField)
+        };
+      } else if (typeof sectionOrField === 'object') {
+        return {
+          sectionKey: sectionOrField.named_section,
+          sectionLabel: getAllLabels(presentation.page_labels, sectionOrField.named_section),
+          fields: sectionOrField.attribute_order
+            .map(fId => fields.find(f => f.id === fId))
+            .filter(Boolean)
+        };
+      }
+    });
+
+    return {
+      pageKey,
+      pageLabel: getAllLabels(presentation.page_labels, pageKey),
+      sections: sections.filter(Boolean),
+      captureBase: presentation.capture_base
+    };
+  });
+
+  return pages.filter(Boolean);
+};
+
+
 // Main parser function to convert JSON into form structure
 export const parseJsonToFormStructure = (): any[] => {
   const { bundle, dependencies } = metadata.oca_bundle
@@ -202,7 +255,7 @@ export const parseJsonToFormStructure = (): any[] => {
     return []
   }
 
-  const allSteps: any[] = []
+  const allSteps: Record<string, any> = {} // Use an object for deduplication
 
   presentations.forEach(presentation => {
     const relationships = parseRelationships(bundle, dependencies, presentation)
@@ -230,7 +283,7 @@ export const parseJsonToFormStructure = (): any[] => {
           ]
         const format = bundle.overlays?.format?.attribute_formats?.[fieldId]
 
-        // Filter labels and options for the specific fieldId
+        // Construct field-specific labels and options
         const fieldLabels = Object.fromEntries(
           Object.entries(labels).map(([lang, langLabels]) => [
             lang,
@@ -244,6 +297,7 @@ export const parseJsonToFormStructure = (): any[] => {
             langOptions[fieldId] ? { [fieldId]: langOptions[fieldId] } : {}
           ])
         )
+
         let field = {
           id: fieldId,
           labels: fieldLabels,
@@ -256,22 +310,22 @@ export const parseJsonToFormStructure = (): any[] => {
           ref: null // Initialize ref
         }
 
-        // Populate `ref` for reference fields
-        if (field.type === 'reference' && relationship.children.length > 0) {
-          field.ref = relationship.children[0] // Assign the first child as the reference
+        // Assign references for `reference` type fields
+        if (field.type === 'reference') {
+          // if your parseRelationships returned multiple children, decide which childRef to pick
+          // For example, let's say you pick the first child from relationship.children:
+          if (relationship.children.length > 0) {
+            field.ref = relationship.children[0]
+          }
         }
 
-        // Check conformance
+        // Handle mandatory fields
         if (conformance === 'M' && !field.value) {
-          console.warn(`Mandatory field missing: ${fieldId}`)
           field.value = '' // Default value for missing mandatory fields
         }
 
         // Validate entry codes
         if (entryCodes && !entryCodes.includes(field.value)) {
-          console.warn(
-            `Entry code mismatch for field ${fieldId}: ${field.value}`
-          )
           field.value = entryCodes[0] // Default to the first valid entry code
         }
 
@@ -280,35 +334,77 @@ export const parseJsonToFormStructure = (): any[] => {
           characterEncoding &&
           !new RegExp(characterEncoding).test(field.value)
         ) {
-          console.warn(
-            `Character encoding mismatch for field ${fieldId}: ${field.value}`
-          )
           field.value = '' // Clear value if encoding doesn't match
         }
 
         // Validate format
         if (format && !new RegExp(format).test(field.value)) {
-          console.warn(`Format mismatch for field ${fieldId}: ${field.value}`)
           field.value = '' // Clear value if format doesn't match
         }
 
         return field
       })
 
-      allSteps.push({
-        id: captureBase,
-        names,
-        descriptions,
-        parent: relationship.parent,
-        fields
+      // Array to store unique presentations
+      const uniquePresentations: Record<string, any>[] = []
+
+      // console.log('parsePresentation presentation:\n', presentation)
+
+      const pages = parsePresentation(presentation, labels, fields)
+
+      // Extract unique capture_base values and push the associated presentation to the array
+      const uniqueCaptureBases = new Set() // To track unique capture_base
+
+      pages.forEach(page => {
+        const captureBase = page?.captureBase || ''
+
+        if (!uniqueCaptureBases.has(captureBase)) {
+          uniqueCaptureBases.add(captureBase)
+          uniquePresentations.push({
+            captureBase,
+            names,
+            descriptions,
+            parent: relationship.parent,
+            pages: [page] // Initialize with the current page
+          })
+        } else {
+          // If captureBase already exists, merge the pages with the existing presentation
+          const existingPresentation = uniquePresentations.find(
+            presentation => presentation.captureBase === captureBase
+          )
+          if (existingPresentation) {
+            existingPresentation.pages.push(page)
+          }
+        }
+      })
+
+      // Add unique presentations to allSteps
+      uniquePresentations.forEach(presentation => {
+        const { captureBase, names, descriptions, parent, pages } = presentation
+
+        if (!allSteps[captureBase]) {
+          allSteps[captureBase] = {
+            id: captureBase,
+            names,
+            descriptions,
+            parent: relationship.parent || null,
+            pages
+          }
+        } else {
+          // Merge unique pages into the existing allSteps entry
+          const existingPages = allSteps[captureBase].pages.map((page: any) => page.id)
+          const newPages = pages.filter(
+            (page: any) => !existingPages.includes(page.id)
+          )
+          allSteps[captureBase].pages = [
+            ...allSteps[captureBase].pages,
+            ...newPages
+          ]
+        }
       })
     })
   })
 
-  // Deduplicate steps by ID
-  const uniqueSteps = allSteps.filter(
-    (step, index, self) => index === self.findIndex(s => s.id === step.id)
-  )
-
-  return uniqueSteps
+  // Convert steps object to an array
+  return Object.values(allSteps)
 }
