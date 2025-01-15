@@ -1,0 +1,25 @@
+/* src/components/Form/Form.module.css */
+.formContainer {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .mainContent {
+    flex: 1;
+    padding: 2rem;
+    padding-right: 20rem; /* Enough space for the sidebar */
+  }
+  
+  .sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 18rem;
+    background: #f7f7f7;
+    overflow-y: auto;
+    padding: 1rem;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  

@@ -1,4 +1,5 @@
-import Form from '@/components/form'
+import Form from '../components/Form/Form'
+import './globals.css';
 
 export default function Home() {
   return (

@@ -2,7 +2,11 @@ export interface Root {
   d: string;
   type: string;
   oca_bundle: OcaBundle;
-  extensions: Extensions;
+  extensions?: Extensions;
+  pages?: Page[];
+  sections?: Section[];
+  steps?: Step[];
+  fields?: Field[];
 }
 
 export interface OcaBundle {
@@ -173,4 +177,44 @@ export interface ArgumentType {
 export interface Reference {
   type: string;
   ref: string;
+}
+
+
+export interface Field {
+  id: string
+  labels: Record<string, Record<string, string>> // Multilingual labels
+  options: Record<string, Record<string, string[]>> // Multilingual options
+  type: string
+  orientation?: 'vertical' | 'horizontal'
+  value?: string
+  ref?: string
+  validation: {
+    conformance: 'M' | 'O'
+    format?: string
+    entryCodes?: string[]
+    characterEncoding?: string
+    cardinality?: string
+  }
+}
+
+export interface Section {
+  sectionKey: string
+  sectionLabel: Record<string, string>
+  fields: Field[]
+}
+
+export interface Page_parsed {
+  pageKey: string
+  pageLabel: Record<string, string>
+  sections: Section[]
+  captureBase: string
+}
+
+export interface Step {
+  id: string
+  names: Record<string, string>
+  descriptions: Record<string, string>
+  parent?: string | null
+  pages: Page[]
+  children?: Step[] // used by the buildStepTree if you want a hierarchical nav
 }

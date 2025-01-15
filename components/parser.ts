@@ -21,7 +21,7 @@ normalizeEntryCodes(metadataJson.oca_bundle.dependencies)
 const metadata: Root = metadataJson as Root
 
 // Find a bundle or dependency by `capture_base`
-const findBundleByCaptureBase = (
+export const findBundleByCaptureBase = (
   captureBase: string,
   bundle: Bundle,
   dependencies: Dependency[]
@@ -282,6 +282,8 @@ export const parseJsonToFormStructure = (): any[] => {
             fieldId
           ]
         const format = bundle.overlays?.format?.attribute_formats?.[fieldId]
+        const cardinality =
+          bundle.overlays?.cardinality?.attribute_cardinality?.[fieldId]
 
         // Construct field-specific labels and options
         const fieldLabels = Object.fromEntries(
@@ -307,7 +309,14 @@ export const parseJsonToFormStructure = (): any[] => {
             (options['eng'][fieldId] ? 'enum' : 'textarea'),
           orientation: types[fieldId]?.orientation || null,
           value: types[fieldId]?.value || null,
-          ref: null // Initialize ref
+          ref: null, // Initialize ref
+          validation: {
+            conformance,
+            entryCodes,
+            characterEncoding,
+            format,
+            cardinality // Include more rules if needed
+          }
         }
 
         // Assign references for `reference` type fields
@@ -317,29 +326,6 @@ export const parseJsonToFormStructure = (): any[] => {
           if (relationship.children.length > 0) {
             field.ref = relationship.children[0]
           }
-        }
-
-        // Handle mandatory fields
-        if (conformance === 'M' && !field.value) {
-          field.value = '' // Default value for missing mandatory fields
-        }
-
-        // Validate entry codes
-        if (entryCodes && !entryCodes.includes(field.value)) {
-          field.value = entryCodes[0] // Default to the first valid entry code
-        }
-
-        // Validate character encoding
-        if (
-          characterEncoding &&
-          !new RegExp(characterEncoding).test(field.value)
-        ) {
-          field.value = '' // Clear value if encoding doesn't match
-        }
-
-        // Validate format
-        if (format && !new RegExp(format).test(field.value)) {
-          field.value = '' // Clear value if format doesn't match
         }
 
         return field
