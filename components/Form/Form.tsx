@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import { parseJsonToFormStructure } from '../parser'
 import { Field, Page_parsed } from '../type'
-import { useDynamicForm } from '../../hooks/useDynamicForm'
+import { useDynamicForm } from './hooks/useDynamicForm'
 import { NavigationItem } from '../Form/NavigationItem'
 import styles from './Form.module.css'
 
@@ -57,7 +57,10 @@ export default function Form() {
             id='language'
             value={language}
             onChange={e => setLanguage(e.target.value)}
-            className='block w-40 rounded border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
+            className='block w-40 rounded 
+            border border-gray-300 bg-white px-3 py-2 text-sm
+            font-medium text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none
+            focus:ring-1 focus:ring-blue-500'
           >
             <option value='eng'>English</option>
             <option value='fra'>French</option>
