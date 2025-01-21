@@ -9,7 +9,7 @@ import { NavigationItem } from '../Form/NavigationItem'
 import styles from './Form.module.css'
 
 const parsedSteps = parseJsonToFormStructure()
-console.log('Parsed Steps:', parsedSteps)
+// console.log('Parsed Steps:', parsedSteps)
 
 // The Main Form Component
 export default function Form() {
@@ -34,6 +34,7 @@ export default function Form() {
     return <div>Loading form structure...</div>
   }
 
+  
   // For NavigationItem: pass a function to get the step index by ID
   const getIndex = (stepId: string) => {
     return parsedSteps.findIndex(s => s.id === stepId)
@@ -43,7 +44,7 @@ export default function Form() {
     <section className={styles.formContainer}>
       {/* Main content area */}
       <div className={styles.mainContent}>
-        <h1 className='mb-6 text-3xl font-bold'>Dynamic Form</h1>
+        <h1 className='mb-6 text-3xl font-bold'>Questionnaire</h1>
 
         {/* Language Selector */}
         <div className='mb-6 flex items-center space-x-4'>
@@ -101,121 +102,127 @@ export default function Form() {
                         </h4>
                       )}
 
-                      {section.fields.map((field: Field) => (
-                        <div key={field.id} className='mb-4'>
-                          {/* Field Label */}
-                          <label className='mb-1 block text-sm font-medium'>
-                            {field.labels[language]?.[field.id] ||
-                              field.labels['eng']?.[field.id]}
-                          </label>
+                      {section.fields.map((field: Field) => {
+                        const fieldValue =
+                          formData[step.id]?.[field.id] ?? field.value ?? ''
+                        return (
+                          <div key={field.id} className='mb-4'>
+                            {/* Field Label */}
+                            <label className='mb-1 block text-sm font-medium'>
+                              {field.labels[language]?.[field.id] ||
+                                field.labels['eng']?.[field.id]}
+                            </label>
 
-                          {/* Different Field Types */}
-                          {field.type === 'textarea' && (
-                            <textarea
-                              name={field.id}
-                              defaultValue={field.value || ''}
-                              className='w-full rounded border p-2'
-                            />
-                          )}
-                          {field.type === 'DateTime' && (
-                            <input
-                              name={field.id}
-                              type='datetime-local'
-                              defaultValue={field.value || ''}
-                              className='w-full rounded border p-2'
-                            />
-                          )}
-                          {field.type === 'radio' && (
-                            <div
-                              className={`flex ${
-                                field.orientation === 'vertical'
-                                  ? 'flex-col'
-                                  : 'flex-row space-x-4'
-                              }`}
-                            >
-                              {field.options[language]?.[field.id]?.map(
-                                (option, i) => (
-                                  <label
-                                    key={i}
-                                    className='flex items-center space-x-2'
-                                  >
-                                    <input
-                                      type='radio'
-                                      name={field.id}
-                                      value={option}
-                                      defaultChecked={field.value === option}
-                                    />
-                                    <span>{option}</span>
-                                  </label>
-                                )
-                              )}
-                            </div>
-                          )}
-                          {(field.type === 'select' ||
-                            field.type === 'dropdown') && (
-                            <select
-                              name={field.id}
-                              defaultValue={field.value || ''}
-                              className='w-full rounded border p-2'
-                            >
-                              {field.options[language]?.[field.id]?.map(
-                                (option, i) => (
-                                  <option key={i} value={option}>
-                                    {option}
-                                  </option>
-                                )
-                              )}
-                            </select>
-                          )}
-
-                          {/* Reference Field → navigate to child */}
-                          {field.type === 'reference' && field.ref && (
-                            <div>
-                              <button
-                                type='button'
-                                onClick={() => {
-                                  const targetIndex = parsedSteps.findIndex(
-                                    s => s.id === field.ref
-                                  )
-                                  if (targetIndex >= 0) {
-                                    onNavigate(targetIndex)
-                                  } else {
-                                    console.warn(
-                                      `Reference step not found for field: ${field.id}`
-                                    )
-                                  }
-                                }}
-                                className='mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
+                            {/* Different Field Types */}
+                            {field.type === 'textarea' && (
+                              <textarea
+                                name={field.id}
+                                defaultValue={fieldValue}
+                                className='w-full rounded border p-2'
+                              />
+                            )}
+                            {field.type === 'DateTime' && (
+                              <input
+                                name={field.id}
+                                type='datetime-local'
+                                defaultValue={fieldValue}
+                                className='w-full rounded border p-2'
+                              />
+                            )}
+                            {field.type === 'radio' && (
+                              <div
+                                className={`flex ${
+                                  field.orientation === 'vertical'
+                                    ? 'flex-col'
+                                    : 'flex-row space-x-4'
+                                }`}
                               >
-                                +{' '}
-                                {parsedSteps.find(s => s.id === field.ref)
-                                  ?.names[language] || 'Child Step'}
-                              </button>
+                                {field.options[language]?.[field.id]?.map(
+                                  (option, i) => (
+                                    <label
+                                      key={i}
+                                      className='flex items-center space-x-2'
+                                    >
+                                      <input
+                                        type='radio'
+                                        name={field.id}
+                                        value={option}
+                                        defaultChecked={fieldValue === option}
+                                      />
+                                      <span>{option}</span>
+                                    </label>
+                                  )
+                                )}
+                              </div>
+                            )}
+                            {(field.type === 'select' ||
+                              field.type === 'dropdown') && (
+                              <select
+                                name={field.id}
+                                defaultValue={fieldValue}
+                                className='w-full rounded border p-2'
+                              >
+                                {field.options[language]?.[field.id]?.map(
+                                  (option, i) => (
+                                    <option key={i} value={option}>
+                                      {option}
+                                    </option>
+                                  )
+                                )}
+                              </select>
+                            )}
 
-                              {/* Display child data if it exists in formData */}
-                              {formData[field.ref] && (
-                                <div className='mt-4 rounded border bg-gray-100 p-4'>
-                                  <h4 className='text-lg font-semibold'>
-                                    {
-                                      parsedSteps.find(s => s.id === field.ref)
-                                        ?.names[language]
-                                    }
-                                  </h4>
-                                  <ul className='mt-2 list-disc space-y-1 pl-4 text-gray-700'>
-                                    {Object.entries(formData[field.ref]).map(
-                                      ([key, val]) => (
-                                        <li key={key}>
-                                          <strong>{key}:</strong> {String(val)}
-                                        </li>
+                            {/* Reference Field → navigate to child */}
+                            {field.type === 'reference' && field.ref && (
+                              <div>
+                                <button
+                                  type='button'
+                                  onClick={() => {
+                                    const targetIndex = parsedSteps.findIndex(
+                                      s => s.id === field.ref
+                                    )
+                                    if (targetIndex >= 0) {
+                                      onNavigate(targetIndex)
+                                    } else {
+                                      console.warn(
+                                        `Reference step not found for field: ${field.id}`
                                       )
-                                    )}
-                                  </ul>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      ))}
+                                    }
+                                  }}
+                                  className='mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
+                                >
+                                  +{' '}
+                                  {parsedSteps.find(s => s.id === field.ref)
+                                    ?.names[language] || 'Child Step'}
+                                </button>
+
+                                {/* Display child data if it exists in formData */}
+                                {formData[field.ref] && (
+                                  <div className='mt-4 rounded border bg-gray-100 p-4'>
+                                    <h4 className='text-lg font-semibold'>
+                                      {
+                                        parsedSteps.find(
+                                          s => s.id === field.ref
+                                        )?.names[language]
+                                      }
+                                    </h4>
+                                    <ul className='mt-2 list-disc space-y-1 pl-4 text-gray-700'>
+                                      {Object.entries(formData[field.ref]).map(
+                                        ([key, val]) => (
+                                          <li key={key}>
+                                            <strong>{key}:</strong>{' '}
+                                            {String(val)}
+                                          </li>
+                                        )
+                                      )}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })}
                     </div>
                   ))}
                 </div>

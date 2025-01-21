@@ -1,5 +1,5 @@
 // src/utils/steps.ts
-import { Step, Field } from '../components/type'
+import { Step, Field } from '../../type'
 
 // Build Step Tree Based on 'reference' Fields
 export function buildStepTree(steps: Step[]): Step[] {

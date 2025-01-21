@@ -215,6 +215,6 @@ export interface Step {
   names: Record<string, string>
   descriptions: Record<string, string>
   parent?: string | null
-  pages: Page[]
+  pages: Page_parsed[]
   children?: Step[] // used by the buildStepTree if you want a hierarchical nav
 }
