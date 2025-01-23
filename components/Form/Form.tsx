@@ -1,3 +1,4 @@
+// src/components/Form/Form.tsx
 'use client'
 
 import { motion } from 'framer-motion'
@@ -7,13 +8,13 @@ import { Field, Page_parsed } from '../type'
 import { useDynamicForm } from './hooks/useDynamicForm'
 import { NavigationItem } from '../Form/NavigationItem'
 import styles from './Form.module.css'
+import { useFormData } from '../Form/context/FormDataContext'
+import Footer from '../../Footer/footer'
 
 const parsedSteps = parseJsonToFormStructure()
 // console.log('Parsed Steps:', parsedSteps)
 
-// The Main Form Component
 export default function Form() {
-  // Call custom hook
   const {
     language,
     setLanguage,
@@ -27,14 +28,19 @@ export default function Form() {
     goToPreviousParent,
     finishHandler,
     cancelHandler,
-    isParentStep
+    isParentStep,
+    setCurrentChildId,
+    createNewChild,
+    editExistingChild
   } = useDynamicForm(parsedSteps)
+
+  // Child data from context
+  const { childrenData } = useFormData()
 
   if (!parsedSteps || parsedSteps.length === 0) {
     return <div>Loading form structure...</div>
   }
 
-  
   // For NavigationItem: pass a function to get the step index by ID
   const getIndex = (stepId: string) => {
     return parsedSteps.findIndex(s => s.id === stepId)
@@ -124,7 +130,7 @@ export default function Form() {
                             {field.type === 'DateTime' && (
                               <input
                                 name={field.id}
-                                type='datetime-local'
+                                type='date'
                                 defaultValue={fieldValue}
                                 className='w-full rounded border p-2'
                               />
@@ -178,9 +184,16 @@ export default function Form() {
                                 <button
                                   type='button'
                                   onClick={() => {
+                                    // Create a new child record in context
+                                    const newChild = createNewChild(field.ref)
+                                    // Mark that we are editing this brand-new child
+                                    setCurrentChildId(newChild.id)
+
+                                    // Navigate to the child step
                                     const targetIndex = parsedSteps.findIndex(
                                       s => s.id === field.ref
                                     )
+
                                     if (targetIndex >= 0) {
                                       onNavigate(targetIndex)
                                     } else {
@@ -206,15 +219,42 @@ export default function Form() {
                                         )?.names[language]
                                       }
                                     </h4>
-                                    <ul className='mt-2 list-disc space-y-1 pl-4 text-gray-700'>
-                                      {Object.entries(formData[field.ref]).map(
-                                        ([key, val]) => (
-                                          <li key={key}>
-                                            <strong>{key}:</strong>{' '}
-                                            {String(val)}
-                                          </li>
+                                    <ul>
+                                      {childrenData
+                                        .filter(
+                                          child => child.stepId === field.ref
                                         )
-                                      )}
+                                        .map(child => (
+                                          <li
+                                            key={child.id}
+                                            className='flex items-center space-x-2'
+                                          >
+                                            <span>
+                                              {/* Display child name or some field */}
+                                              {child.data[
+                                                Object.keys(child.data)[0]
+                                              ] || '(No Name)'}
+                                            </span>
+                                            <button
+                                              type='button'
+                                              onClick={() => {
+                                                // Put us into "edit mode"
+                                                setCurrentChildId(child.id)
+                                                // Navigate to that child’s step
+                                                const idx =
+                                                  parsedSteps.findIndex(
+                                                    s => s.id === child.stepId
+                                                  )
+                                                if (idx >= 0) {
+                                                  onNavigate(idx)
+                                                }
+                                              }}
+                                              className='text-sm text-blue-700 underline'
+                                            >
+                                              Edit
+                                            </button>
+                                          </li>
+                                        ))}
                                     </ul>
                                   </div>
                                 )}
@@ -297,6 +337,9 @@ export default function Form() {
           ))}
         </ul>
       </nav>
+
+      {/* Footer */}
+      <Footer currentPage={currentStep} />
     </section>
   )
 }

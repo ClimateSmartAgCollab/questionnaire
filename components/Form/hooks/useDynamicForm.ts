@@ -5,158 +5,198 @@ import {
   buildStepTree,
   getParentSteps,
   getReferencingStep,
-  validateField,
+  validateField
 } from '../utils/steps'
+import { useFormData } from '../context/FormDataContext'
 
 export function useDynamicForm(parsedSteps: Step[]) {
-  const [language, setLanguage] = useState('eng');
-  const [currentStep, setCurrentStep] = useState(0);
+  const [language, setLanguage] = useState('eng')
+  const [currentStep, setCurrentStep] = useState(0)
   const [visitedSteps, setVisitedSteps] = useState<Set<string>>(
     new Set([parsedSteps[0]?.id])
-  );
-  const [formData, setFormData] = useState<Record<string, any>>({});
+  )
+  // This is the local formData for "parent steps" that we already had:
+  const [formData, setFormData] = useState<Record<string, any>>({})
 
-  const stepTree = useMemo(() => buildStepTree(parsedSteps), [parsedSteps]);
-  const parentSteps = useMemo(() => getParentSteps(parsedSteps), [parsedSteps]);
+  // for tracking "which child am I editing?"
+  const [currentChildId, setCurrentChildId] = useState<string | null>(null)
+
+  // Context
+  const {
+    createNewChild,
+    editExistingChild,
+    saveChildData
+    // childrenData, getChildById, ...
+  } = useFormData()
+
+  const stepTree = useMemo(() => buildStepTree(parsedSteps), [parsedSteps])
+  const parentSteps = useMemo(() => getParentSteps(parsedSteps), [parsedSteps])
 
   // Save current step's data
   const saveCurrentStepData = useCallback(() => {
-    const stepObj = parsedSteps[currentStep];
-    if (!stepObj) return;
+    const stepObj = parsedSteps[currentStep]
+    if (!stepObj) return
 
-    const currentStepData: Record<string, any> = {};
+    const currentStepData: Record<string, any> = {}
 
     // Collect data from pages -> sections -> fields
-    stepObj.pages.forEach((page) => {
-      page.sections.forEach((section) => {
-        section.fields.forEach((field) => {
-          let userInput = '';
+    stepObj.pages.forEach(page => {
+      page.sections.forEach(section => {
+        section.fields.forEach(field => {
+          let userInput = ''
 
           if (field.type === 'radio') {
             const selectedRadio = document.querySelector(
               `input[name="${field.id}"]:checked`
-            ) as HTMLInputElement | null;
-            userInput = selectedRadio?.value || '';
+            ) as HTMLInputElement | null
+            userInput = selectedRadio?.value || ''
           } else {
             const input = document.querySelector(`[name="${field.id}"]`) as
               | HTMLInputElement
               | HTMLTextAreaElement
-              | null;
-            userInput = input?.value || '';
+              | null
+            userInput = input?.value || ''
           }
 
           // Validate input
-          const isValid = validateField(field, userInput, language);
+          const isValid = validateField(field, userInput, language)
           if (!isValid) {
-            console.warn(`Validation failed for field ${field.id}`);
+            console.warn(`Validation failed for field ${field.id}`)
           }
 
-          currentStepData[field.id] = userInput;
-        });
-      });
-    });
+          currentStepData[field.id] = userInput
+        })
+      })
+    })
 
-    // Update form data
-    setFormData((prevData) => ({
-      ...prevData,
-      [stepObj.id]: currentStepData,
-    }));
-  }, [currentStep, parsedSteps, language]);
+    // Update local formData
+    setFormData(prev => ({
+      ...prev,
+      [stepObj.id]: currentStepData
+    }))
+
+    // If we are in a "child step" and we have a current child being edited,
+    // also save that child's data to the context.
+    if (currentChildId) {
+      saveChildData(currentChildId, currentStepData)
+    }
+  }, [currentStep, parsedSteps, language, currentChildId, saveChildData])
 
   // Navigate with save
   const onNavigate = useCallback(
     (index: number) => {
-      saveCurrentStepData();
-      setCurrentStep(index);
-      setVisitedSteps((prev) => {
-        const updated = new Set(prev);
-        updated.add(parsedSteps[index]?.id);
-        return updated;
-      });
+      saveCurrentStepData()
+      setCurrentStep(index)
+      setVisitedSteps(prev => {
+        const updated = new Set(prev)
+        updated.add(parsedSteps[index]?.id)
+        return updated
+      })
     },
     [parsedSteps, saveCurrentStepData]
-  );
+  )
 
   const goToNextParent = useCallback(() => {
-    saveCurrentStepData();
-    const currentStepId = parsedSteps[currentStep]?.id;
+    saveCurrentStepData()
+    const currentStepId = parsedSteps[currentStep]?.id
     const currentParentIndex = parentSteps.findIndex(
-      (step) => step.id === currentStepId
-    );
-    if (currentParentIndex >= 0 && currentParentIndex < parentSteps.length - 1) {
-      const nextParentId = parentSteps[currentParentIndex + 1]?.id;
-      const nextStepIndex = parsedSteps.findIndex((s) => s.id === nextParentId);
+      step => step.id === currentStepId
+    )
+    if (
+      currentParentIndex >= 0 &&
+      currentParentIndex < parentSteps.length - 1
+    ) {
+      const nextParentId = parentSteps[currentParentIndex + 1]?.id
+      const nextStepIndex = parsedSteps.findIndex(s => s.id === nextParentId)
       if (nextStepIndex >= 0) {
-        onNavigate(nextStepIndex);
+        onNavigate(nextStepIndex)
       }
     }
-  }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData]);
+  }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData])
 
   const goToPreviousParent = useCallback(() => {
-    saveCurrentStepData();
-    const currentStepId = parsedSteps[currentStep]?.id;
+    saveCurrentStepData()
+    const currentStepId = parsedSteps[currentStep]?.id
     const currentParentIndex = parentSteps.findIndex(
-      (step) => step.id === currentStepId
-    );
+      step => step.id === currentStepId
+    )
     if (currentParentIndex > 0) {
-      const previousParentId = parentSteps[currentParentIndex - 1]?.id;
+      const previousParentId = parentSteps[currentParentIndex - 1]?.id
       const previousStepIndex = parsedSteps.findIndex(
-        (s) => s.id === previousParentId
-      );
-      if (previousStepIndex >= 0) onNavigate(previousStepIndex);
+        s => s.id === previousParentId
+      )
+      if (previousStepIndex >= 0) onNavigate(previousStepIndex)
     }
-  }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData]);
+  }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData])
 
   const finishHandler = useCallback(() => {
-    saveCurrentStepData();
+    saveCurrentStepData()
 
-    const stepObj = parsedSteps[currentStep];
-    if (!stepObj) return;
+    const stepObj = parsedSteps[currentStep]
+    if (!stepObj) return
 
-    const referencingStep = getReferencingStep(stepObj.id, parsedSteps);
+    // When finishing editing the child, reset currentChildId
+    setCurrentChildId(null)
+
+    // Navigate back to whichever step references this child
+    const referencingStep = getReferencingStep(stepObj.id, parsedSteps)
     if (referencingStep) {
       const referencingStepIndex = parsedSteps.findIndex(
-        (s) => s.id === referencingStep.id
-      );
-      setCurrentStep(referencingStepIndex);
+        s => s.id === referencingStep.id
+      )
+      setCurrentStep(referencingStepIndex)
     } else {
-      setCurrentStep(0);
+      // or just go home
+      setCurrentStep(0)
     }
-  }, [currentStep, parsedSteps, saveCurrentStepData]);
+  }, [currentStep, parsedSteps, saveCurrentStepData])
 
   const cancelHandler = useCallback(() => {
-    saveCurrentStepData();
-    setCurrentStep(0);
-  }, [saveCurrentStepData]);
+    // If you want to discard changes, you can skip save or do partial revert
+    // For now, let's just do save + navigate to root
+    saveCurrentStepData()
+    setCurrentChildId(null)
+    setCurrentStep(0)
+  }, [saveCurrentStepData])
 
-  const isParentStep = (step: Step) =>
-    parentSteps.some((p) => p.id === step.id);
+  const isParentStep = (step: Step) => parentSteps.some(p => p.id === step.id)
 
   // Pre-fill data on page load
   const prefillData = useCallback(() => {
-    const stepObj = parsedSteps[currentStep];
-    if (!stepObj) return;
+    const stepObj = parsedSteps[currentStep]
+    if (!stepObj) return
 
-    const stepData = formData[stepObj.id] || {};
-    stepObj.pages.forEach((page) => {
-      page.sections.forEach((section) => {
-        section.fields.forEach((field) => {
+    // If there's a child being edited, fill from context child data
+    // Otherwise fill from your local formData
+    let stepData = formData[stepObj.id] || {}
+
+    // If editing a child, check the context for that child's data
+    if (currentChildId) {
+      const child = editExistingChild(currentChildId)
+      if (child) {
+        stepData = child.data
+      }
+    }
+
+    stepObj.pages.forEach(page => {
+      page.sections.forEach(section => {
+        section.fields.forEach(field => {
           const input = document.querySelector(`[name="${field.id}"]`) as
             | HTMLInputElement
             | HTMLTextAreaElement
-            | null;
+            | null
           if (input) {
-            input.value = stepData[field.id] || '';
+            input.value = stepData[field.id] || ''
           }
-        });
-      });
-    });
-  }, [currentStep, parsedSteps, formData]);
+        })
+      })
+    })
+  }, [currentStep, parsedSteps, formData, currentChildId, editExistingChild])
 
   // Call prefillData when the step changes
   useEffect(() => {
-    prefillData();
-  }, [currentStep, prefillData]);
+    prefillData()
+  }, [currentStep, prefillData])
 
   return {
     language,
@@ -174,5 +214,9 @@ export function useDynamicForm(parsedSteps: Step[]) {
     finishHandler,
     cancelHandler,
     isParentStep,
-  };
+    currentChildId,
+    setCurrentChildId,
+    createNewChild,
+    editExistingChild
+  }
 }
