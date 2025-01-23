@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-y: auto;
 }
 
 .mainContent {
@@ -12,17 +13,42 @@
   /* overflow-y: auto; Allows scrolling for the main content */
 }
 
-.sidebar {
-  position: fixed;
-  right: 0;
-  top: 0;
-  /* bottom: 0; */
-  width: 250px;
-  background: #f7f7f7;
-  overflow-y: auto;
+.formLayout {
+  display: grid;
+  grid-template-columns: 250px 1fr; /* Sidebar and main content */
+  grid-template-rows: auto 1fr auto; /* Header and content */
+  height: 100vh;
+}
+
+.header {
+  grid-column: span 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 1rem;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0; /* Sticks the header to the top */
+  z-index: 1000; /* Ensures the header stays above other elements */
+  margin: 0; /* Ensures there is no space from the top */
+}
+
+.sidebar {
+  grid-row: 2 / 3; /* Ends before footer */
+  padding: 1rem;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  overflow-y: auto;
+}
+
+.footer {
+  grid-column: span 2;
+  background-color: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-size: 0.875rem;
 }
 
 /* Responsive Sidebar Width */

@@ -8,6 +8,7 @@ import { Field, Page_parsed } from '../type'
 import { useDynamicForm } from './hooks/useDynamicForm'
 import { NavigationItem } from '../Form/NavigationItem'
 import styles from './Form.module.css'
+import Footer from '../../Footer/footer'
 import { useFormData } from '../Form/context/FormDataContext'
 
 const parsedSteps = parseJsonToFormStructure()
@@ -46,13 +47,12 @@ export default function Form() {
   }
 
   return (
-    <section className={styles.formContainer}>
+    <section className={styles.formLayout}>
       {/* Main content area */}
-      <div className={styles.mainContent}>
-        <h1 className='mb-6 text-3xl font-bold'>Questionnaire</h1>
 
-        {/* Language Selector */}
-        <div className='mb-6 flex items-center space-x-4'>
+      <header className={styles.header}>
+        <h1 className='text-3xl font-bold'>Questionnaire</h1>
+        <div className='flex items-center space-x-4'>
           <label
             htmlFor='language'
             className='text-sm font-medium text-gray-700'
@@ -72,7 +72,8 @@ export default function Form() {
             <option value='fra'>French</option>
           </select>
         </div>
-
+      </header>
+      <div className={styles.mainContent}>
         {/* Render the current step's content */}
         {parsedSteps.map((step, index) =>
           currentStep === index ? (
@@ -227,12 +228,14 @@ export default function Form() {
                                           <li
                                             key={child.id}
                                             className='flex items-center space-x-2'
-                                          >                                            
+                                          >
                                             <span>
                                               {/* Display child name or some field */}
-                                              {child.data[Object.keys(child.data)[0]] || '(No Name)'}
-                                            </span>                                            
-                                            <button                                          
+                                              {child.data[
+                                                Object.keys(child.data)[0]
+                                              ] || '(No Name)'}
+                                            </span>
+                                            <button
                                               type='button'
                                               onClick={() => {
                                                 // Put us into "edit mode"
@@ -334,6 +337,13 @@ export default function Form() {
           ))}
         </ul>
       </nav>
+      {/* Footer */}
+      <div className={styles.footer}>
+        <Footer currentPage={currentStep} />
+        <p className='text-center text-gray-600'>
+          © 2025 University of Guelph. All rights reserved.
+        </p>
+      </div>
     </section>
   )
 }
