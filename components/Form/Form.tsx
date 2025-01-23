@@ -9,7 +9,6 @@ import { useDynamicForm } from './hooks/useDynamicForm'
 import { NavigationItem } from '../Form/NavigationItem'
 import styles from './Form.module.css'
 import { useFormData } from '../Form/context/FormDataContext'
-import Footer from '../../Footer/footer'
 
 const parsedSteps = parseJsonToFormStructure()
 // console.log('Parsed Steps:', parsedSteps)
@@ -228,14 +227,12 @@ export default function Form() {
                                           <li
                                             key={child.id}
                                             className='flex items-center space-x-2'
-                                          >
+                                          >                                            
                                             <span>
                                               {/* Display child name or some field */}
-                                              {child.data[
-                                                Object.keys(child.data)[0]
-                                              ] || '(No Name)'}
-                                            </span>
-                                            <button
+                                              {child.data[Object.keys(child.data)[0]] || '(No Name)'}
+                                            </span>                                            
+                                            <button                                          
                                               type='button'
                                               onClick={() => {
                                                 // Put us into "edit mode"
@@ -337,9 +334,6 @@ export default function Form() {
           ))}
         </ul>
       </nav>
-
-      {/* Footer */}
-      <Footer currentPage={currentStep} />
     </section>
   )
 }

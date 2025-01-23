@@ -32,6 +32,12 @@ export function useDynamicForm(parsedSteps: Step[]) {
   const stepTree = useMemo(() => buildStepTree(parsedSteps), [parsedSteps])
   const parentSteps = useMemo(() => getParentSteps(parsedSteps), [parsedSteps])
 
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  };
+
+  
   // Save current step's data
   const saveCurrentStepData = useCallback(() => {
     const stepObj = parsedSteps[currentStep]
@@ -85,6 +91,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   // Navigate with save
   const onNavigate = useCallback(
     (index: number) => {
+      scrollToTop();
       saveCurrentStepData()
       setCurrentStep(index)
       setVisitedSteps(prev => {
@@ -97,6 +104,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   )
 
   const goToNextParent = useCallback(() => {
+    scrollToTop();
     saveCurrentStepData()
     const currentStepId = parsedSteps[currentStep]?.id
     const currentParentIndex = parentSteps.findIndex(
@@ -115,6 +123,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData])
 
   const goToPreviousParent = useCallback(() => {
+    scrollToTop();
     saveCurrentStepData()
     const currentStepId = parsedSteps[currentStep]?.id
     const currentParentIndex = parentSteps.findIndex(
@@ -130,6 +139,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData])
 
   const finishHandler = useCallback(() => {
+    scrollToTop();
     saveCurrentStepData()
 
     const stepObj = parsedSteps[currentStep]
@@ -152,8 +162,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   }, [currentStep, parsedSteps, saveCurrentStepData])
 
   const cancelHandler = useCallback(() => {
-    // If you want to discard changes, you can skip save or do partial revert
-    // For now, let's just do save + navigate to root
+    scrollToTop();
     saveCurrentStepData()
     setCurrentChildId(null)
     setCurrentStep(0)
