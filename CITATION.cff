@@ -1,0 +1,30 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: OCA Composer
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - name: Agri-food Data Canada
+    location: '50 Stone Road East, University of Guelph'
+    post-code: N1G 2W1
+    country: CA
+    city: Gueph
+    email: adc@uoguelph.ca
+    website: 'https://agrifooddatacanada.ca'
+    tel: (226) 971-0357
+repository-code: 'https://github.com/ClimateSmartAgCollab/questionnaire'
+abstract: >-
+  This code displays OCA Packages - OCA schemas written
+  according to the OCA standard with additional form
+  information - as a form to be filled out by the user.
+keywords:
+  - Overlays Capture Architecture
+  - Schema
+  - Agri-food Data Canada
+  - form
+  - questionnaire
+license: EUPL-1.2
