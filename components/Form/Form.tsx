@@ -12,7 +12,7 @@ import Footer from '../../Footer/footer'
 import { useFormData } from '../Form/context/FormDataContext'
 
 const parsedSteps = parseJsonToFormStructure()
-// console.log('Parsed Steps:', parsedSteps)
+console.log('Parsed Steps:', parsedSteps)
 
 export default function Form() {
   const {
@@ -21,6 +21,7 @@ export default function Form() {
     currentStep,
     visitedSteps,
     formData,
+    setFormData,
     stepTree,
     parentSteps,
     onNavigate,
@@ -49,7 +50,6 @@ export default function Form() {
   return (
     <section className={styles.formLayout}>
       {/* Main content area */}
-
       <header className={styles.header}>
         <h1 className='text-3xl font-bold'>Questionnaire</h1>
         <div className='flex items-center space-x-4'>
@@ -100,7 +100,10 @@ export default function Form() {
                     </h3>
                   )}
                   {page.sections.map(section => (
-                    <div key={section.sectionKey} className='mb-6'>
+                    <div
+                      key={section.sectionKey}
+                      className='mb-6 bg-gray-50 p-4'
+                    >
                       {section.sectionLabel[language] && (
                         <h4 className='text-lg font-medium'>
                           {section.sectionLabel[language] ||
@@ -161,21 +164,80 @@ export default function Form() {
                                 )}
                               </div>
                             )}
+
                             {(field.type === 'select' ||
                               field.type === 'dropdown') && (
-                              <select
-                                name={field.id}
-                                defaultValue={fieldValue}
-                                className='w-full rounded border p-2'
-                              >
-                                {field.options[language]?.[field.id]?.map(
-                                  (option, i) => (
-                                    <option key={i} value={option}>
-                                      {option}
-                                    </option>
-                                  )
-                                )}
-                              </select>
+                              <div>
+                                {/* Display selected options */}
+                                <div className='mb-4 rounded border bg-gray-100 p-4'>
+                                  <h4 className='text-sm font-semibold'>
+                                    Selected Options:
+                                  </h4>
+                                  {Array.isArray(formData[step.id]?.[field.id]) &&
+                                  formData[step.id][field.id].length > 0 ? (
+                                    <ul className='list-disc pl-4'>
+                                      {formData[step.id][field.id].map((option: string, i: number) => (
+                                        <li key={i} className='text-sm'>
+                                          {option}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  ) : (
+                                    <p className='text-sm text-gray-500'>
+                                      No options selected.
+                                    </p>
+                                  )}
+                                </div>
+
+                                {/* Dropdown for selecting multiple options */}
+                                <select
+                                  name={field.id}
+                                  multiple={field.value === 'multiple'}
+                                  // defaultValue={fieldValue} 
+                                  defaultValue={Array.isArray(formData[step.id]?.[field.id]) ? formData[step.id][field.id] : []}    
+                                  className='w-full rounded border p-2'
+                                  onChange={(e) => {
+                                    const selectedOptions = Array.from(
+                                      e.target.selectedOptions,
+                                      (option) => option.value
+                                    );
+                            
+                                    const min = field.validation.cardinality?.min || 0;
+                                    const max = field.validation.cardinality?.max || Infinity;
+                            
+                                    if (selectedOptions.length < min) {
+                                      alert('You must select at least ${min} options.');
+                                      return;
+                                    }
+                                    if (selectedOptions.length > max) {
+                                      alert('You can select at most ${max} options.');
+                                      return;
+                                    }
+                            
+                                    // Update the form data with valid selections
+                                    setFormData((prevFormData) => {
+                                      const stepData = prevFormData[step.id] || {};
+                                      return {
+                                        ...prevFormData,
+                                        [step.id]: {
+                                          ...stepData,
+                                          [field.id]: selectedOptions, // Store all selected options
+                                        },
+                                      };
+                                    });
+                                  }}
+                                >
+
+                                  
+                                  {field.options[language]?.[field.id]?.map(
+                                    (option, i) => (
+                                      <option key={i} value={option}>
+                                        {option}
+                                      </option>
+                                    )
+                                  )}
+                                </select>
+                              </div>
                             )}
 
                             {/* Reference Field → navigate to child */}

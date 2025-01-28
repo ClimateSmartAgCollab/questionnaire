@@ -1,0 +1,1460 @@
+{
+  "d": "####OCA_PACKAGE_SAID####",
+  "type": "adc/oca_package/1.0",
+  "oca_bundle": {
+    "v": "OCAA11JSON006305_",
+    "bundle": {
+      "v": "OCAS11JSON0029a5_",
+      "d": "ENgXe1ZAaCDmfVRuYT7MdG8JZjQ0nE4mQ_LkmimMisFZ",
+      "capture_base": {
+        "d": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+        "type": "spec/capture_base/1.0",
+        "attributes": {
+          "q1": "Text",
+          "q10": "Text",
+          "q11": "Text",
+          "q12": "Numeric",
+          "q13": "DateTime",
+          "q14": "Boolean",
+          "q15": "Text",
+          "q16": "Text",
+          "q17": "Text",
+          "q18": "Numeric",
+          "q19": "Text",
+          "q2": "DateTime",
+          "q20": "Text",
+          "q21": "refs:EBDbV2iPgqzbXn-Z_1qa6Rjc9e0GURfd_ssglLUHsl_M",
+          "q3": "Numeric",
+          "q4": "Text",
+          "q5": "Boolean",
+          "q6": "Text",
+          "q7": "Text",
+          "q8": "DateTime",
+          "q9": "Text"
+        },
+        "classification": "RDF504",
+        "flagged_attributes": []
+      },
+      "overlays": {
+        "cardinality": {
+          "d": "EFF8nKvax6JkAER8e-wb7BjYhCBUkc-XYLScWmtPlwCf",
+          "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+          "type": "spec/overlays/cardinality/1.0",
+          "attribute_cardinality": {
+            "q11": "1-5",
+            "q13": "3-",
+            "q16": "-7",
+            "q20": "1-3",
+            "q21": "1-",
+            "q4": "1-5",
+            "q7": "2-",
+            "q9": "2-6"
+          }
+        },
+        "character_encoding": {
+          "d": "EMWVr14i1fj9eRv2pUVAvnwgJrxZIs3tXSwXrSoiz9FW",
+          "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+          "type": "spec/overlays/character_encoding/1.0",
+          "attribute_character_encoding": {
+            "q1": "utf-8",
+            "q10": "utf-8",
+            "q11": "utf-8",
+            "q12": "utf-8",
+            "q13": "utf-8",
+            "q14": "utf-8",
+            "q15": "utf-8",
+            "q16": "utf-8",
+            "q17": "utf-8",
+            "q18": "utf-8",
+            "q19": "utf-8",
+            "q2": "utf-8",
+            "q20": "utf-8",
+            "q21": "utf-8",
+            "q3": "utf-8",
+            "q4": "utf-8",
+            "q5": "utf-8",
+            "q6": "utf-8",
+            "q7": "utf-8",
+            "q8": "utf-8",
+            "q9": "utf-8"
+          }
+        },
+        "conformance": {
+          "d": "EHiEZUxNWtpwj90wcnsqAhHg17eqae3IZ3HRuAtcDcq-",
+          "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+          "type": "spec/overlays/conformance/1.0",
+          "attribute_conformance": {
+            "q1": "M",
+            "q10": "M",
+            "q11": "O",
+            "q12": "O",
+            "q13": "O",
+            "q14": "O",
+            "q15": "O",
+            "q16": "O",
+            "q17": "M",
+            "q18": "M",
+            "q19": "O",
+            "q2": "M",
+            "q20": "O",
+            "q3": "O",
+            "q4": "O",
+            "q5": "M",
+            "q6": "O",
+            "q7": "O",
+            "q8": "M",
+            "q9": "O"
+          }
+        },
+        "entry": [
+          {
+            "d": "EJQ9iz_Teh84jt7sq-fqF0r23dTT6mn830GQTIkUoBfl",
+            "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+            "type": "spec/overlays/entry/1.0",
+            "language": "fra",
+            "attribute_entries": {
+              "q11": {
+                "Certification": "Acquérir une certification professionnelle",
+                "Mentoring": "Mentorer des collègues",
+                "Networking": "Créer des connexions professionnelles",
+                "Project Completion": "Terminer avec succès des projets",
+                "Promotion": "Obtenir une promotion"
+              },
+              "q14": {
+                "0": "oui",
+                "1": "non"
+              },
+              "q16": {
+                "Career": "Concentré sur la carrière",
+                "Family": "Passer du temps avec la famille",
+                "Financial Stability": "Assurer la sécurité financière",
+                "Health": "Maintenir la santé et la forme",
+                "Hobbies": "Pratiquer des loisirs",
+                "Learning": "Acquérir de nouvelles connaissances",
+                "Travel": "Explorer de nouvelles destinations"
+              },
+              "q18": {
+                "0": "team",
+                "1": "individual"
+              },
+              "q20": {
+                "Arts": "Travaux créatifs dans les arts",
+                "Education": "Développements dans l'éducation",
+                "Entrepreneurship": "Initiatives entrepreneuriales",
+                "Environment": "Efforts de durabilité",
+                "Finance": "Opportunités dans les finances",
+                "Healthcare": "Innovations dans la santé",
+                "Technology": "Avancées technologiques"
+              },
+              "q3": {
+                "1": "Très insatisfait",
+                "2": "Insatisfait",
+                "3": "Neutre",
+                "4": "Satisfait",
+                "5": "Très satisfait"
+              },
+              "q4": {
+                "Cooking": "Cuisiner ou pâtisser",
+                "Gaming": "Jouer à des jeux vidéo",
+                "Gardening": "Jardiner à la maison",
+                "Photography": "Faire de la photographie",
+                "Reading": "Lire des livres ou des articles",
+                "Sports": "Jouer ou regarder des sports",
+                "Traveling": "Explorer de nouveaux endroits"
+              },
+              "q5": {
+                "0": "yes",
+                "1": "no"
+              },
+              "q7": {
+                "Coding": "Apprendre de nouveaux langages de codage",
+                "Designing": "Créer des graphismes ou des produits",
+                "Negotiation": "Pratiquer des compétences de négociation",
+                "Public Speaking": "Améliorer la prise de parole en public",
+                "Teaching": "Partager des connaissances avec d'autres",
+                "Writing": "Écrire des histoires ou du contenu"
+              },
+              "q9": {
+                "AR Glasses": "Utilisation de lunettes AR pour la réalité augmentée",
+                "Laptops": "Travail avec des ordinateurs portables",
+                "Mobile Phones": "Utilisation de téléphones mobiles pour les tâches",
+                "Smart Watches": "Utilisation de montres intelligentes pour le suivi",
+                "Tablets": "Utilisation de tablettes pour les tâches",
+                "Wearable Tech": "Autres technologies portables"
+              }
+            }
+          },
+          {
+            "d": "ELxAVHtRLvZrzpbgSzT0xh6yTTvobevgjZH9h82VLSSp",
+            "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+            "type": "spec/overlays/entry/1.0",
+            "language": "eng",
+            "attribute_entries": {
+              "q11": {
+                "Certification": "Earning a professional certification",
+                "Mentoring": "Mentoring colleagues",
+                "Networking": "Building professional connections",
+                "Project Completion": "Successfully completing projects",
+                "Promotion": "Achieving a job promotion"
+              },
+              "q14": {
+                "0": "yes",
+                "1": "no"
+              },
+              "q16": {
+                "Career": "Focusing on career growth",
+                "Family": "Spending time with family",
+                "Financial Stability": "Ensuring financial security",
+                "Health": "Maintaining health and fitness",
+                "Hobbies": "Engaging in hobbies",
+                "Learning": "Acquiring new knowledge",
+                "Travel": "Exploring new destinations"
+              },
+              "q18": {
+                "0": "team",
+                "1": "individual"
+              },
+              "q20": {
+                "Arts": "Creative work in the arts",
+                "Education": "Developments in education",
+                "Entrepreneurship": "Entrepreneurial ventures",
+                "Environment": "Sustainability efforts",
+                "Finance": "Opportunities in finance",
+                "Healthcare": "Innovations in healthcare",
+                "Technology": "Advancements in technology"
+              },
+              "q3": {
+                "1": "Very dissatisfied",
+                "2": "Dissatisfied",
+                "3": "Neutral",
+                "4": "Satisfied",
+                "5": "Very satisfied"
+              },
+              "q4": {
+                "Cooking": "Cooking or baking",
+                "Gaming": "Playing video games",
+                "Gardening": "Gardening at home",
+                "Photography": "Taking photographs",
+                "Reading": "Reading books or articles",
+                "Sports": "Playing or watching sports",
+                "Traveling": "Exploring new places"
+              },
+              "q5": {
+                "0": "yes",
+                "1": "no"
+              },
+              "q7": {
+                "Coding": "Learning new coding languages",
+                "Designing": "Designing graphics or products",
+                "Negotiation": "Practicing negotiation skills",
+                "Public Speaking": "Improving public speaking",
+                "Teaching": "Sharing knowledge with others",
+                "Writing": "Writing stories or content"
+              },
+              "q9": {
+                "AR Glasses": "Using AR glasses for augmented reality",
+                "Laptops": "Working with laptops",
+                "Mobile Phones": "Using mobile phones for tasks",
+                "Smart Watches": "Using smart watches for tracking",
+                "Tablets": "Using tablets for tasks",
+                "Wearable Tech": "Other wearable technology"
+              }
+            }
+          }
+        ],
+        "entry_code": {
+          "d": "ELSbllxEtzJK49g_8yfWyvwulkpEFTVhxQFxcqqLD2pL",
+          "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+          "type": "spec/overlays/entry_code/1.0",
+          "attribute_entry_codes": {
+            "q11": [
+              "Certification",
+              "Mentoring",
+              "Networking",
+              "Project Completion",
+              "Promotion"
+            ],
+            "q14": ["0", "1"],
+            "q16": [
+              "Career",
+              "Family",
+              "Financial Stability",
+              "Health",
+              "Hobbies",
+              "Learning",
+              "Travel"
+            ],
+            "q18": ["0", "1"],
+            "q20": [
+              "Arts",
+              "Education",
+              "Entrepreneurship",
+              "Environment",
+              "Finance",
+              "Healthcare",
+              "Technology"
+            ],
+            "q3": ["1", "2", "3", "4", "5"],
+            "q4": [
+              "Cooking",
+              "Gaming",
+              "Gardening",
+              "Photography",
+              "Reading",
+              "Sports",
+              "Traveling"
+            ],
+            "q5": ["0", "1"],
+            "q7": [
+              "Coding",
+              "Designing",
+              "Negotiation",
+              "Public Speaking",
+              "Teaching",
+              "Writing"
+            ],
+            "q9": [
+              "AR Glasses",
+              "Laptops",
+              "Mobile Phones",
+              "Smart Watches",
+              "Tablets",
+              "Wearable Tech"
+            ]
+          }
+        },
+        "format": {
+          "d": "EASa7mpHLgvTOue6S2e_ocUtCNC5-ItGnHconBWiSOU4",
+          "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+          "type": "spec/overlays/format/1.0",
+          "attribute_formats": {
+            "q1": "^.{0,50}$",
+            "q10": "^.{0,800}$",
+            "q11": "^.{0,50}$",
+            "q12": "^-?[0-9]+$",
+            "q13": "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$",
+            "q15": "^.{0,800}$",
+            "q16": "^.{0,50}$",
+            "q17": "^.{0,50}$",
+            "q18": "^-?[0-9]+$",
+            "q19": "^.{0,800}$",
+            "q2": "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$",
+            "q20": "^.{0,50}$",
+            "q3": "^-?[0-9]+$",
+            "q4": "^.{0,50}$",
+            "q6": "^.{0,800}$",
+            "q7": "^.{0,50}$",
+            "q8": "^([01]\\d|2[0-3]):([0-5]\\d)$",
+            "q9": "^.{0,50}$"
+          }
+        },
+        "label": [
+          {
+            "d": "EBumxJ4IYe6M8m1JjRvTwab7TUe6pq3jC8qvsOWgwxnJ",
+            "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+            "type": "spec/overlays/label/1.0",
+            "language": "fra",
+            "attribute_categories": [],
+            "attribute_labels": {
+              "q1": "Quel est votre nom complet?",
+              "q10": "Partagez une expérience mémorable de votre vie.",
+              "q11": "Quels objectifs professionnels souhaitez-vous atteindre?",
+              "q12": "Évaluez votre équilibre travail-vie sur une échelle de 1 à 10.",
+              "q13": "Listez des dates importantes liées à vos réalisations.",
+              "q14": "Accepteriez-vous de déménager pour votre carrière?",
+              "q15": "Qu'est-ce qui vous motive dans votre vie professionnelle?",
+              "q16": "Quelles sont vos principales priorités dans la vie?",
+              "q17": "Quand vous sentez-vous le plus productif?",
+              "q18": "Préférez-vous travailler en équipe ou individuellement?",
+              "q19": "Fournissez des commentaires sur l'amélioration des lieux de travail.",
+              "q2": "Quelle est votre date de naissance?",
+              "q20": "Quels secteurs trouvez-vous les plus inspirants?",
+              "q21": "Décrire plusieurs articles",
+              "q3": "À quel point êtes-vous satisfait de votre emploi actuel?",
+              "q4": "Quels sont vos loisirs?",
+              "q5": "Aimez-vous les activités de plein air?",
+              "q6": "Décrivez votre destination de vacances idéale.",
+              "q7": "Quelles compétences avez-vous récemment acquises?",
+              "q8": "Quelle est votre heure de travail préférée?",
+              "q9": "Quelles technologies utilisez-vous le plus souvent?"
+            },
+            "category_labels": {}
+          },
+          {
+            "d": "EHCIjDnFAI6Eh1l4xs8yiEuVW0E7c4-KT-CJUsRWYZJ5",
+            "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+            "type": "spec/overlays/label/1.0",
+            "language": "eng",
+            "attribute_categories": [],
+            "attribute_labels": {
+              "q1": "What is your full name?",
+              "q10": "Share a memorable experience from your life.",
+              "q11": "What professional goals do you want to achieve?",
+              "q12": "Rate your work-life balance on a scale of 1-10.",
+              "q13": "List significant dates related to your achievements.",
+              "q14": "Would you consider relocating for your career?",
+              "q15": "What motivates you in your professional life?",
+              "q16": "What are your top priorities in life?",
+              "q17": "When do you feel most productive?",
+              "q18": "Do you prefer working in a team or individually?",
+              "q19": "Provide feedback on how workplaces can improve.",
+              "q2": "What is your date of birth?",
+              "q20": "Which industries do you find most inspiring?",
+              "q21": "Describe several papers",
+              "q3": "How satisfied are you with your current job?",
+              "q4": "What are your hobbies?",
+              "q5": "Do you enjoy outdoor activities?",
+              "q6": "Describe your ideal vacation destination.",
+              "q7": "Which skills have you learned recently?",
+              "q8": "What is your preferred time to start work?",
+              "q9": "Which technologies do you use most frequently?"
+            },
+            "category_labels": {}
+          }
+        ],
+        "meta": [
+          {
+            "d": "EAUHGcNmJnCMTOv4uU0ZJVtwEIjajHRrdp_EHqsLOeU9",
+            "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+            "type": "spec/overlays/meta/1.0",
+            "language": "eng",
+            "description": "A questionnaire to get to know someone better with defined formats.",
+            "name": "getting_to_know_you_with_formats"
+          },
+          {
+            "d": "EA_m0cPf98R2Ibvv1_obfinpm8cBtqq9dPGy2alhcwy1",
+            "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+            "type": "spec/overlays/meta/1.0",
+            "language": "fra",
+            "description": "Un questionnaire pour mieux connaître quelqu'un avec des formats définis.",
+            "name": "apprendre_a_vous_connaitre_avec_formats"
+          }
+        ]
+      }
+    },
+    "dependencies": [
+      {
+        "v": "OCAS11JSON001688_",
+        "d": "EBDbV2iPgqzbXn-Z_1qa6Rjc9e0GURfd_ssglLUHsl_M",
+        "capture_base": {
+          "d": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "q1": "Text",
+            "q2": "DateTime",
+            "q3": "Numeric",
+            "q4": ["Text"],
+            "q5": "Boolean",
+            "q6": "Text",
+            "q7": "refs:EIM3WANzLhIC7vefwmDRSYQ2AOIWBaTWlKyWoOAoyNHp",
+            "q8": "refs:EGyYXKWNmJs8qZEYyEs78DdYFjYd6i35pZmLCEu_EW3N"
+          },
+          "classification": "RDF509",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "cardinality": {
+            "d": "EFwnwx6REupgY0aEFLEaXGoMEeUw0S2UnRrqeS_g22AI",
+            "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+            "type": "spec/overlays/cardinality/1.0",
+            "attribute_cardinality": {
+              "q4": "1-5"
+            }
+          },
+          "character_encoding": {
+            "d": "ENpsdqUMyIxPr8LQjh_aWy9MBUJryRtDSS4cnFqlwm90",
+            "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+            "type": "spec/overlays/character_encoding/1.0",
+            "attribute_character_encoding": {
+              "q1": "utf-8",
+              "q2": "utf-8",
+              "q3": "utf-8",
+              "q4": "utf-8",
+              "q5": "utf-8",
+              "q6": "utf-8",
+              "q7": "utf-8",
+              "q8": "utf-8"
+            }
+          },
+          "conformance": {
+            "d": "EOmACcx37OsPqemFi55DCLfQa4xMzfgwdNXUdCsVx0Pv",
+            "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "q1": "M",
+              "q2": "M",
+              "q3": "O",
+              "q4": "O",
+              "q5": "M",
+              "q6": "O"
+            }
+          },
+          "entry": [
+            {
+              "d": "EMv5z8Z7b2qUolqdWIWBdM_iCltKuPCjZ_U4WkgEpOz1",
+              "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+              "type": "spec/overlays/entry/1.0",
+              "language": "fra",
+              "attribute_entries": {
+                "q3": {
+                  "001": "Rouge",
+                  "002": "Vert",
+                  "003": "Bleu",
+                  "004": "Jaune",
+                  "005": "Orange"
+                },
+                "q4": {
+                  "5G": "Réseaux 5G et télécommunications",
+                  "AI": "Intelligence artificielle et éthique",
+                  "AIH": "IA dans les diagnostics de santé",
+                  "BA": "Applications de la blockchain en finance",
+                  "BL": "Perte de biodiversité et efforts de conservation",
+                  "CC": "Changement climatique et réchauffement global",
+                  "CG": "CRISPR et génie génétique",
+                  "CT": "Menaces et solutions en cybersécurité",
+                  "DP": "Protection et confidentialité des données",
+                  "FRW": "L'avenir du travail à distance",
+                  "MLPA": "Apprentissage automatique en analyse prédictive",
+                  "NB": "Neurosciences et cartographie cérébrale",
+                  "QC": "Avancées en calcul quantique",
+                  "RA": "Robotiques et automatisation dans l'industrie",
+                  "RE": "Technologies des énergies renouvelables",
+                  "RES": "Systèmes de stockage d'énergie renouvelable",
+                  "SE": "Exploration spatiale et colonisation de Mars",
+                  "SM": "Impact des médias sociaux sur la santé mentale",
+                  "US": "Urbanisation et villes durables",
+                  "VR": "Réalité virtuelle dans l'éducation"
+                }
+              }
+            },
+            {
+              "d": "EO-jwDLafCgmBKcKJICYtNsor-DTBzYojhoSSnKtnzhg",
+              "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "q3": {
+                  "001": "Red",
+                  "002": "Green",
+                  "003": "Blue",
+                  "004": "Yellow",
+                  "005": "Orange"
+                },
+                "q4": {
+                  "5G": "5G Networks and Telecommunications",
+                  "AI": "Artificial Intelligence and Ethics",
+                  "AIH": "AI in Healthcare Diagnostics",
+                  "BA": "Blockchain Applications in Finance",
+                  "BL": "Biodiversity Loss and Conservation Efforts",
+                  "CC": "Climate Change and Global Warming",
+                  "CG": "CRISPR and Genetic Engineering",
+                  "CT": "Cybersecurity Threats and Solutions",
+                  "DP": "Data Privacy and Protection",
+                  "FRW": "The Future of Remote Work",
+                  "MLPA": "Machine Learning in Predictive Analytics",
+                  "NB": "Neuroscience and Brain Mapping",
+                  "QC": "Quantum Computing Advancements",
+                  "RA": "Robotics and Automation in Industry",
+                  "RE": "Renewable Energy Technologies",
+                  "RES": "Renewable Energy Storage Systems",
+                  "SE": "Space Exploration and Mars Colonization",
+                  "SM": "Social Media Impact on Mental Health",
+                  "US": "Urbanization and Sustainable Cities",
+                  "VR": "Virtual Reality in Education"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EA44329z4ApmYSyJPvK5zwyblCg2FPQa5Ra4G7Z5rTRX",
+            "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "q3": ["001", "002", "003", "004", "005"],
+              "q4": [
+                "5G",
+                "AI",
+                "AIH",
+                "BA",
+                "BL",
+                "CC",
+                "CG",
+                "CT",
+                "DP",
+                "FRW",
+                "MLPA",
+                "NB",
+                "QC",
+                "RA",
+                "RE",
+                "RES",
+                "SE",
+                "SM",
+                "US",
+                "VR"
+              ]
+            }
+          },
+          "format": {
+            "d": "EPVQexDa7ePwx1JKgnhT0-HiOxmgzMO__0dWLZrG7Iq6",
+            "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+            "type": "spec/overlays/format/1.0",
+            "attribute_formats": {
+              "q1": "^[A-Za-z]{1,50}$",
+              "q2": "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$",
+              "q3": "^-?[0-9]+$",
+              "q4": "^[A-Z]*$",
+              "q6": "^.{0,800}$"
+            }
+          },
+          "label": [
+            {
+              "d": "EAVht0W1x84GT6IgqVtxeAV1XHtZam-sYjG31Bj3Jbep",
+              "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+              "type": "spec/overlays/label/1.0",
+              "language": "fra",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "Quel est ton nom?",
+                "q2": "Entrez une date",
+                "q3": "Quelle est ta couleur préférée ?",
+                "q4": "Sélectionnez les domaines de recherche qui s'appli",
+                "q5": "Oui ou non ?",
+                "q6": "Écrivez un paragraphe expliquant votre raisonnemen",
+                "q7": "Nommer les auteurs.",
+                "q8": "Nommez les collaborateurs."
+              },
+              "category_labels": {}
+            },
+            {
+              "d": "EI68zhnYQYCdxbhe1BmM1HkHJArpHj-_tTRuV4MN4lJQ",
+              "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "What is your name?",
+                "q2": "Enter a date",
+                "q3": "What is your favourite colour?",
+                "q4": "Select which research fields apply.",
+                "q5": "Yes or no?",
+                "q6": "Write a paragraph explaining your reasoning.",
+                "q7": "Name the Authors.",
+                "q8": "Name the Collaborators."
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EC6rdU2J8nLcN7SfphWRFItaptLG_44kSAh7c7R0ZRxs",
+              "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "A sample questionnaire for the development of the DRT.",
+              "name": "sample_questionnaire"
+            },
+            {
+              "d": "EMVd3h24-IMSLuYrOWgZmbxaRU2frdMv3fUMDB34FRR9",
+              "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+              "type": "spec/overlays/meta/1.0",
+              "language": "fra",
+              "description": "Un exemple de questionnaire pour le développement du DRT.",
+              "name": "exemple_de_questionnaire"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON00072d_",
+        "d": "EIM3WANzLhIC7vefwmDRSYQ2AOIWBaTWlKyWoOAoyNHp",
+        "capture_base": {
+          "d": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "q1": "Text",
+            "q2": "Text",
+            "q3": "refs:EKF6HHAtCJEuJC82oPBmC4Vo83W0azCLAJill8B2_F-f"
+          },
+          "classification": "RDF508",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "character_encoding": {
+            "d": "EG9QZaDBpAJoWITRKZR1jEuAUnb9kVnxcajY0NvFTlwM",
+            "capture_base": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+            "type": "spec/overlays/character_encoding/1.0",
+            "attribute_character_encoding": {
+              "q1": "utf-8",
+              "q2": "utf-8",
+              "q3": "utf-8"
+            }
+          },
+          "format": {
+            "d": "EJGcwS855CzfUuIl7KyVYGHnGl7CuMhEav1YUqQrJ1BS",
+            "capture_base": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+            "type": "spec/overlays/format/1.0",
+            "attribute_formats": {
+              "q1": "^.{0,50}$",
+              "q2": "^.{0,250}$"
+            }
+          },
+          "label": [
+            {
+              "d": "EFg55lA8J9CZ4hbim9OYac3d-4wpUgwg9W7UQS98cKr4",
+              "capture_base": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "First name",
+                "q2": "Last name",
+                "q3": "Identifier"
+              },
+              "category_labels": {}
+            },
+            {
+              "d": "EK9boMevPe61wrQsAFuCkfs7hNXR7RCBT_GTSsSjrnzz",
+              "capture_base": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+              "type": "spec/overlays/label/1.0",
+              "language": "fra",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "Prénom",
+                "q2": "Nom de famille",
+                "q3": "Identifiant"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EH7BccGaXkRD-R7Mj0IcW8lKpPuq4u6Kt14zM6Xq1qtt",
+              "capture_base": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Details about person",
+              "name": "person"
+            },
+            {
+              "d": "EPIc806pH5eA6b9OK19QhVxHzfmqljE1kO5tAEFUf1aS",
+              "capture_base": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+              "type": "spec/overlays/meta/1.0",
+              "language": "fra",
+              "description": "Détails sur la personne",
+              "name": "personne"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON000a3a_",
+        "d": "EKF6HHAtCJEuJC82oPBmC4Vo83W0azCLAJill8B2_F-f",
+        "capture_base": {
+          "d": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "q1": "Text",
+            "q2": "Text"
+          },
+          "classification": "RDF508",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "character_encoding": {
+            "d": "ELs8cvDdzwTZb3NlRxbAiFQoA9qUi2o9JtTANW1QYS49",
+            "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+            "type": "spec/overlays/character_encoding/1.0",
+            "attribute_character_encoding": {
+              "q1": "utf-8",
+              "q2": "utf-8"
+            }
+          },
+          "entry": [
+            {
+              "d": "EBhuuEC-nNiUCnAnD57scCEvkm9f-trfhXo7LxnWB-4G",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/entry/1.0",
+              "language": "fra",
+              "attribute_entries": {
+                "q1": {
+                  "Google": "ID Google Scholar",
+                  "ISNI": "ISNI",
+                  "ORCiD": "ORCiD",
+                  "ResearcherID": "ResearcherID",
+                  "Scopus": "ID Auteur Scopus"
+                }
+              }
+            },
+            {
+              "d": "ELxRESiAA8xZ1NEHvzz3qwwHhLD5VpmV31lLTqc-3Vyo",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "q1": {
+                  "Google": "Google Scholar ID",
+                  "ISNI": "ISNI",
+                  "ORCiD": "ORCiD",
+                  "ResearcherID": "ResearcherID",
+                  "Scopus": "Scopus Author ID"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EGD_4lrQ_Lh6jumCuAlhqBdNsn4CTUUdYY28WqRIr9YY",
+            "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "q1": ["Google", "ISNI", "ORCiD", "ResearcherID", "Scopus"]
+            }
+          },
+          "format": {
+            "d": "EEHf24wphJvpBD016jcwGeX6_tsOkOnoxbWgm8S6zTNh",
+            "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+            "type": "spec/overlays/format/1.0",
+            "attribute_formats": {
+              "q1": "^.{0,50}$",
+              "q2": "^.{0,50}$"
+            }
+          },
+          "label": [
+            {
+              "d": "EFap5E399QOZvLXGzEssPKoPb6Cj-ibBjSHxvMVx5oC6",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "Identifier",
+                "q2": "value"
+              },
+              "category_labels": {}
+            },
+            {
+              "d": "EI70mFOktq2K2UpBJDXNLNjgiyK9R30pUb7P4WQx1z1O",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/label/1.0",
+              "language": "fra",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "Identifiant",
+                "q2": "valeur"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EDqbNg_LskjQSuvZgBkU2TT6qrIcgrPN5CcAaGE6sYhe",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Identifiers for people.",
+              "name": "identifier"
+            },
+            {
+              "d": "ENGV3zsssI_s0hOGKALPXsX8T3GJhgmvfV-hHiRMF4NB",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/meta/1.0",
+              "language": "fra",
+              "description": "Identifiants pour les personnes.",
+              "name": "identifiant"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON00078e_",
+        "d": "EGyYXKWNmJs8qZEYyEs78DdYFjYd6i35pZmLCEu_EW3N",
+        "capture_base": {
+          "d": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "q1": "Text",
+            "q2": "Text",
+            "q3": "Text",
+            "q4": "refs:EKF6HHAtCJEuJC82oPBmC4Vo83W0azCLAJill8B2_F-f"
+          },
+          "classification": "RDF508",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "character_encoding": {
+            "d": "EJWAPYJT_urLCe__R4OY5VDnTxWZcGD19KskicqjEZPH",
+            "capture_base": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
+            "type": "spec/overlays/character_encoding/1.0",
+            "attribute_character_encoding": {
+              "q1": "utf-8",
+              "q2": "utf-8",
+              "q3": "utf-8",
+              "q4": "utf-8"
+            }
+          },
+          "format": {
+            "d": "EFfiN3h4yk2Mr63F23s3HjhLmhomgOK1tcKu0TRftuIL",
+            "capture_base": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
+            "type": "spec/overlays/format/1.0",
+            "attribute_formats": {
+              "q1": "^.{0,50}$",
+              "q2": "^.{0,250}$"
+            }
+          },
+          "label": [
+            {
+              "d": "EI2WP4yqSMmvVxLsPSDVrXp1KO20mxO5khq4qqME_DHR",
+              "capture_base": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
+              "type": "spec/overlays/label/1.0",
+              "language": "fra",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "Prénom",
+                "q2": "Nom de famille",
+                "q3": "Organisation",
+                "q4": "Identifiant"
+              },
+              "category_labels": {}
+            },
+            {
+              "d": "EOoyBCglq8CTZWyARz8NWqg0abwJuH4bD4ZdHOPaacQD",
+              "capture_base": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "First name",
+                "q2": "Last name",
+                "q3": "Organization",
+                "q4": "Identifier"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EBjxFGQFMeMnVPSV7Gb3g4KsvBc-JbDozH0F_lZbkYeX",
+              "capture_base": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Details about collaborator",
+              "name": "collaborator"
+            },
+            {
+              "d": "ENyLsZzgkh8YVmQKBADc0GTaLnXvZ9eDRUxFtqDh3NjH",
+              "capture_base": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
+              "type": "spec/overlays/meta/1.0",
+              "language": "fra",
+              "description": "Détails sur le collaborateur/rice",
+              "name": "collaborateur/rice"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON000a3a_",
+        "d": "EKF6HHAtCJEuJC82oPBmC4Vo83W0azCLAJill8B2_F-f",
+        "capture_base": {
+          "d": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "q1": "Text",
+            "q2": "Text"
+          },
+          "classification": "RDF508",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "character_encoding": {
+            "d": "ELs8cvDdzwTZb3NlRxbAiFQoA9qUi2o9JtTANW1QYS49",
+            "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+            "type": "spec/overlays/character_encoding/1.0",
+            "attribute_character_encoding": {
+              "q1": "utf-8",
+              "q2": "utf-8"
+            }
+          },
+          "entry": [
+            {
+              "d": "EBhuuEC-nNiUCnAnD57scCEvkm9f-trfhXo7LxnWB-4G",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/entry/1.0",
+              "language": "fra",
+              "attribute_entries": {
+                "q1": {
+                  "Google": "ID Google Scholar",
+                  "ISNI": "ISNI",
+                  "ORCiD": "ORCiD",
+                  "ResearcherID": "ResearcherID",
+                  "Scopus": "ID Auteur Scopus"
+                }
+              }
+            },
+            {
+              "d": "ELxRESiAA8xZ1NEHvzz3qwwHhLD5VpmV31lLTqc-3Vyo",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "q1": {
+                  "Google": "Google Scholar ID",
+                  "ISNI": "ISNI",
+                  "ORCiD": "ORCiD",
+                  "ResearcherID": "ResearcherID",
+                  "Scopus": "Scopus Author ID"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EGD_4lrQ_Lh6jumCuAlhqBdNsn4CTUUdYY28WqRIr9YY",
+            "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "q1": ["Google", "ISNI", "ORCiD", "ResearcherID", "Scopus"]
+            }
+          },
+          "format": {
+            "d": "EEHf24wphJvpBD016jcwGeX6_tsOkOnoxbWgm8S6zTNh",
+            "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+            "type": "spec/overlays/format/1.0",
+            "attribute_formats": {
+              "q1": "^.{0,50}$",
+              "q2": "^.{0,50}$"
+            }
+          },
+          "label": [
+            {
+              "d": "EFap5E399QOZvLXGzEssPKoPb6Cj-ibBjSHxvMVx5oC6",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "Identifier",
+                "q2": "value"
+              },
+              "category_labels": {}
+            },
+            {
+              "d": "EI70mFOktq2K2UpBJDXNLNjgiyK9R30pUb7P4WQx1z1O",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/label/1.0",
+              "language": "fra",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "q1": "Identifiant",
+                "q2": "valeur"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EDqbNg_LskjQSuvZgBkU2TT6qrIcgrPN5CcAaGE6sYhe",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Identifiers for people.",
+              "name": "identifier"
+            },
+            {
+              "d": "ENGV3zsssI_s0hOGKALPXsX8T3GJhgmvfV-hHiRMF4NB",
+              "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+              "type": "spec/overlays/meta/1.0",
+              "language": "fra",
+              "description": "Identifiants pour les personnes.",
+              "name": "identifiant"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "extensions": {
+    "form": [
+      {
+        "d": "###presentationDigest###",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
+        "language": ["eng", "fra"],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              {
+                "named_section": "section-1",
+                "attribute_order": ["q1", "q2"]
+              },
+              {
+                "named_section": "section-2",
+                "attribute_order": ["q3"]
+              }
+            ]
+          },
+          {
+            "named_section": "page-2",
+            "attribute_order": [
+              {
+                "named_section": "section-3",
+                "attribute_order": ["q4", "q5"]
+              }
+            ]
+          },
+          {
+            "named_section": "page-3",
+            "attribute_order": [
+              {
+                "named_section": "section-4",
+                "attribute_order": ["q6", "q7"]
+              }
+            ]
+          },
+          {
+            "named_section": "page-4",
+            "attribute_order": [
+              {
+                "named_section": "section-5",
+                "attribute_order": ["q8", "q9"]
+              }
+            ]
+          },
+          {
+            "named_section": "page-5",
+            "attribute_order": [
+              {
+                "named_section": "section-6",
+                "attribute_order": [
+                  "q10",
+                  "q11",
+                  "q12",
+                  "q13",
+                  "q14",
+                  "q15",
+                  "q16",
+                  "q17",
+                  "q18",
+                  "q19",
+                  "q20",
+                  "q21"
+                ]
+              }
+            ]
+          }
+        ],
+        "page_order": ["page-1", "page-2", "page-3", "page-4", "page-5"],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Introduction",
+            "section-1": "Section 1: Personal Details",
+            "section-2": "Section 2: Satisfaction",
+            "page-2": "Page 2: Preferences",
+            "section-3": "Section 3: Lifestyle and Interests",
+            "page-3": "Page 3: Skills and Competencies",
+            "section-4": "Section 4: Development",
+            "page-4": "Page 4: Work Schedule",
+            "section-5": "Section 5: Technologies and Tools",
+            "page-5": "Page 5: Comprehensive Feedback",
+            "section-6": "Section 6: Final Reflections"
+          },
+          "fra": {
+            "page-1": "Page 1: Introduction",
+            "section-1": "Section 1: Détails personnels",
+            "section-2": "Section 2: Satisfaction",
+            "page-2": "Page 2: Préférences",
+            "section-3": "Section 3: Style de vie et intérêts",
+            "page-3": "Page 3: Compétences et compétences",
+            "section-4": "Section 4: Développement",
+            "page-4": "Page 4: Horaires de travail",
+            "section-5": "Section 5: Technologies et outils",
+            "page-5": "Page 5: Commentaires détaillés",
+            "section-6": "Section 6: Réflexions finales"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "q1": {
+                "type": "textarea"
+              },
+              "q2": {
+                "type": "DateTime"
+              },
+              "q3": {
+                "type": "radio",
+                "orientation": "vertical"
+              },
+              "q4": {
+                "type": "select",
+                "value": "multiple"
+              },
+              "q5": {
+                "type": "radio",
+                "orientation": "vertical"
+              },
+              "q6": {
+                "type": "textarea"
+              },
+              "q7": {
+                "type": "select",
+                "value": "multiple"
+              },
+              "q8": {
+                "type": "DateTime"
+              },
+              "q9": {
+                "type": "select",
+                "value": "multiple"
+              },
+              "q10": {
+                "type": "textarea"
+              },
+              "q11": {
+                "type": "select",
+                "value": "multiple"
+              },
+              "q12": {
+                "type": "textarea"
+              },
+              "q13": {
+                "type": "DateTime"
+              },
+              "q14": {
+                "type": "radio",
+                "orientation": "vertical"
+              },
+              "q15": {
+                "type": "textarea"
+              },
+              "q16": {
+                "type": "select",
+                "value": "multiple"
+              },
+              "q17": {
+                "type": "textarea"
+              },
+              "q18": {
+                "type": "radio",
+                "orientation": "vertical"
+              },
+              "q19": {
+                "type": "textarea"
+              },
+              "q20": {
+                "type": "select",
+                "value": "multiple"
+              },
+              "q21": {
+                "type": "reference"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "###presentationDigest###",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+        "language": ["eng", "fra"],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              {
+                "named_section": "section-1",
+                "attribute_order": ["q1"]
+              },
+              {
+                "named_section": "section-2",
+                "attribute_order": ["q2"]
+              },
+              "q3",
+              "q4",
+              "q5",
+              "q6"
+            ]
+          },
+          {
+            "named_section": "page-2",
+            "attribute_order": ["q7"]
+          },
+          {
+            "named_section": "page-3",
+            "attribute_order": ["q8"]
+          }
+        ],
+        "page_order": ["page-1", "page-2", "page-3"],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Introduction",
+            "section-1": "Section 1: name",
+            "section-2": "Section 2: Date",
+            "page-2": "Page 2: Authors",
+            "page-3": "Page 3: References"
+          },
+          "fra": {
+            "page-1": "Page 1: Introduction",
+            "section-1": "Section 1: nom",
+            "section-2": "Section 2: Date",
+            "page-2": "Page 2: Auteurs"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "q1": {
+                "type": "textarea"
+              },
+              "q2": {
+                "type": "DateTime"
+              },
+              "q3": {
+                "type": "radio",
+                "orientation": "vertical"
+              },
+              "q4": {
+                "type": "select",
+                "value": "multiple"
+              },
+              "q5": {
+                "type": "radio",
+                "orientation": "vertical"
+              },
+              "q6": {
+                "type": "textarea"
+              },
+              "q7": {
+                "type": "reference"
+              },
+              "q8": {
+                "type": "reference"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "###presentationDigest###",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+        "language": ["eng", "fra"],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": ["q1", "q2"]
+          },
+          {
+            "named_section": "page-2",
+            "attribute_order": ["q3"]
+          }
+        ],
+        "page_order": ["page-1", "page-2"],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Author Details",
+            "page-2": "Page 2: IDs"
+          },
+          "fra": {
+            "page-1": "Page 1: Détails des auteurs",
+            "page-2": "Page 2: IDs"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "q1": {
+                "type": "textarea"
+              },
+              "q2": {
+                "type": "textarea"
+              },
+              "q3": {
+                "type": "reference"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "###presentationDigest###",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+        "language": ["eng", "fra"],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": ["q1", "q2"]
+          }
+        ],
+        "page_order": ["page-1"],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Identifier"
+          },
+          "fra": {
+            "page-1": "Page 1: Identifiant"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "q1": {
+                "type": "dropdown",
+                "orientation": "vertical",
+                "entry_code_order": ["Google", "Scopus", "ISNI", "ORCiD"]
+              },
+              "q2": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "###presentationDigest###",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
+        "language": ["eng", "fra"],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": ["q1", "q2"]
+          },
+          {
+            "named_section": "page-2",
+            "attribute_order": ["q3", "q4"]
+          }
+        ],
+        "page_order": ["page-1", "page-2"],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Collaborator Details",
+            "page-2": "Page 2: IDs"
+          },
+          "fra": {
+            "page-1": "Page 1: Détails du collaborateur",
+            "page-2": "Page 2: IDs"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "q1": {
+                "type": "textarea"
+              },
+              "q2": {
+                "type": "textarea"
+              },
+              "q3": {
+                "type": "textarea"
+              },
+              "q4": {
+                "type": "reference"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

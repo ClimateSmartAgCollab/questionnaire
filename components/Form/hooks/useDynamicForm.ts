@@ -32,12 +32,10 @@ export function useDynamicForm(parsedSteps: Step[]) {
   const stepTree = useMemo(() => buildStepTree(parsedSteps), [parsedSteps])
   const parentSteps = useMemo(() => getParentSteps(parsedSteps), [parsedSteps])
 
-
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-  };
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }
 
-  
   // Save current step's data
   const saveCurrentStepData = useCallback(() => {
     const stepObj = parsedSteps[currentStep]
@@ -51,7 +49,17 @@ export function useDynamicForm(parsedSteps: Step[]) {
         section.fields.forEach(field => {
           let userInput = ''
 
-          if (field.type === 'radio') {
+          if (field.type === 'select' || field.type === 'dropdown') {
+            // Collect multiselect values
+            const selectElement = document.querySelector(
+              `[name="${field.id}"]`
+            ) as HTMLSelectElement | null
+            currentStepData[field.id] = selectElement
+              ? Array.from(selectElement.selectedOptions).map(
+                  option => option.value
+                )
+              : []
+          } else if (field.type === 'radio') {
             const selectedRadio = document.querySelector(
               `input[name="${field.id}"]:checked`
             ) as HTMLInputElement | null
@@ -91,7 +99,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   // Navigate with save
   const onNavigate = useCallback(
     (index: number) => {
-      scrollToTop();
+      scrollToTop()
       saveCurrentStepData()
       setCurrentStep(index)
       setVisitedSteps(prev => {
@@ -104,7 +112,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   )
 
   const goToNextParent = useCallback(() => {
-    scrollToTop();
+    scrollToTop()
     saveCurrentStepData()
     const currentStepId = parsedSteps[currentStep]?.id
     const currentParentIndex = parentSteps.findIndex(
@@ -123,7 +131,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData])
 
   const goToPreviousParent = useCallback(() => {
-    scrollToTop();
+    scrollToTop()
     saveCurrentStepData()
     const currentStepId = parsedSteps[currentStep]?.id
     const currentParentIndex = parentSteps.findIndex(
@@ -139,7 +147,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData])
 
   const finishHandler = useCallback(() => {
-    scrollToTop();
+    scrollToTop()
     saveCurrentStepData()
 
     const stepObj = parsedSteps[currentStep]
@@ -162,7 +170,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   }, [currentStep, parsedSteps, saveCurrentStepData])
 
   const cancelHandler = useCallback(() => {
-    scrollToTop();
+    scrollToTop()
     saveCurrentStepData()
     setCurrentChildId(null)
     setCurrentStep(0)

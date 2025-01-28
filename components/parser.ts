@@ -1,5 +1,8 @@
 import { Root, Bundle, Dependency, Presentation } from './type'
-import metadataJson from '../public/sampleQuestionnaire_V2.json'
+// import metadataJson from '../public/getting_to_know_single_level_presentation.json'
+// import metadataJson from '../public/sampleQuestionnaire_V2.json'
+import metadataJson from '../public/multi_level_package_presentation.json'
+
 
 // Normalize entry codes in dependencies
 const normalizeEntryCodes = (dependencies: Dependency[]): void => {
@@ -87,21 +90,25 @@ const parseRelationships = (
     }
 
     
-    // 'childRefs' will collect all capture_bases that this entity references
+    // childRefs will collect all capture_bases this entity references
+    // refMap will map each attribute to the child it references, if any
     const childRefs: string[] = []
+    const refMap: Record<string, string> = {}
 
-    // For example, you might store references as "refs:SOME_ID" in attributes
-    // Adjust this logic to match your data
-    Object.values(entity.capture_base.attributes || {}).forEach(attr => {
-      if (typeof attr === 'string' && attr.startsWith('refs:')) {
-        // Extract the reference ID and find the matching dependency
-        const refId = attr.replace('refs:', '')
-        const refEntity = dependencies.find(dep => dep.d === refId)
-        if (refEntity) {
-          childRefs.push(refEntity.capture_base.d)
+    Object.entries(entity.capture_base.attributes || {}).forEach(
+      ([attrKey, attrValue]) => {
+        if (typeof attrValue === 'string' && attrValue.startsWith('refs:')) {
+          const refId = attrValue.replace('refs:', '')
+
+          // find the dependency by .d == refId
+          const refEntity = dependencies.find(dep => dep.d === refId)
+          if (refEntity) {
+            childRefs.push(refEntity.capture_base.d)
+            refMap[attrKey] = refEntity.capture_base.d
+          }
         }
       }
-    })
+    )
 
     // Ensure children are processed and relationships are updated
     relationships[captureBase] = {
@@ -109,7 +116,8 @@ const parseRelationships = (
       isParent: childRefs.length > 0,
       parent: parentRef,
       children: childRefs,
-      fields: Object.keys(entity.capture_base.attributes || {})
+      fields: Object.keys(entity.capture_base.attributes || {}),
+      refsMap: refMap
     }
 
     childRefs.forEach(childRef => {
@@ -132,16 +140,18 @@ const getLabelsOptionsAndTypes = (
   labels: Record<string, Record<string, string>>
   options: Record<string, Record<string, string[]>>
   types: Record<string, any>
+  cardinalityRules: Record<string, any>
 } => {
   const entity = findBundleByCaptureBase(captureBase, bundle, dependencies)
 
   if (!entity) {
-    return { labels: {}, options: {}, types: {} }
+    return { labels: {}, options: {}, types: {}, cardinalityRules: {} }
   }
 
   const labels: Record<string, Record<string, string>> = {}
   const options: Record<string, Record<string, string[]>> = {}
   const types: Record<string, any> = {}
+  const cardinalityRules: Record<string, any> = {};
 
   // Collect labels for all languages
   ;(entity.overlays?.label || []).forEach((labelOverlay: any) => {
@@ -162,6 +172,15 @@ const getLabelsOptionsAndTypes = (
     )
   })
 
+    // Get interaction types and apply cardinality rules
+    if (entity.overlays?.cardinality) {
+      const cardinalityOverlay = entity.overlays.cardinality;
+      Object.entries(cardinalityOverlay.attribute_cardinality).forEach(([key, range]) => {
+          const [min, max] = range.split("-").map(Number);
+          cardinalityRules[key] = { min, max };
+      });
+  }
+
   // Collect types for all fields
   const interaction =
     metadata.extensions?.form.find(form => form.capture_base === captureBase)
@@ -170,7 +189,7 @@ const getLabelsOptionsAndTypes = (
     types[key] = interaction[key]
   })
 
-  return { labels, options, types }
+  return { labels, options, types, cardinalityRules }
 }
 
 // Extract metadata (name and description) for each step
@@ -261,7 +280,7 @@ export const parseJsonToFormStructure = (): any[] => {
     const relationships = parseRelationships(bundle, dependencies, presentation)
 
     Object.entries(relationships).forEach(([captureBase, relationship]) => {
-      const { labels, options, types } = getLabelsOptionsAndTypes(
+      const { labels, options, types, cardinalityRules } = getLabelsOptionsAndTypes(
         captureBase,
         bundle,
         dependencies
@@ -315,18 +334,17 @@ export const parseJsonToFormStructure = (): any[] => {
             entryCodes,
             characterEncoding,
             format,
-            cardinality // Include more rules if needed
+            cardinality: cardinalityRules[fieldId] || { min: 0, max: 1 }
           }
         }
 
-        // Assign references for `reference` type fields
         if (field.type === 'reference') {
-          // if your parseRelationships returned multiple children, decide which childRef to pick
-          // For example, let's say you pick the first child from relationship.children:
-          if (relationship.children.length > 0) {
-            field.ref = relationship.children[0]
+          const refMap = relationships[captureBase].refsMap
+          if (refMap && refMap[fieldId]) {
+            field.ref = refMap[fieldId]   
           }
         }
+        
 
         return field
       })
