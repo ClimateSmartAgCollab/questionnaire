@@ -174,7 +174,9 @@ const getLabelsOptionsAndTypes = (
     const cardinalityOverlay = entity.overlays.cardinality
     Object.entries(cardinalityOverlay.attribute_cardinality).forEach(
       ([key, range]) => {
-        const [min, max] = range.split('-').map(Number)
+        const parts = range.split('-')
+        const min = parts[0] ? Number(parts[0]) : 0
+        const max = parts[1] ? Number(parts[1]) : Infinity
         cardinalityRules[key] = { min, max }
       }
     )
@@ -359,7 +361,7 @@ export const parseJsonToFormStructure = (): any[] => {
             entryCodes,
             characterEncoding,
             format,
-            cardinality: cardinalityRules[fieldId] || { min: 0, max: 1 }
+            cardinality: cardinalityRules[fieldId]
           }
         }
 

@@ -206,11 +206,11 @@ export default function Form() {
                                     const max = field.validation.cardinality?.max || Infinity;
                             
                                     if (selectedOptions.length < min) {
-                                      alert('You must select at least ${min} options.');
+                                      alert(`You must select at least ${min} options.`);
                                       return;
                                     }
                                     if (selectedOptions.length > max) {
-                                      alert('You can select at most ${max} options.');
+                                      alert(`You can select at most ${max} options.`);
                                       return;
                                     }
                             
