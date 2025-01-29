@@ -496,6 +496,10 @@
               "type": "spec/overlays/entry/1.0",
               "language": "fra",
               "attribute_entries": {
+                "q5": {
+                  "0": "oui",
+                  "1": "non"
+                },
                 "q3": {
                   "001": "Rouge",
                   "002": "Vert",
@@ -533,6 +537,10 @@
               "type": "spec/overlays/entry/1.0",
               "language": "eng",
               "attribute_entries": {
+                "q5": {
+                  "0": "yes",
+                  "1": "no"
+                },
                 "q3": {
                   "001": "Red",
                   "002": "Green",
@@ -570,6 +578,7 @@
             "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
             "type": "spec/overlays/entry_code/1.0",
             "attribute_entry_codes": {
+              "q5": ["0", "1"],
               "q3": ["001", "002", "003", "004", "005"],
               "q4": [
                 "5G",
@@ -1076,6 +1085,211 @@
       {
         "d": "###presentationDigest###",
         "type": "community/adc/presentation/v1.0",
+        "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
+        "language": ["eng", "fra"],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              {
+                "named_section": "section-1",
+                "attribute_order": ["q1"]
+              },
+              {
+                "named_section": "section-2",
+                "attribute_order": ["q2"]
+              },
+              "q3",
+              "q4",
+              "q5",
+              "q6"
+            ]
+          },
+          {
+            "named_section": "page-2",
+            "attribute_order": ["q7"]
+          },
+          {
+            "named_section": "page-3",
+            "attribute_order": ["q8"]
+          }
+        ],
+        "page_order": ["page-1", "page-2", "page-3"],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Introduction",
+            "section-1": "Section 1: name",
+            "section-2": "Section 2: Date",
+            "page-2": "Page 2: Authors",
+            "page-3": "Page 3: Collaborators"
+          },
+          "fra": {
+            "page-1": "Page 1: Introduction",
+            "section-1": "Section 1: nom",
+            "section-2": "Section 2: Date",
+            "page-2": "Page 2: Auteurs",
+            "page-3": "Page 3: Collaborateurs"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "q1": {
+                "type": "textarea"
+              },
+              "q2": {
+                "type": "DateTime"
+              },
+              "q3": {
+                "type": "radio",
+                "orientation": "vertical"
+              },
+              "q4": {
+                "type": "select",
+                "value": "multiple"
+              },
+              "q5": {
+                "type": "radio",
+                "orientation": "vertical"
+              },
+              "q6": {
+                "type": "textarea"
+              },
+              "q7": {
+                "type": "reference"
+              },
+              "q8": {
+                "type": "reference"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "###presentationDigest###",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
+        "language": ["eng", "fra"],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": ["q1", "q2"]
+          },
+          {
+            "named_section": "page-2",
+            "attribute_order": ["q3"]
+          }
+        ],
+        "page_order": ["page-1", "page-2"],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Author Details",
+            "page-2": "Page 2: IDs"
+          },
+          "fra": {
+            "page-1": "Page 1: Détails des auteurs",
+            "page-2": "Page 2: IDs"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "q1": {
+                "type": "textarea"
+              },
+              "q2": {
+                "type": "textarea"
+              },
+              "q3": {
+                "type": "reference"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "###presentationDigest###",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
+        "language": ["eng", "fra"],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": ["q1", "q2"]
+          }
+        ],
+        "page_order": ["page-1"],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Identifier"
+          },
+          "fra": {
+            "page-1": "Page 1: Identifiant"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "q1": {
+                "type": "dropdown",
+                "orientation": "vertical",
+                "entry_code_order": ["Google", "Scopus", "ISNI", "ORCiD"]
+              },
+              "q2": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "###presentationDigest###",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
+        "language": ["eng", "fra"],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": ["q1", "q2"]
+          },
+          {
+            "named_section": "page-2",
+            "attribute_order": ["q3", "q4"]
+          }
+        ],
+        "page_order": ["page-1", "page-2"],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Collaborator Details",
+            "page-2": "Page 2: IDs"
+          },
+          "fra": {
+            "page-1": "Page 1: Détails du collaborateur",
+            "page-2": "Page 2: IDs"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "q1": {
+                "type": "textarea"
+              },
+              "q2": {
+                "type": "textarea"
+              },
+              "q3": {
+                "type": "textarea"
+              },
+              "q4": {
+                "type": "reference"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "###presentationDigest###",
+        "type": "community/adc/presentation/v1.0",
         "capture_base": "EPdKNzV-o7IbraOYgx09jAVYKIv71UoNOtiZykGVSxkE",
         "language": ["eng", "fra"],
         "pages": [
@@ -1245,210 +1459,6 @@
                 "value": "multiple"
               },
               "q21": {
-                "type": "reference"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "d": "###presentationDigest###",
-        "type": "community/adc/presentation/v1.0",
-        "capture_base": "EA-4sqXhPkLhzfJzZQuu0wQ6X-xBhMx3yC21BQ-neAJE",
-        "language": ["eng", "fra"],
-        "pages": [
-          {
-            "named_section": "page-1",
-            "attribute_order": [
-              {
-                "named_section": "section-1",
-                "attribute_order": ["q1"]
-              },
-              {
-                "named_section": "section-2",
-                "attribute_order": ["q2"]
-              },
-              "q3",
-              "q4",
-              "q5",
-              "q6"
-            ]
-          },
-          {
-            "named_section": "page-2",
-            "attribute_order": ["q7"]
-          },
-          {
-            "named_section": "page-3",
-            "attribute_order": ["q8"]
-          }
-        ],
-        "page_order": ["page-1", "page-2", "page-3"],
-        "page_labels": {
-          "eng": {
-            "page-1": "Page 1: Introduction",
-            "section-1": "Section 1: name",
-            "section-2": "Section 2: Date",
-            "page-2": "Page 2: Authors",
-            "page-3": "Page 3: References"
-          },
-          "fra": {
-            "page-1": "Page 1: Introduction",
-            "section-1": "Section 1: nom",
-            "section-2": "Section 2: Date",
-            "page-2": "Page 2: Auteurs"
-          }
-        },
-        "interaction": [
-          {
-            "arguments": {
-              "q1": {
-                "type": "textarea"
-              },
-              "q2": {
-                "type": "DateTime"
-              },
-              "q3": {
-                "type": "radio",
-                "orientation": "vertical"
-              },
-              "q4": {
-                "type": "select",
-                "value": "multiple"
-              },
-              "q5": {
-                "type": "radio",
-                "orientation": "vertical"
-              },
-              "q6": {
-                "type": "textarea"
-              },
-              "q7": {
-                "type": "reference"
-              },
-              "q8": {
-                "type": "reference"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "d": "###presentationDigest###",
-        "type": "community/adc/presentation/v1.0",
-        "capture_base": "EAXVUvI8uMakW1TsdpkBY-Oo0U2cqZemVQPj_ziTCCTh",
-        "language": ["eng", "fra"],
-        "pages": [
-          {
-            "named_section": "page-1",
-            "attribute_order": ["q1", "q2"]
-          },
-          {
-            "named_section": "page-2",
-            "attribute_order": ["q3"]
-          }
-        ],
-        "page_order": ["page-1", "page-2"],
-        "page_labels": {
-          "eng": {
-            "page-1": "Page 1: Author Details",
-            "page-2": "Page 2: IDs"
-          },
-          "fra": {
-            "page-1": "Page 1: Détails des auteurs",
-            "page-2": "Page 2: IDs"
-          }
-        },
-        "interaction": [
-          {
-            "arguments": {
-              "q1": {
-                "type": "textarea"
-              },
-              "q2": {
-                "type": "textarea"
-              },
-              "q3": {
-                "type": "reference"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "d": "###presentationDigest###",
-        "type": "community/adc/presentation/v1.0",
-        "capture_base": "EBw5K6SvNSe2Mi5Ok5c_cNtQhLZuj8Mz6JNQbBQO76tD",
-        "language": ["eng", "fra"],
-        "pages": [
-          {
-            "named_section": "page-1",
-            "attribute_order": ["q1", "q2"]
-          }
-        ],
-        "page_order": ["page-1"],
-        "page_labels": {
-          "eng": {
-            "page-1": "Page 1: Identifier"
-          },
-          "fra": {
-            "page-1": "Page 1: Identifiant"
-          }
-        },
-        "interaction": [
-          {
-            "arguments": {
-              "q1": {
-                "type": "dropdown",
-                "orientation": "vertical",
-                "entry_code_order": ["Google", "Scopus", "ISNI", "ORCiD"]
-              },
-              "q2": {
-                "type": "textarea"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "d": "###presentationDigest###",
-        "type": "community/adc/presentation/v1.0",
-        "capture_base": "EAWm5IySSmQuIIoRuuj0noNzvHxLBzUGUgedFbflc0BN",
-        "language": ["eng", "fra"],
-        "pages": [
-          {
-            "named_section": "page-1",
-            "attribute_order": ["q1", "q2"]
-          },
-          {
-            "named_section": "page-2",
-            "attribute_order": ["q3", "q4"]
-          }
-        ],
-        "page_order": ["page-1", "page-2"],
-        "page_labels": {
-          "eng": {
-            "page-1": "Page 1: Collaborator Details",
-            "page-2": "Page 2: IDs"
-          },
-          "fra": {
-            "page-1": "Page 1: Détails du collaborateur",
-            "page-2": "Page 2: IDs"
-          }
-        },
-        "interaction": [
-          {
-            "arguments": {
-              "q1": {
-                "type": "textarea"
-              },
-              "q2": {
-                "type": "textarea"
-              },
-              "q3": {
-                "type": "textarea"
-              },
-              "q4": {
                 "type": "reference"
               }
             }

@@ -3,7 +3,6 @@ import { Root, Bundle, Dependency, Presentation } from './type'
 // import metadataJson from '../public/sampleQuestionnaire_V2.json'
 import metadataJson from '../public/multi_level_package_presentation.json'
 
-
 // Normalize entry codes in dependencies
 const normalizeEntryCodes = (dependencies: Dependency[]): void => {
   dependencies.forEach(dependency => {
@@ -78,7 +77,6 @@ const parseRelationships = (
   const refsSeen: Set<string> = new Set()
 
   const addRelationships = (captureBase: string, parentRef: string | null) => {
-    
     // Avoid re-processing the same capture base
     if (refsSeen.has(captureBase)) return
     refsSeen.add(captureBase)
@@ -89,7 +87,6 @@ const parseRelationships = (
       return
     }
 
-    
     // childRefs will collect all capture_bases this entity references
     // refMap will map each attribute to the child it references, if any
     const childRefs: string[] = []
@@ -151,7 +148,7 @@ const getLabelsOptionsAndTypes = (
   const labels: Record<string, Record<string, string>> = {}
   const options: Record<string, Record<string, string[]>> = {}
   const types: Record<string, any> = {}
-  const cardinalityRules: Record<string, any> = {};
+  const cardinalityRules: Record<string, any> = {}
 
   // Collect labels for all languages
   ;(entity.overlays?.label || []).forEach((labelOverlay: any) => {
@@ -172,13 +169,15 @@ const getLabelsOptionsAndTypes = (
     )
   })
 
-    // Get interaction types and apply cardinality rules
-    if (entity.overlays?.cardinality) {
-      const cardinalityOverlay = entity.overlays.cardinality;
-      Object.entries(cardinalityOverlay.attribute_cardinality).forEach(([key, range]) => {
-          const [min, max] = range.split("-").map(Number);
-          cardinalityRules[key] = { min, max };
-      });
+  // Get interaction types and apply cardinality rules
+  if (entity.overlays?.cardinality) {
+    const cardinalityOverlay = entity.overlays.cardinality
+    Object.entries(cardinalityOverlay.attribute_cardinality).forEach(
+      ([key, range]) => {
+        const [min, max] = range.split('-').map(Number)
+        cardinalityRules[key] = { min, max }
+      }
+    )
   }
 
   // Collect types for all fields
@@ -222,17 +221,20 @@ const parsePresentation = (
   labels: Record<string, Record<string, string>>,
   fields: any[]
 ) => {
-  const getAllLabels = (labels: Record<string, Record<string, string>>, key: string) => {
-    const result: Record<string, string> = {};
+  const getAllLabels = (
+    labels: Record<string, Record<string, string>>,
+    key: string
+  ) => {
+    const result: Record<string, string> = {}
     Object.keys(labels).forEach(lang => {
-      result[lang] = labels[lang]?.[key] || '';
-    });
-    return result;
-  };
+      result[lang] = labels[lang]?.[key] || ''
+    })
+    return result
+  }
 
   const pages = presentation.page_order.map(pageKey => {
-    const page = presentation.pages.find(p => p.named_section === pageKey);
-    if (!page) return null;
+    const page = presentation.pages.find(p => p.named_section === pageKey)
+    if (!page) return null
 
     const sections = (page.attribute_order || []).map(sectionOrField => {
       if (typeof sectionOrField === 'string') {
@@ -240,51 +242,74 @@ const parsePresentation = (
           sectionKey: sectionOrField,
           sectionLabel: {}, // No label for standalone fields
           fields: fields.filter(f => f.id === sectionOrField)
-        };
+        }
       } else if (typeof sectionOrField === 'object') {
         return {
           sectionKey: sectionOrField.named_section,
-          sectionLabel: getAllLabels(presentation.page_labels, sectionOrField.named_section),
+          sectionLabel: getAllLabels(
+            presentation.page_labels,
+            sectionOrField.named_section
+          ),
           fields: sectionOrField.attribute_order
             .map(fId => fields.find(f => f.id === fId))
             .filter(Boolean)
-        };
+        }
       }
-    });
+    })
 
     return {
       pageKey,
       pageLabel: getAllLabels(presentation.page_labels, pageKey),
       sections: sections.filter(Boolean),
       captureBase: presentation.capture_base
-    };
-  });
+    }
+  })
 
-  return pages.filter(Boolean);
-};
-
+  return pages.filter(Boolean)
+}
 
 // Main parser function to convert JSON into form structure
 export const parseJsonToFormStructure = (): any[] => {
   const { bundle, dependencies } = metadata.oca_bundle
   const presentations = metadata.extensions?.form
 
-  if (!presentations || presentations.length === 0) {
+  // The main bundle’s capture_base
+  const mainCaptureBase = bundle.capture_base.d
+
+  // Sort presentations so the one with mainCaptureBase comes first
+  // (You could also do more complex ordering logic)
+  const presentationsSorted = (metadata.extensions?.form || []).sort((a, b) => {
+    // if a.capture_base is the main bundle, that goes first
+    if (
+      a.capture_base === mainCaptureBase &&
+      b.capture_base !== mainCaptureBase
+    ) {
+      return -1
+    }
+    // if b.capture_base is the main bundle, that goes first
+    if (
+      b.capture_base === mainCaptureBase &&
+      a.capture_base !== mainCaptureBase
+    ) {
+      return 1
+    }
+    // otherwise no ordering or alphabetical ordering
+    return 0
+  })
+
+  if (!presentationsSorted || presentationsSorted.length === 0) {
     console.warn('No presentations found in the OCA package.')
     return []
   }
 
   const allSteps: Record<string, any> = {} // Use an object for deduplication
 
-  presentations.forEach(presentation => {
+  presentationsSorted.forEach(presentation => {
     const relationships = parseRelationships(bundle, dependencies, presentation)
 
     Object.entries(relationships).forEach(([captureBase, relationship]) => {
-      const { labels, options, types, cardinalityRules } = getLabelsOptionsAndTypes(
-        captureBase,
-        bundle,
-        dependencies
-      )
+      const { labels, options, types, cardinalityRules } =
+        getLabelsOptionsAndTypes(captureBase, bundle, dependencies)
       const { names, descriptions } = getStepMeta(
         captureBase,
         bundle,
@@ -341,10 +366,9 @@ export const parseJsonToFormStructure = (): any[] => {
         if (field.type === 'reference') {
           const refMap = relationships[captureBase].refsMap
           if (refMap && refMap[fieldId]) {
-            field.ref = refMap[fieldId]   
+            field.ref = refMap[fieldId]
           }
         }
-        
 
         return field
       })
@@ -396,7 +420,9 @@ export const parseJsonToFormStructure = (): any[] => {
           }
         } else {
           // Merge unique pages into the existing allSteps entry
-          const existingPages = allSteps[captureBase].pages.map((page: any) => page.id)
+          const existingPages = allSteps[captureBase].pages.map(
+            (page: any) => page.id
+          )
           const newPages = pages.filter(
             (page: any) => !existingPages.includes(page.id)
           )
