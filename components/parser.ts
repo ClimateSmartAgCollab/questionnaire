@@ -176,7 +176,7 @@ const getLabelsOptionsAndTypes = (
       ([key, range]) => {
         const parts = range.split('-')
         const min = parts[0] ? Number(parts[0]) : 0
-        const max = parts[1] ? Number(parts[1]) : Infinity
+        const max = parts[1] ? Number(parts[1]) : 999999999999999999
         cardinalityRules[key] = { min, max }
       }
     )
