@@ -149,13 +149,22 @@ export function useDynamicForm(parsedSteps: Step[]) {
     }
   }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData])
 
+  const isParentStep = (step: Step) => parentSteps.some(p => p.id === step.id)
 
   const finishHandler = useCallback(() => {
-    scrollToTop()
     saveCurrentStepData()
 
     const stepObj = parsedSteps[currentStep]
     if (!stepObj) return
+
+    // If this step is a child, remove it from visitedSteps so it disappears from sidebar
+    if (!isParentStep(stepObj)) {
+      setVisitedSteps(prev => {
+        const updated = new Set(prev)
+        updated.delete(stepObj.id)
+        return updated
+      })
+    }
 
     // When finishing editing the child, reset currentChildId
     setCurrentChildId(null)
@@ -171,7 +180,14 @@ export function useDynamicForm(parsedSteps: Step[]) {
       // or just go home
       setCurrentStep(0)
     }
-  }, [currentStep, parsedSteps, saveCurrentStepData])
+  }, [
+    currentStep,
+    parsedSteps,
+    saveCurrentStepData,
+    isParentStep,
+    setVisitedSteps,
+    setCurrentChildId
+  ])
 
   const cancelHandler = useCallback(() => {
     scrollToTop()
@@ -180,7 +196,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
     setCurrentStep(0)
   }, [saveCurrentStepData])
 
-  const isParentStep = (step: Step) => parentSteps.some(p => p.id === step.id)
 
   // Pre-fill data on page load
   const prefillData = useCallback(() => {
