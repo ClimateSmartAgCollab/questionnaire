@@ -12,7 +12,6 @@ import { useFormData } from '../context/FormDataContext'
 export function useDynamicForm(parsedSteps: Step[]) {
   const [language, setLanguage] = useState('eng')
   const [currentStep, setCurrentStep] = useState(0)
-  const [currentPageIndex, setCurrentPageIndex] = useState(0)
   const [pageIndexByStep, setPageIndexByStep] = useState<{
     [stepId: string]: number
   }>({})
@@ -224,7 +223,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
     language,
     setLanguage,
     currentStep,
-    setCurrentStep,
     visitedSteps,
     formData,
     setFormData,
@@ -236,11 +234,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
     finishHandler,
     cancelHandler,
     isParentStep,
-    currentChildId,
     setCurrentChildId,
     createNewChild,
-    editExistingChild,
-    currentPageIndex,
     pageIndexByStep,
     setPageIndexByStep
   }

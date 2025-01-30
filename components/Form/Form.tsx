@@ -2,7 +2,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { parseJsonToFormStructure } from '../parser'
 import { Field, Page_parsed, Step } from '../type'
 import { useDynamicForm } from './hooks/useDynamicForm'
@@ -32,7 +32,6 @@ export default function Form() {
     isParentStep,
     setCurrentChildId,
     createNewChild,
-    editExistingChild,
     pageIndexByStep,
     setPageIndexByStep
   } = useDynamicForm(parsedSteps)
@@ -44,6 +43,10 @@ export default function Form() {
     return <div>Loading form structure...</div>
   }
 
+  const [expandedStep, setExpandedStep] = useState<string | null>(
+    parsedSteps[0]?.id || null
+  )
+
   const step: Step = parsedSteps[currentStep]
   const currentPageIndex = pageIndexByStep[step.id] ?? 0
   const currentPage: Page_parsed | undefined = step.pages[currentPageIndex]
@@ -54,6 +57,20 @@ export default function Form() {
   const isVeryLastPageOfLastStep =
     isParentStep(step) && currentStep === 0 && isLastPageOfThisStep
 
+  const handleNavigate = (stepIndex: number, pageIndex: number = 0) => {
+    setExpandedStep(parsedSteps[stepIndex].id) 
+    setPageIndexByStep(prev => ({
+      ...prev,
+      [parsedSteps[stepIndex].id]: pageIndex
+    }))
+    onNavigate(stepIndex)
+  }
+
+
+  useEffect(() => {
+    const newStepId = parsedSteps[currentStep].id
+    setExpandedStep(newStepId)
+  }, [currentStep])
 
   const handleNextPage = () => {
     const lastPageIndex = step.pages.length - 1
@@ -61,7 +78,7 @@ export default function Form() {
     if (currentPageIndex < lastPageIndex) {
       setPageIndexByStep(prev => ({
         ...prev,
-        [step.id]: currentPageIndex + 1,
+        [step.id]: currentPageIndex + 1
       }))
     } else {
       if (isParentStep(step)) {
@@ -70,21 +87,20 @@ export default function Form() {
         if (newStepIndex < parsedSteps.length) {
           setPageIndexByStep(prev => ({
             ...prev,
-            [parsedSteps[newStepIndex].id]: 0,
+            [parsedSteps[newStepIndex].id]: 0
           }))
         }
       }
-      // If it's a child step on the last page, do nothing here 
+      // If it's a child step on the last page, do nothing here
       // (the user sees Finish/Cancel).
     }
   }
-
 
   const handlePreviousPage = () => {
     if (currentPageIndex > 0) {
       setPageIndexByStep(prev => ({
         ...prev,
-        [step.id]: currentPageIndex - 1,
+        [step.id]: currentPageIndex - 1
       }))
     } else {
       if (isParentStep(step)) {
@@ -94,16 +110,15 @@ export default function Form() {
           const prevStep = parsedSteps[newStepIndex]
           setPageIndexByStep(prev => ({
             ...prev,
-            [prevStep.id]: prevStep.pages.length - 1 || 0,
+            [prevStep.id]: prevStep.pages.length - 1 || 0
           }))
         }
       }
-      // If child step is on first page, do nothing 
+      // If child step is on first page, do nothing
       // (the user does not have a "Back" on the first child page).
     }
   }
 
-  
   const getIndex = (stepId: string) => {
     return parsedSteps.findIndex(s => s.id === stepId)
   }
@@ -472,23 +487,34 @@ export default function Form() {
         )}
       </div>
 
-      {/* Sidebar Navigation using the step tree */}
+      {/* Sidebar */}
       <nav className={styles.sidebar}>
-        <h2 className='mb-4 text-xl font-semibold'>Pages</h2>
+        <h2 className='mb-4 text-xl font-semibold'>Pages / Steps</h2>
         <ul className='space-y-4'>
-          {stepTree.map(step => (
-            <NavigationItem
-              key={step.id}
-              step={step}
-              currentStep={currentStep}
-              visitedSteps={visitedSteps}
-              onNavigate={onNavigate}
-              language={language}
-              getIndex={getIndex}
-            />
-          ))}
+          {/* Show only visited steps + the very first root step */}
+          {parsedSteps
+            .filter(s => visitedSteps.has(s.id) || s.id === parsedSteps[0].id)
+            .map(stepNode => {
+              const nodeStepIndex = getIndex(stepNode.id)
+              const nodeCurrentPageIndex = pageIndexByStep[stepNode.id] ?? 0
+
+              return (
+                <NavigationItem
+                  key={stepNode.id}
+                  step={stepNode}
+                  currentStep={currentStep}
+                  currentPageIndex={nodeCurrentPageIndex}
+                  onNavigate={handleNavigate}
+                  language={language}
+                  getIndex={getIndex}
+                  expandedStep={expandedStep}
+                  setExpandedStep={setExpandedStep}
+                />
+              )
+            })}
         </ul>
       </nav>
+
       {/* Footer */}
       <div className={styles.footer}>
         <Footer currentPage={currentStep} />
