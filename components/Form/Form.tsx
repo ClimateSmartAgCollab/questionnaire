@@ -58,14 +58,13 @@ export default function Form() {
     isParentStep(step) && currentStep === 0 && isLastPageOfThisStep
 
   const handleNavigate = (stepIndex: number, pageIndex: number = 0) => {
-    setExpandedStep(parsedSteps[stepIndex].id) 
+    setExpandedStep(parsedSteps[stepIndex].id)
     setPageIndexByStep(prev => ({
       ...prev,
       [parsedSteps[stepIndex].id]: pageIndex
     }))
     onNavigate(stepIndex)
   }
-
 
   useEffect(() => {
     const newStepId = parsedSteps[currentStep].id
@@ -405,7 +404,7 @@ export default function Form() {
               <div className='mt-8 flex items-center space-x-4'>
                 <button
                   type='button'
-                  onClick={handlePreviousPage}
+                  onClick={() => { handlePreviousPage(); scrollTo(0, 0); }}
                   className='rounded bg-gray-300 px-4 py-2 text-gray-800 hover:bg-gray-400'
                   disabled={
                     // If this is the first parent step, first page => no back
@@ -430,7 +429,7 @@ export default function Form() {
                 ) : (
                   <button
                     type='button'
-                    onClick={handleNextPage}
+                    onClick={() => { handleNextPage(); scrollTo(0, 0); }}
                     className='rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
                   >
                     Next
@@ -446,7 +445,7 @@ export default function Form() {
                     {/* Back only if not first page */}
                     <button
                       type='button'
-                      onClick={handlePreviousPage}
+                      onClick={() => { handlePreviousPage(); scrollTo(0, 0); }}
                       className='rounded bg-gray-300 px-4 py-2 text-gray-800 hover:bg-gray-400'
                       disabled={isFirstPageOfThisStep}
                     >
@@ -455,7 +454,7 @@ export default function Form() {
                     {/* Next */}
                     <button
                       type='button'
-                      onClick={handleNextPage}
+                      onClick={() => { handleNextPage(); scrollTo(0, 0); }}
                       className='rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
                     >
                       Next
