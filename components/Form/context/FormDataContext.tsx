@@ -4,7 +4,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
-// The shape of our parent data:
 interface ParentFormData {
   [stepId: string]: {
     [fieldId: string]: any
@@ -14,17 +13,14 @@ interface ParentFormData {
   }
 }
 
-// The shape of a single child record:
 interface ChildRecord {
-  id: string // Could match a "step id" or a generated ID
-  stepId: string // which step definition to use
-  data: { [fieldId: string]: any } // actual child form data
+  id: string 
+  stepId: string 
+  data: { [fieldId: string]: any } 
 }
 
-// The shape of our children data array:
 type ChildrenData = ChildRecord[]
 
-// Define context type:
 interface FormDataContextType {
   parentFormData: ParentFormData
   setParentFormData: React.Dispatch<React.SetStateAction<ParentFormData>>
@@ -40,12 +36,10 @@ interface FormDataContextType {
   updateChildById: (childId: string, newData: Record<string, any>) => void
 }
 
-// Create the context:
 const FormDataContext = createContext<FormDataContextType | undefined>(
   undefined
 )
 
-// Provider component:
 export function FormDataProvider({
   children,
   initialParentData = {},
@@ -60,7 +54,6 @@ export function FormDataProvider({
   const [childrenData, setChildrenData] =
     useState<ChildrenData>(initialChildrenData)
 
-  // Create a new child record with blank data
   const createNewChild = useCallback((stepId: string | undefined) => {
     const newChild: ChildRecord = {
       id: uuidv4(),
@@ -71,7 +64,6 @@ export function FormDataProvider({
     return newChild
   }, [])
 
-  // Find and return an existing child for editing
   const editExistingChild = useCallback(
     (childId: string) => {
       return childrenData.find(child => child.id === childId) || null
@@ -79,7 +71,6 @@ export function FormDataProvider({
     [childrenData]
   )
 
-  // Save updated child data
   const saveChildData = useCallback(
     (childId: string, newData: Record<string, any>) => {
       setChildrenData(prev =>
@@ -133,7 +124,6 @@ export function FormDataProvider({
   )
 }
 
-// Custom hook for easy consumption:
 export function useFormData() {
   const context = useContext(FormDataContext)
   if (!context) {

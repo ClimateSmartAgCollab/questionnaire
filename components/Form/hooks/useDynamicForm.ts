@@ -39,21 +39,18 @@ export function useDynamicForm(parsedSteps: Step[]) {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }
 
-  // Save current step's data
   const saveCurrentStepData = useCallback(() => {
     const stepObj = parsedSteps[currentStep]
     if (!stepObj) return
 
     const currentStepData: Record<string, any> = {}
 
-    // Collect data from pages -> sections -> fields
     stepObj.pages.forEach(page => {
       page.sections.forEach(section => {
         section.fields.forEach(field => {
           let userInput = ''
 
           if (field.type === 'select' || field.type === 'dropdown') {
-            // Collect multiselect values
             const selectElement = document.querySelector(
               `[name="${field.id}"]`
             ) as HTMLSelectElement | null
@@ -86,14 +83,11 @@ export function useDynamicForm(parsedSteps: Step[]) {
       })
     })
 
-    // Update local formData
     setFormData(prev => ({
       ...prev,
       [stepObj.id]: currentStepData
     }))
 
-    // If we are in a "child step" and we have a current child being edited,
-    // also save that child's data to the context.
     if (currentChildId) {
       saveChildData(currentChildId, currentStepData)
     }
@@ -238,7 +232,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
     const stepObj = parsedSteps[currentStep]
     if (!stepObj) return
 
-    // If this step is a child, remove it from visitedSteps so it disappears from sidebar
     if (!isParentStep(stepObj)) {
       setVisitedSteps(prev => {
         const updated = new Set(prev)
@@ -247,10 +240,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
       })
     }
 
-    // When finishing editing the child, reset currentChildId
     setCurrentChildId(null)
 
-    // Navigate back to whichever step references this child
     const referencingStep = getReferencingStep(stepObj.id, parsedSteps)
     if (referencingStep) {
       const referencingStepIndex = parsedSteps.findIndex(
@@ -258,7 +249,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
       )
       setCurrentStep(referencingStepIndex)
     } else {
-      // or just go home
       setCurrentStep(0)
     }
   }, [
@@ -277,16 +267,12 @@ export function useDynamicForm(parsedSteps: Step[]) {
     setCurrentStep(0)
   }, [saveCurrentStepData])
 
-  // Pre-fill data on page load
   const prefillData = useCallback(() => {
     const stepObj = parsedSteps[currentStep]
     if (!stepObj) return
 
-    // If there's a child being edited, fill from context child data
-    // Otherwise fill from your local formData
     let stepData = formData[stepObj.id] || {}
 
-    // If editing a child, check the context for that child's data
     if (currentChildId) {
       const child = editExistingChild(currentChildId)
       if (child) {
@@ -309,7 +295,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
     })
   }, [currentStep, parsedSteps, formData, currentChildId, editExistingChild])
 
-  // Call prefillData when the step changes
   useEffect(() => {
     prefillData()
   }, [currentStep, prefillData])

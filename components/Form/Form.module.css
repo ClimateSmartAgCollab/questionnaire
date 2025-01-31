@@ -29,7 +29,6 @@
 
 .header {
   grid-column: 1 / -1;
-  /* Span across all columns */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,20 +37,14 @@
   border-bottom: 1px solid #e5e7eb;
   position: sticky;
   top: 0;
-  /* Sticks the header to the top */
   z-index: 1000;
-  /* Ensures the header stays above other elements */
   margin: 0;
-  /* Ensures there is no space from the top */
   box-sizing: border-box;
-  /* Ensures padding is included within the height/width */
   width: 100%;
-  /* Ensures it spans the full width */
 }
 
 .sidebar {
   grid-row: 2 / 3;
-  /* Ends before footer */
   padding: 1rem;
   background-color: #ffffff;
   border-right: 1px solid #e5e7eb;
@@ -67,15 +60,12 @@
   font-size: 0.875rem;
 }
 
-/* Responsive Sidebar Width */
 @media (max-width: 768px) {
   .sidebar {
     width: 200px;
-    /* Narrower sidebar for smaller screens */
   }
 
   .mainContent {
     margin-right: 200px;
-    /* Match the narrower sidebar */
   }
 }

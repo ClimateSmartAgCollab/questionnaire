@@ -183,8 +183,8 @@ export interface Reference {
 
 export interface Field {
   id: string
-  labels: Record<string, Record<string, string>> // Multilingual labels
-  options: Record<string, Record<string, string[]>> // Multilingual options
+  labels: Record<string, Record<string, string>> 
+  options: Record<string, Record<string, string[]>> 
   type: string
   orientation?: 'vertical' | 'horizontal'
   value?: string
@@ -217,5 +217,5 @@ export interface Step {
   descriptions: Record<string, string>
   parent?: string | null
   pages: Page_parsed[]
-  children?: Step[] // used by the buildStepTree if you want a hierarchical nav
+  children?: Step[] 
 }

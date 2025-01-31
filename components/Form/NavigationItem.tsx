@@ -25,20 +25,15 @@ export const NavigationItem = React.memo(function NavigationItem({
   expandedStep,
   setExpandedStep
 }: NavigationItemProps) {
-  // Find where this step is in the array of parsedSteps
   const stepIndex = getIndex(step.id)
 
-  // Determine if this step is "expanded" in the sidebar
   const isExpanded = expandedStep === step.id
-  // Check if the user is currently on this step
   const isActiveStep = currentStep === stepIndex
 
-  // Toggle expanding/collapsing this step
   const toggleExpand = () => {
     setExpandedStep(isExpanded ? null : step.id)
   }
 
-  // Step button styling
   const stepButtonClass = isExpanded
     ? 'bg-blue-600 text-white'
     : 'bg-gray-200 text-gray-800'

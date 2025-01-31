@@ -26,7 +26,7 @@ const Footer: React.FC<FooterProps> = ({ currentPage }) => {
           justifyContent='left'
           alignItems='center'
           sx={{
-            gap: '1rem' // Adjust spacing between logos
+            gap: '1rem' 
           }}
         >
           <div>

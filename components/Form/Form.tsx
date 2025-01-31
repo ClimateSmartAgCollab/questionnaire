@@ -2,9 +2,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import React, { useState, useEffect } from 'react'
 import { parseJsonToFormStructure } from '../parser'
-import { Field, Step, Page_parsed} from '../type'
+import { Field} from '../type'
 import { useDynamicForm } from './hooks/useDynamicForm'
 import { NavigationItem } from '../Form/NavigationItem'
 import styles from './Form.module.css'
