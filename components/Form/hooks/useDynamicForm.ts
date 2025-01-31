@@ -1,6 +1,6 @@
 // src/hooks/useDynamicForm.ts
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { Page_parsed, Step  } from '../../type'
+import { Page_parsed, Step } from '../../type'
 import {
   buildStepTree,
   getParentSteps,
@@ -8,6 +8,7 @@ import {
   validateField
 } from '../utils/steps'
 import { useFormData } from '../context/FormDataContext'
+import { array } from 'zod'
 
 export function useDynamicForm(parsedSteps: Step[]) {
   const [language, setLanguage] = useState('eng')
@@ -35,18 +36,18 @@ export function useDynamicForm(parsedSteps: Step[]) {
   const stepTree = useMemo(() => buildStepTree(parsedSteps), [parsedSteps])
   const parentSteps = useMemo(() => getParentSteps(parsedSteps), [parsedSteps])
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
-  }
+  const saveCurrentPageData = useCallback(
+    (updatedData?: Record<string, any>) => {
+      const stepObj = parsedSteps[currentStep]
+      if (!stepObj) return
 
-  const saveCurrentStepData = useCallback(() => {
-    const stepObj = parsedSteps[currentStep]
-    if (!stepObj) return
+      const currentPageIndex = pageIndexByStep[stepObj.id] ?? 0
+      const currentPage = stepObj.pages[currentPageIndex]
+      if (!currentPage) return
 
-    const currentStepData: Record<string, any> = {}
+      const currentPageData: Record<string, any> = {}
 
-    stepObj.pages.forEach(page => {
-      page.sections.forEach(section => {
+      currentPage.sections.forEach(section => {
         section.fields.forEach(field => {
           let userInput = ''
 
@@ -54,11 +55,11 @@ export function useDynamicForm(parsedSteps: Step[]) {
             const selectElement = document.querySelector(
               `[name="${field.id}"]`
             ) as HTMLSelectElement | null
-            currentStepData[field.id] = selectElement
+            userInput = selectElement
               ? Array.from(selectElement.selectedOptions).map(
                   option => option.value
-                )
-              : []
+                ).join(', ')
+              : ''
           } else if (field.type === 'radio') {
             const selectedRadio = document.querySelector(
               `input[name="${field.id}"]:checked`
@@ -72,32 +73,46 @@ export function useDynamicForm(parsedSteps: Step[]) {
             userInput = input?.value || ''
           }
 
-          // Validate input
           const isValid = validateField(field, userInput, language)
           if (!isValid) {
             console.warn(`Validation failed for field ${field.id}`)
           }
 
-          currentStepData[field.id] = userInput
+          currentPageData[field.id] = userInput
         })
       })
-    })
 
-    setFormData(prev => ({
-      ...prev,
-      [stepObj.id]: currentStepData
-    }))
+      // Merge with updatedData if provided
+      const finalData = updatedData
+        ? { ...currentPageData, ...updatedData }
+        : currentPageData
 
-    if (currentChildId) {
-      saveChildData(currentChildId, currentStepData)
-    }
-  }, [currentStep, parsedSteps, language, currentChildId, saveChildData])
+      setFormData(prev => ({
+        ...prev,
+        [stepObj.id]: {
+          ...(prev[stepObj.id]),
+          ...finalData
+        }
+      }))
+      
 
-  
+      if (currentChildId) {
+        saveChildData(currentChildId, finalData)
+      }
+    },
+    [
+      currentStep,
+      parsedSteps,
+      pageIndexByStep,
+      language,
+      currentChildId,
+      saveChildData
+    ]
+  )
+
   const onNavigate = useCallback(
     (index: number) => {
-      scrollToTop()
-      saveCurrentStepData()
+      saveCurrentPageData()
       setCurrentStep(index)
       setVisitedSteps(prev => {
         const updated = new Set(prev)
@@ -105,34 +120,28 @@ export function useDynamicForm(parsedSteps: Step[]) {
         return updated
       })
     },
-    [parsedSteps, saveCurrentStepData]
+    [parsedSteps, saveCurrentPageData]
   )
 
   const handleNavigate = useCallback(
     (stepIndex: number, pageIndex: number = 0) => {
-      if (stepIndex < 0 || stepIndex >= parsedSteps.length) return;
-  
-      saveCurrentStepData();
-  
-      setExpandedStep(parsedSteps[stepIndex].id);
+      if (stepIndex < 0 || stepIndex >= parsedSteps.length) return
+
+      saveCurrentPageData()
+
+      setExpandedStep(parsedSteps[stepIndex].id)
       setPageIndexByStep(prev => ({
         ...prev,
         [parsedSteps[stepIndex].id]: pageIndex
-      }));
-  
-      onNavigate(stepIndex);
+      }))
+
+      onNavigate(stepIndex)
     },
-    [parsedSteps, saveCurrentStepData, onNavigate]
-  );
-  
-  useEffect(() => {
-    const newStepId = parsedSteps[currentStep]?.id
-    setExpandedStep(newStepId)
-  }, [currentStep])
+    [parsedSteps, saveCurrentPageData, onNavigate]
+  )
 
   const goToNextParent = useCallback(() => {
-    scrollToTop()
-    saveCurrentStepData()
+    saveCurrentPageData()
     const currentStepId = parsedSteps[currentStep]?.id
     const currentParentIndex = parentSteps.findIndex(
       step => step.id === currentStepId
@@ -147,11 +156,10 @@ export function useDynamicForm(parsedSteps: Step[]) {
         onNavigate(nextStepIndex)
       }
     }
-  }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData])
+  }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentPageData])
 
   const goToPreviousParent = useCallback(() => {
-    scrollToTop()
-    saveCurrentStepData()
+    saveCurrentPageData()
     const currentStepId = parsedSteps[currentStep]?.id
     const currentParentIndex = parentSteps.findIndex(
       step => step.id === currentStepId
@@ -163,7 +171,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
       )
       if (previousStepIndex >= 0) onNavigate(previousStepIndex)
     }
-  }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentStepData])
+  }, [currentStep, parentSteps, parsedSteps, onNavigate, saveCurrentPageData])
 
   const isParentStep = (step: Step) => parentSteps.some(p => p.id === step.id)
 
@@ -177,8 +185,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
   const isVeryLastPageOfLastStep =
     isParentStep(step) && currentStep === 0 && isLastPageOfThisStep
 
-
   const handleNextPage = () => {
+    saveCurrentPageData()
     const lastPageIndex = step.pages.length - 1
 
     if (currentPageIndex < lastPageIndex) {
@@ -203,6 +211,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   }
 
   const handlePreviousPage = () => {
+    saveCurrentPageData()
     if (currentPageIndex > 0) {
       setPageIndexByStep(prev => ({
         ...prev,
@@ -224,10 +233,9 @@ export function useDynamicForm(parsedSteps: Step[]) {
       // (the user does not have a "Back" on the first child page).
     }
   }
-  
- 
+
   const finishHandler = useCallback(() => {
-    saveCurrentStepData()
+    saveCurrentPageData()
 
     const stepObj = parsedSteps[currentStep]
     if (!stepObj) return
@@ -254,22 +262,25 @@ export function useDynamicForm(parsedSteps: Step[]) {
   }, [
     currentStep,
     parsedSteps,
-    saveCurrentStepData,
+    saveCurrentPageData,
     isParentStep,
     setVisitedSteps,
     setCurrentChildId
   ])
 
   const cancelHandler = useCallback(() => {
-    scrollToTop()
-    saveCurrentStepData()
+    saveCurrentPageData()
     setCurrentChildId(null)
     setCurrentStep(0)
-  }, [saveCurrentStepData])
+  }, [saveCurrentPageData])
 
-  const prefillData = useCallback(() => {
+  const prefillCurrentPageData = useCallback(() => {
     const stepObj = parsedSteps[currentStep]
     if (!stepObj) return
+
+    const currentPageIndex = pageIndexByStep[stepObj.id] ?? 0
+    const currentPage = stepObj.pages[currentPageIndex]
+    if (!currentPage) return
 
     let stepData = formData[stepObj.id] || {}
 
@@ -280,24 +291,48 @@ export function useDynamicForm(parsedSteps: Step[]) {
       }
     }
 
-    stepObj.pages.forEach(page => {
-      page.sections.forEach(section => {
-        section.fields.forEach(field => {
+    currentPage.sections.forEach(section => {
+      section.fields.forEach(field => {
+        const fieldValue = stepData[field.id] || ''
+
+        if (field.type === 'select' || field.type === 'dropdown') {
+          const selectElement = document.querySelector(
+            `[name="${field.id}"]`
+          ) as HTMLSelectElement | null
+          if (selectElement) {
+            const storedValues = Array.isArray(fieldValue)
+              ? fieldValue
+              : [fieldValue]
+
+            Array.from(selectElement.options).forEach(option => {
+              option.selected = storedValues.includes(option.value)
+            })
+          }
+        } else {
           const input = document.querySelector(`[name="${field.id}"]`) as
             | HTMLInputElement
             | HTMLTextAreaElement
             | null
           if (input) {
-            input.value = stepData[field.id] || ''
+            input.value = fieldValue
           }
-        })
+        }
       })
     })
-  }, [currentStep, parsedSteps, formData, currentChildId, editExistingChild])
+  }, [
+    currentStep,
+    parsedSteps,
+    pageIndexByStep,
+    formData,
+    currentChildId,
+    editExistingChild
+  ])
 
   useEffect(() => {
-    prefillData()
-  }, [currentStep, prefillData])
+    const newStepId = parsedSteps[currentStep]?.id
+    setExpandedStep(newStepId)
+    prefillCurrentPageData()
+  }, [currentStep, prefillCurrentPageData])
 
   return {
     language,
@@ -323,6 +358,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
     currentPage,
     isLastPageOfThisStep,
     isFirstPageOfThisStep,
-    step
+    step,
+    saveCurrentPageData
   }
 }

@@ -3,12 +3,13 @@
 
 import { motion } from 'framer-motion'
 import { parseJsonToFormStructure } from '../parser'
-import { Field} from '../type'
+import { Field } from '../type'
 import { useDynamicForm } from './hooks/useDynamicForm'
 import { NavigationItem } from '../Form/NavigationItem'
 import styles from './Form.module.css'
 import Footer from '../../Footer/footer'
 import { useFormData } from '../Form/context/FormDataContext'
+
 
 const parsedSteps = parseJsonToFormStructure()
 console.log('Parsed Steps:', parsedSteps)
@@ -38,10 +39,10 @@ export default function Form() {
     currentPage,
     isLastPageOfThisStep,
     isFirstPageOfThisStep,
-    step
+    step,
+    saveCurrentPageData
   } = useDynamicForm(parsedSteps)
 
-  // Child data from context
   const { childrenData } = useFormData()
 
   if (!parsedSteps || parsedSteps.length === 0) {
@@ -190,18 +191,16 @@ export default function Form() {
                           <select
                             name={field.id}
                             multiple={field.value === 'multiple'}
-                            // defaultValue={fieldValue}
-                            defaultValue={
-                              Array.isArray(formData[step.id]?.[field.id])
-                                ? formData[step.id][field.id]
-                                : []
-                            }
+                            value={formData[step.id]?.[field.id] || []}
                             className='w-full rounded border p-2'
                             onChange={e => {
                               const selectedOptions = Array.from(
                                 e.target.selectedOptions,
                                 option => option.value
                               )
+                              saveCurrentPageData({
+                                [field.id]: selectedOptions
+                              })
 
                               const min = field.validation.cardinality?.min || 0
                               const max =
@@ -218,16 +217,8 @@ export default function Form() {
                                 return
                               }
 
-                              // Update the form data with valid selections
-                              setFormData(prevFormData => {
-                                const stepData = prevFormData[step.id] || {}
-                                return {
-                                  ...prevFormData,
-                                  [step.id]: {
-                                    ...stepData,
-                                    [field.id]: selectedOptions // Store all selected options
-                                  }
-                                }
+                              saveCurrentPageData({
+                                [field.id]: selectedOptions
                               })
                             }}
                           >
@@ -340,7 +331,6 @@ export default function Form() {
                   }}
                   className='rounded bg-gray-300 px-4 py-2 text-gray-800 hover:bg-gray-400'
                   disabled={
-                    // If this is the first parent step, first page => no back
                     parentSteps.findIndex(p => p.id === step.id) === 0 &&
                     isFirstPageOfThisStep
                   }
@@ -352,7 +342,6 @@ export default function Form() {
                   <button
                     type='button'
                     onClick={() => {
-                      // Placeholder for final form submission
                       alert('Submit clicked (no-op)')
                     }}
                     className='rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600'
@@ -373,10 +362,8 @@ export default function Form() {
                 )}
               </div>
             ) : (
-              // If it's a child (referenced) step
               <>
                 {!isLastPageOfThisStep ? (
-                  // Not on the last page => Next/Back
                   <div className='mt-8 flex items-center space-x-4'>
                     {/* Back only if not first page */}
                     <button
