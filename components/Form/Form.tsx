@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion'
 import React, { useState, useEffect } from 'react'
 import { parseJsonToFormStructure } from '../parser'
-import { Field, Page_parsed, Step } from '../type'
+import { Field, Step, Page_parsed} from '../type'
 import { useDynamicForm } from './hooks/useDynamicForm'
 import { NavigationItem } from '../Form/NavigationItem'
 import styles from './Form.module.css'
@@ -22,18 +22,24 @@ export default function Form() {
     visitedSteps,
     formData,
     setFormData,
-    stepTree,
     parentSteps,
     onNavigate,
-    goToNextParent,
-    goToPreviousParent,
     finishHandler,
     cancelHandler,
     isParentStep,
     setCurrentChildId,
     createNewChild,
     pageIndexByStep,
-    setPageIndexByStep
+    expandedStep,
+    setExpandedStep,
+    handleNavigate,
+    handleNextPage,
+    handlePreviousPage,
+    isVeryLastPageOfLastStep,
+    currentPage,
+    isLastPageOfThisStep,
+    isFirstPageOfThisStep,
+    step
   } = useDynamicForm(parsedSteps)
 
   // Child data from context
@@ -41,81 +47,6 @@ export default function Form() {
 
   if (!parsedSteps || parsedSteps.length === 0) {
     return <div>Loading form structure...</div>
-  }
-
-  const [expandedStep, setExpandedStep] = useState<string | null>(
-    parsedSteps[0]?.id || null
-  )
-
-  const step: Step = parsedSteps[currentStep]
-  const currentPageIndex = pageIndexByStep[step.id] ?? 0
-  const currentPage: Page_parsed | undefined = step.pages[currentPageIndex]
-
-  const isLastPageOfThisStep = currentPageIndex === step.pages.length - 1
-  const isFirstPageOfThisStep = currentPageIndex === 0
-
-  const isVeryLastPageOfLastStep =
-    isParentStep(step) && currentStep === 0 && isLastPageOfThisStep
-
-  const handleNavigate = (stepIndex: number, pageIndex: number = 0) => {
-    setExpandedStep(parsedSteps[stepIndex].id)
-    setPageIndexByStep(prev => ({
-      ...prev,
-      [parsedSteps[stepIndex].id]: pageIndex
-    }))
-    onNavigate(stepIndex)
-  }
-
-  useEffect(() => {
-    const newStepId = parsedSteps[currentStep].id
-    setExpandedStep(newStepId)
-  }, [currentStep])
-
-  const handleNextPage = () => {
-    const lastPageIndex = step.pages.length - 1
-
-    if (currentPageIndex < lastPageIndex) {
-      setPageIndexByStep(prev => ({
-        ...prev,
-        [step.id]: currentPageIndex + 1
-      }))
-    } else {
-      if (isParentStep(step)) {
-        goToNextParent()
-        const newStepIndex = currentStep + 1
-        if (newStepIndex < parsedSteps.length) {
-          setPageIndexByStep(prev => ({
-            ...prev,
-            [parsedSteps[newStepIndex].id]: 0
-          }))
-        }
-      }
-      // If it's a child step on the last page, do nothing here
-      // (the user sees Finish/Cancel).
-    }
-  }
-
-  const handlePreviousPage = () => {
-    if (currentPageIndex > 0) {
-      setPageIndexByStep(prev => ({
-        ...prev,
-        [step.id]: currentPageIndex - 1
-      }))
-    } else {
-      if (isParentStep(step)) {
-        goToPreviousParent()
-        const newStepIndex = currentStep - 1
-        if (newStepIndex >= 0) {
-          const prevStep = parsedSteps[newStepIndex]
-          setPageIndexByStep(prev => ({
-            ...prev,
-            [prevStep.id]: prevStep.pages.length - 1 || 0
-          }))
-        }
-      }
-      // If child step is on first page, do nothing
-      // (the user does not have a "Back" on the first child page).
-    }
   }
 
   const getIndex = (stepId: string) => {
@@ -404,7 +335,10 @@ export default function Form() {
               <div className='mt-8 flex items-center space-x-4'>
                 <button
                   type='button'
-                  onClick={() => { handlePreviousPage(); scrollTo(0, 0); }}
+                  onClick={() => {
+                    handlePreviousPage()
+                    scrollTo(0, 0)
+                  }}
                   className='rounded bg-gray-300 px-4 py-2 text-gray-800 hover:bg-gray-400'
                   disabled={
                     // If this is the first parent step, first page => no back
@@ -429,7 +363,10 @@ export default function Form() {
                 ) : (
                   <button
                     type='button'
-                    onClick={() => { handleNextPage(); scrollTo(0, 0); }}
+                    onClick={() => {
+                      handleNextPage()
+                      scrollTo(0, 0)
+                    }}
                     className='rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
                   >
                     Next
@@ -445,7 +382,10 @@ export default function Form() {
                     {/* Back only if not first page */}
                     <button
                       type='button'
-                      onClick={() => { handlePreviousPage(); scrollTo(0, 0); }}
+                      onClick={() => {
+                        handlePreviousPage()
+                        scrollTo(0, 0)
+                      }}
                       className='rounded bg-gray-300 px-4 py-2 text-gray-800 hover:bg-gray-400'
                       disabled={isFirstPageOfThisStep}
                     >
@@ -454,7 +394,10 @@ export default function Form() {
                     {/* Next */}
                     <button
                       type='button'
-                      onClick={() => { handleNextPage(); scrollTo(0, 0); }}
+                      onClick={() => {
+                        handleNextPage()
+                        scrollTo(0, 0)
+                      }}
                       className='rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
                     >
                       Next

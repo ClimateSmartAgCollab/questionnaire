@@ -1,6 +1,6 @@
 // src/hooks/useDynamicForm.ts
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { Step } from '../../type'
+import { Page_parsed, Step  } from '../../type'
 import {
   buildStepTree,
   getParentSteps,
@@ -18,11 +18,11 @@ export function useDynamicForm(parsedSteps: Step[]) {
   const [visitedSteps, setVisitedSteps] = useState<Set<string>>(
     new Set([parsedSteps[0]?.id])
   )
-  // This is the local formData for "parent steps" that we already had:
   const [formData, setFormData] = useState<Record<string, any>>({})
-
-  // for tracking "which child am I editing?"
   const [currentChildId, setCurrentChildId] = useState<string | null>(null)
+  const [expandedStep, setExpandedStep] = useState<string | null>(
+    parsedSteps[0]?.id || null
+  )
 
   // Context
   const {
@@ -99,7 +99,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
     }
   }, [currentStep, parsedSteps, language, currentChildId, saveChildData])
 
-  // Navigate with save
+  
   const onNavigate = useCallback(
     (index: number) => {
       scrollToTop()
@@ -113,6 +113,28 @@ export function useDynamicForm(parsedSteps: Step[]) {
     },
     [parsedSteps, saveCurrentStepData]
   )
+
+  const handleNavigate = useCallback(
+    (stepIndex: number, pageIndex: number = 0) => {
+      if (stepIndex < 0 || stepIndex >= parsedSteps.length) return;
+  
+      saveCurrentStepData();
+  
+      setExpandedStep(parsedSteps[stepIndex].id);
+      setPageIndexByStep(prev => ({
+        ...prev,
+        [parsedSteps[stepIndex].id]: pageIndex
+      }));
+  
+      onNavigate(stepIndex);
+    },
+    [parsedSteps, saveCurrentStepData, onNavigate]
+  );
+  
+  useEffect(() => {
+    const newStepId = parsedSteps[currentStep]?.id
+    setExpandedStep(newStepId)
+  }, [currentStep])
 
   const goToNextParent = useCallback(() => {
     scrollToTop()
@@ -151,6 +173,65 @@ export function useDynamicForm(parsedSteps: Step[]) {
 
   const isParentStep = (step: Step) => parentSteps.some(p => p.id === step.id)
 
+  const step: Step = parsedSteps[currentStep]
+  const currentPageIndex = pageIndexByStep[step.id] ?? 0
+  const currentPage: Page_parsed | undefined = step.pages[currentPageIndex]
+
+  const isLastPageOfThisStep = currentPageIndex === step.pages.length - 1
+  const isFirstPageOfThisStep = currentPageIndex === 0
+
+  const isVeryLastPageOfLastStep =
+    isParentStep(step) && currentStep === 0 && isLastPageOfThisStep
+
+
+  const handleNextPage = () => {
+    const lastPageIndex = step.pages.length - 1
+
+    if (currentPageIndex < lastPageIndex) {
+      setPageIndexByStep(prev => ({
+        ...prev,
+        [step.id]: currentPageIndex + 1
+      }))
+    } else {
+      if (isParentStep(step)) {
+        goToNextParent()
+        const newStepIndex = currentStep + 1
+        if (newStepIndex < parsedSteps.length) {
+          setPageIndexByStep(prev => ({
+            ...prev,
+            [parsedSteps[newStepIndex].id]: 0
+          }))
+        }
+      }
+      // If it's a child step on the last page, do nothing here
+      // (the user sees Finish/Cancel).
+    }
+  }
+
+  const handlePreviousPage = () => {
+    if (currentPageIndex > 0) {
+      setPageIndexByStep(prev => ({
+        ...prev,
+        [step.id]: currentPageIndex - 1
+      }))
+    } else {
+      if (isParentStep(step)) {
+        goToPreviousParent()
+        const newStepIndex = currentStep - 1
+        if (newStepIndex >= 0) {
+          const prevStep = parsedSteps[newStepIndex]
+          setPageIndexByStep(prev => ({
+            ...prev,
+            [prevStep.id]: prevStep.pages.length - 1 || 0
+          }))
+        }
+      }
+      // If child step is on first page, do nothing
+      // (the user does not have a "Back" on the first child page).
+    }
+  }
+  
+ 
   const finishHandler = useCallback(() => {
     saveCurrentStepData()
 
@@ -196,7 +277,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
     setCurrentStep(0)
   }, [saveCurrentStepData])
 
-
   // Pre-fill data on page load
   const prefillData = useCallback(() => {
     const stepObj = parsedSteps[currentStep]
@@ -241,17 +321,23 @@ export function useDynamicForm(parsedSteps: Step[]) {
     visitedSteps,
     formData,
     setFormData,
-    stepTree,
     parentSteps,
     onNavigate,
-    goToNextParent,
-    goToPreviousParent,
     finishHandler,
     cancelHandler,
     isParentStep,
     setCurrentChildId,
     createNewChild,
     pageIndexByStep,
-    setPageIndexByStep
+    expandedStep,
+    setExpandedStep,
+    handleNavigate,
+    handleNextPage,
+    handlePreviousPage,
+    isVeryLastPageOfLastStep,
+    currentPage,
+    isLastPageOfThisStep,
+    isFirstPageOfThisStep,
+    step
   }
 }
