@@ -10,9 +10,8 @@ import styles from './Form.module.css'
 import Footer from '../../Footer/footer'
 import { useFormData } from '../Form/context/FormDataContext'
 
-
 const parsedSteps = parseJsonToFormStructure()
-console.log('Parsed Steps:', parsedSteps)
+// console.log('Parsed Steps:', parsedSteps)
 
 export default function Form() {
   const {
@@ -164,22 +163,44 @@ export default function Form() {
                       {(field.type === 'select' ||
                         field.type === 'dropdown') && (
                         <div>
-                          {/* Display selected options */}
-                          <div className='mb-4 rounded border bg-gray-100 p-4'>
-                            <h4 className='text-sm font-semibold'>
-                              Selected Options:
-                            </h4>
+                          {/* Selected Options Display as Removable Tags */}
+                          <div className='mb-4 flex flex-wrap gap-2'>
                             {Array.isArray(formData[step.id]?.[field.id]) &&
                             formData[step.id][field.id].length > 0 ? (
-                              <ul className='list-disc pl-4'>
-                                {formData[step.id][field.id].map(
-                                  (option: string, i: number) => (
-                                    <li key={i} className='text-sm'>
-                                      {option}
-                                    </li>
-                                  )
-                                )}
-                              </ul>
+                              formData[step.id][field.id].map(
+                                (option: string) => (
+                                  <span
+                                    key={option}
+                                    className='flex items-center rounded bg-blue-100 px-3 py-1 text-sm text-blue-800'
+                                  >
+                                    {option}
+                                    <button
+                                      type='button'
+                                      className='ml-2 text-red-500 hover:text-red-700'
+                                      onClick={() => {
+                                        // Remove this specific option
+                                        const updatedOptions = formData[
+                                          step.id
+                                        ][field.id].filter(
+                                          (selected: string) =>
+                                            selected !== option
+                                        )
+
+                                        setFormData(prev => ({
+                                          ...prev,
+                                          [step.id]: {
+                                            ...(prev[step.id] || {}),
+                                            [field.id]: updatedOptions
+                                          }
+                                        }))
+                                      }}
+                                      aria-label={`Remove ${option}`}
+                                    >
+                                      x
+                                    </button>
+                                  </span>
+                                )
+                              )
                             ) : (
                               <p className='text-sm text-gray-500'>
                                 No options selected.
@@ -187,24 +208,22 @@ export default function Form() {
                             )}
                           </div>
 
-                          {/* Dropdown for selecting multiple options */}
+                          {/* Multi-Select Dropdown */}
                           <select
                             name={field.id}
-                            multiple={field.value === 'multiple'}
-                            value={formData[step.id]?.[field.id] || []}
+                            multiple
                             className='w-full rounded border p-2'
+                            value={formData[step.id]?.[field.id] || []}
                             onChange={e => {
                               const selectedOptions = Array.from(
                                 e.target.selectedOptions,
                                 option => option.value
                               )
-                              saveCurrentPageData({
-                                [field.id]: selectedOptions
-                              })
 
-                              const min = field.validation.cardinality?.min || 0
+                              const min =
+                                field.validation?.cardinality?.min || 0
                               const max =
-                                field.validation.cardinality?.max || Infinity
+                                field.validation?.cardinality?.max || Infinity
 
                               if (selectedOptions.length < min) {
                                 alert(
@@ -217,9 +236,14 @@ export default function Form() {
                                 return
                               }
 
-                              saveCurrentPageData({
-                                [field.id]: selectedOptions
-                              })
+                              // Update selected options
+                              setFormData(prev => ({
+                                ...prev,
+                                [step.id]: {
+                                  ...(prev[step.id] || {}),
+                                  [field.id]: selectedOptions
+                                }
+                              }))
                             }}
                           >
                             {field.options[language]?.[field.id]?.map(
@@ -230,6 +254,24 @@ export default function Form() {
                               )
                             )}
                           </select>
+
+                          {/* Clear Selections Button */}
+                          {formData[step.id]?.[field.id]?.length > 0 && (
+                            <button
+                              className='mt-2 rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600'
+                              onClick={() => {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  [step.id]: {
+                                    ...(prev[step.id] || {}),
+                                    [field.id]: []
+                                  }
+                                }))
+                              }}
+                            >
+                              Clear All
+                            </button>
+                          )}
                         </div>
                       )}
 

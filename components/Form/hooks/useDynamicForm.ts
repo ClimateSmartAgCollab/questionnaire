@@ -49,17 +49,15 @@ export function useDynamicForm(parsedSteps: Step[]) {
 
       currentPage.sections.forEach(section => {
         section.fields.forEach(field => {
-          let userInput = ''
+          let userInput: string | string[] = '';
 
           if (field.type === 'select' || field.type === 'dropdown') {
             const selectElement = document.querySelector(
               `[name="${field.id}"]`
             ) as HTMLSelectElement | null
             userInput = selectElement
-              ? Array.from(selectElement.selectedOptions).map(
-                  option => option.value
-                ).join(', ')
-              : ''
+            ? Array.from(selectElement.selectedOptions).map(option => option.value)
+            : []
           } else if (field.type === 'radio') {
             const selectedRadio = document.querySelector(
               `input[name="${field.id}"]:checked`
@@ -73,7 +71,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
             userInput = input?.value || ''
           }
 
-          const isValid = validateField(field, userInput, language)
+          const isValid = validateField(field, Array.isArray(userInput) ? userInput.join(',') : userInput, language)
           if (!isValid) {
             console.warn(`Validation failed for field ${field.id}`)
           }
@@ -87,6 +85,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
         ? { ...currentPageData, ...updatedData }
         : currentPageData
 
+      console.log("finalData", finalData)
+      
       setFormData(prev => ({
         ...prev,
         [stepObj.id]: {
@@ -274,6 +274,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
     setCurrentStep(0)
   }, [saveCurrentPageData])
 
+
+  
   const prefillCurrentPageData = useCallback(() => {
     const stepObj = parsedSteps[currentStep]
     if (!stepObj) return
