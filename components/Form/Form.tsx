@@ -236,6 +236,8 @@ export default function Form() {
                                 return
                               }
 
+                              saveCurrentPageData()
+
                               // Update selected options
                               setFormData(prev => ({
                                 ...prev,
@@ -260,6 +262,7 @@ export default function Form() {
                             <button
                               className='mt-2 rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600'
                               onClick={() => {
+                                saveCurrentPageData()
                                 setFormData(prev => ({
                                   ...prev,
                                   [step.id]: {
