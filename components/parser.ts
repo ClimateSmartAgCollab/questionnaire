@@ -80,7 +80,7 @@ const parseRelationships = (
       return
     }
 
-const childRefs: string[] = []
+    const childRefs: string[] = []
     const refMap: Record<string, string> = {}
 
     Object.entries(entity.capture_base.attributes || {}).forEach(
@@ -107,7 +107,7 @@ const childRefs: string[] = []
     }
 
     childRefs.forEach(childRef => {
-      addRelationships(childRef, captureBase) 
+      addRelationships(childRef, captureBase)
     })
   }
 
@@ -141,17 +141,9 @@ const getLabelsOptionsAndTypes = (
     const lang = labelOverlay.language
     labels[lang] = labelOverlay.attribute_labels || {}
   })
-
   ;(entity.overlays?.entry || []).forEach((entryOverlay: any) => {
     const lang = entryOverlay.language
-    options[lang] = Object.fromEntries(
-      Object.entries(entryOverlay.attribute_entries || {}).map(
-        ([key, value]) => [
-          key,
-          Object.values(value as { [key: string]: string })
-        ]
-      )
-    )
+    options[lang] = entryOverlay.attribute_entries || {}
   })
 
   if (entity.overlays?.cardinality) {
@@ -223,7 +215,7 @@ const parsePresentation = (
       if (typeof sectionOrField === 'string') {
         return {
           sectionKey: sectionOrField,
-          sectionLabel: {}, 
+          sectionLabel: {},
           fields: fields.filter(f => f.id === sectionOrField)
         }
       } else if (typeof sectionOrField === 'object') {
@@ -278,7 +270,7 @@ export const parseJsonToFormStructure = (): any[] => {
     return []
   }
 
-  const allSteps: Record<string, any> = {} 
+  const allSteps: Record<string, any> = {}
   presentationsSorted.forEach(presentation => {
     const relationships = parseRelationships(bundle, dependencies, presentation)
 
@@ -314,7 +306,7 @@ export const parseJsonToFormStructure = (): any[] => {
         const fieldOptions = Object.fromEntries(
           Object.entries(options).map(([lang, langOptions]) => [
             lang,
-            langOptions[fieldId] ? { [fieldId]: langOptions[fieldId] } : {}
+            langOptions[fieldId] || {}
           ])
         )
 
@@ -327,7 +319,7 @@ export const parseJsonToFormStructure = (): any[] => {
             (options['eng'][fieldId] ? 'enum' : 'textarea'),
           orientation: types[fieldId]?.orientation || null,
           value: types[fieldId]?.value || null,
-          ref: null, 
+          ref: null,
           validation: {
             conformance,
             entryCodes,
@@ -353,7 +345,7 @@ export const parseJsonToFormStructure = (): any[] => {
 
       const pages = parsePresentation(presentation, labels, fields)
 
-      const uniqueCaptureBases = new Set() 
+      const uniqueCaptureBases = new Set()
 
       pages.forEach(page => {
         const captureBase = page?.captureBase || ''
@@ -365,7 +357,7 @@ export const parseJsonToFormStructure = (): any[] => {
             names,
             descriptions,
             parent: relationship.parent,
-            pages: [page] 
+            pages: [page]
           })
         } else {
           const existingPresentation = uniquePresentations.find(

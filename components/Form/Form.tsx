@@ -4,8 +4,9 @@
 import { motion } from 'framer-motion'
 import { parseJsonToFormStructure } from '../parser'
 import { Field } from '../type'
-import { useDynamicForm } from './hooks/useDynamicForm'
+import { useDynamicForm, isValid__UTF8 } from './hooks/useDynamicForm'
 import { NavigationItem } from '../Form/NavigationItem'
+import DateTimeField from '../Form/DateTimeField'
 import styles from './Form.module.css'
 import Footer from '../../Footer/footer'
 import { useFormData } from '../Form/context/FormDataContext'
@@ -39,7 +40,10 @@ export default function Form() {
     isLastPageOfThisStep,
     isFirstPageOfThisStep,
     step,
-    saveCurrentPageData
+    saveCurrentPageData,
+    fieldErrors,
+    handleFieldChange,
+    registerFieldRef
   } = useDynamicForm(parsedSteps)
 
   const { childrenData } = useFormData()
@@ -123,16 +127,29 @@ export default function Form() {
                           name={field.id}
                           defaultValue={fieldValue}
                           className='w-full rounded border p-2'
+                          ref={el => registerFieldRef(field.id, el)}
+                          onBlur={e => handleFieldChange(field, e.target.value)}
+                          onPaste={e => {
+                            const pastedText = e.clipboardData.getData('text')
+                            if (!isValid__UTF8(pastedText)) {
+                              e.preventDefault()
+                              alert(
+                                'Pasted text contains invalid characters. Please use UTF-8 text only.'
+                              )
+                            }
+                          }}
                         />
                       )}
                       {field.type === 'DateTime' && (
-                        <input
-                          name={field.id}
-                          type='date'
-                          defaultValue={fieldValue}
-                          className='w-full rounded border p-2'
+                        <DateTimeField
+                          field={field}
+                          format={field.validation.format || 'defaultFormat'}
+                          fieldValue={fieldValue}
+                          registerFieldRef={registerFieldRef}
+                          handleFieldChange={handleFieldChange}
                         />
                       )}
+
                       {field.type === 'radio' && (
                         <div
                           className={`flex ${
@@ -141,19 +158,24 @@ export default function Form() {
                               : 'flex-row space-x-4'
                           }`}
                         >
-                          {field.options[language]?.[field.id]?.map(
-                            (option, i) => (
+                          {Object.entries(field.options[language] || {}).map(
+                            ([optionKey, optionLabel]) => (
                               <label
-                                key={i}
+                                key={optionKey}
                                 className='flex items-center space-x-2'
                               >
                                 <input
                                   type='radio'
                                   name={field.id}
-                                  value={option}
-                                  defaultChecked={fieldValue === option}
+                                  value={optionKey}
+                                  // Compare the field value with the option key
+                                  defaultChecked={fieldValue === optionKey}
+                                  ref={el => registerFieldRef(field.id, el)}
+                                  onBlur={() =>
+                                    handleFieldChange(field, optionKey)
+                                  }
                                 />
-                                <span>{option}</span>
+                                <span>{optionLabel}</span>
                               </label>
                             )
                           )}
@@ -214,6 +236,7 @@ export default function Form() {
                             multiple
                             className='w-full rounded border p-2'
                             value={formData[step.id]?.[field.id] || []}
+                            ref={el => registerFieldRef(field.id, el)}
                             onChange={e => {
                               const selectedOptions = Array.from(
                                 e.target.selectedOptions,
@@ -248,10 +271,10 @@ export default function Form() {
                               }))
                             }}
                           >
-                            {field.options[language]?.[field.id]?.map(
-                              (option, i) => (
-                                <option key={i} value={option}>
-                                  {option}
+                            {Object.entries(field.options[language] || {}).map(
+                              ([optionKey, optionLabel]) => (
+                                <option key={optionKey} value={optionLabel}>
+                                  {optionLabel}
                                 </option>
                               )
                             )}
@@ -356,6 +379,12 @@ export default function Form() {
                               </ul>
                             </div>
                           )}
+                        </div>
+                      )}
+                      {/* Show Validation Errors */}
+                      {fieldErrors[field.id] && (
+                        <div className='mt-1 text-sm text-red-600'>
+                          {fieldErrors[field.id]}
                         </div>
                       )}
                     </div>
