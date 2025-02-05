@@ -60,7 +60,6 @@ export function getParentSteps(steps: Step[]): Step[] {
   return steps.filter(step => rootStepIds.has(step.id))
 }
 
-
 export function getReferencingStep(
   childId: string,
   steps: Step[]
@@ -74,40 +73,65 @@ export function getReferencingStep(
   )
 }
 
-
 export function validateField(
   field: Field,
-  userInput: string,
+  userInput: string | string[],
   language: string
 ): string | null {
   const { conformance, format, entryCodes, characterEncoding } =
     field.validation
 
-    const pattern = '^' + characterEncoding + '$';
+    console.log("input", userInput)
 
   if (conformance === 'M' && !userInput) {
     return 'This field is required.'
   }
-  if (format && !new RegExp(format).test(userInput)) {
-    console.log('format', format)
-    console.log('userInput', userInput)
-    console.log('new RegExp(format)', new RegExp(format))
-    return `Please match the format: ${format}`
-  }
-  if (entryCodes && entryCodes.length > 0 && !entryCodes.includes(userInput)) {
-    return `Value must be one of: ${entryCodes.join(', ')}`
-  }
-  if (field.validation.characterEncoding === 'utf-8') {
-    if (!isValid__UTF8(userInput)) {
-      return 'Invalid UTF-8 characters detected.'
-    }
-  }
-  if (field.options[language] && field.options[language][field.id]) {
-    const allowed = field.options[language][field.id]
-    if (allowed.length > 0 && !allowed.includes(userInput)) {
-      return `Value must be one of: ${allowed.join(', ')}`
-    }
-  }
 
+  if (typeof userInput === 'string') {
+    if (format && !new RegExp(format).test(userInput)) {
+      return `Please match the format: ${format}`
+    }
+    if (
+      entryCodes &&
+      entryCodes.length > 0 &&
+      !entryCodes.includes(userInput)
+    ) {
+      return `Value must be one of: ${entryCodes.join(', ')}`
+    }
+    if (characterEncoding === 'utf-8') {
+      if (!isValid__UTF8(userInput)) {
+        return 'Invalid UTF-8 characters detected.'
+      }
+    }
+    if (field.options[language] && field.options[language][field.id]) {
+      const allowed = field.options[language][field.id]
+      if (allowed.length > 0 && !allowed.includes(userInput)) {
+        return `Value must be one of these: ${allowed.join(', ')}`
+      }
+    }
+  } else if (
+    Array.isArray(userInput) &&
+    userInput.every(item => typeof item === 'string')
+  ) {
+    for (const item of userInput) {
+      if (format && !new RegExp(format).test(item)) {
+        return `Each item must match the format: ${format}`
+      }
+      if (entryCodes && entryCodes.length > 0 && !entryCodes.includes(item)) {
+        return `Each item must be one of: ${entryCodes.join(', ')}`
+      }
+      if (characterEncoding === 'utf-8') {
+        if (!isValid__UTF8(item)) {
+          return 'Invalid UTF-8 characters detected in one or more items.'
+        }
+      }
+      if (field.options[language] && field.options[language][field.id]) {
+        const allowed = field.options[language][field.id]
+        if (allowed.length > 0 && !allowed.includes(item)) {
+          return `Each item must be one of these: ${allowed.join(', ')}`
+        }
+      }
+    }
+  }
   return null
 }

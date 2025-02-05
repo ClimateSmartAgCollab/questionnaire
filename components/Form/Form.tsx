@@ -187,15 +187,18 @@ export default function Form() {
                         <div>
                           {/* Selected Options Display as Removable Tags */}
                           <div className='mb-4 flex flex-wrap gap-2'>
+                            
                             {Array.isArray(formData[step.id]?.[field.id]) &&
                             formData[step.id][field.id].length > 0 ? (
                               formData[step.id][field.id].map(
-                                (option: string) => (
+                                (optionKey: string) => (
                                   <span
-                                    key={option}
+                                    key={optionKey}
                                     className='flex items-center rounded bg-blue-100 px-3 py-1 text-sm text-blue-800'
                                   >
-                                    {option}
+                                    {/* Map the stored option key back to its label */}
+                                    {field.options[language][optionKey] ||
+                                      optionKey}
                                     <button
                                       type='button'
                                       className='ml-2 text-red-500 hover:text-red-700'
@@ -205,7 +208,7 @@ export default function Form() {
                                           step.id
                                         ][field.id].filter(
                                           (selected: string) =>
-                                            selected !== option
+                                            selected !== optionKey
                                         )
 
                                         setFormData(prev => ({
@@ -216,7 +219,7 @@ export default function Form() {
                                           }
                                         }))
                                       }}
-                                      aria-label={`Remove ${option}`}
+                                      aria-label={`Remove ${field.options[language][optionKey] || optionKey}`}
                                     >
                                       x
                                     </button>
@@ -261,7 +264,7 @@ export default function Form() {
 
                               saveCurrentPageData()
 
-                              // Update selected options
+                              // Update selected options with the option keys
                               setFormData(prev => ({
                                 ...prev,
                                 [step.id]: {
@@ -270,10 +273,15 @@ export default function Form() {
                                 }
                               }))
                             }}
+                            onBlur={e => {
+                              const selectedKeys = Array.from(e.target.selectedOptions, option => option.value);
+                              handleFieldChange(field, selectedKeys)
+                              saveCurrentPageData()
+                            }}
                           >
                             {Object.entries(field.options[language] || {}).map(
                               ([optionKey, optionLabel]) => (
-                                <option key={optionKey} value={optionLabel}>
+                                <option key={optionKey} value={optionKey}>
                                   {optionLabel}
                                 </option>
                               )

@@ -76,7 +76,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
 
 
   const handleFieldChange = useCallback(
-    (field: Field, newValue: string | number) => {
+    (field: Field, newValue: string | string[]) => {
       const finalValue =newValue
       const normalizedValue = typeof finalValue === 'string' ? finalValue.normalize('NFC') : finalValue
 
@@ -95,7 +95,9 @@ export function useDynamicForm(parsedSteps: Step[]) {
         }
       }))
 
-      const errorMessage = validateField(field, String(normalizedValue), language)
+
+      console.log("normalizedValue\n", normalizedValue)
+      const errorMessage = validateField(field, normalizedValue, language)
       setFieldErrors(prev => ({
         ...prev,
         [field.id]: errorMessage || ''
@@ -132,10 +134,11 @@ export function useDynamicForm(parsedSteps: Step[]) {
             .value
         }
 
-        const joinedValue = Array.isArray(userInput)
-          ? userInput.join(',')
-          : userInput
-        const errorMessage = validateField(field, joinedValue, language)
+        // const joinedValue = Array.isArray(userInput)
+        //   ? userInput.join(',')
+        //   : userInput
+
+        const errorMessage = validateField(field, userInput, language)
 
         if (errorMessage) {
           hasError = true
