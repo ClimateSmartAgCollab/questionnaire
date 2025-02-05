@@ -442,7 +442,7 @@
           "attributes": {
             "q1": "Text",
             "q2": "DateTime",
-            "q3": "Numeric",
+            "q3": "Text",
             "q4": ["Text"],
             "q5": "Boolean",
             "q6": "Text",

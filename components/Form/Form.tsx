@@ -12,7 +12,7 @@ import Footer from '../../Footer/footer'
 import { useFormData } from '../Form/context/FormDataContext'
 
 const parsedSteps = parseJsonToFormStructure()
-// console.log('Parsed Steps:', parsedSteps)
+console.log('Parsed Steps:', parsedSteps)
 
 export default function Form() {
   const {
@@ -128,7 +128,10 @@ export default function Form() {
                           defaultValue={fieldValue}
                           className='w-full rounded border p-2'
                           ref={el => registerFieldRef(field.id, el)}
-                          onBlur={e => handleFieldChange(field, e.target.value)}
+                          onBlur={e => {
+                            handleFieldChange(field, e.target.value)
+                            saveCurrentPageData()
+                          }}
                           onPaste={e => {
                             const pastedText = e.clipboardData.getData('text')
                             if (!isValid__UTF8(pastedText)) {
@@ -171,9 +174,10 @@ export default function Form() {
                                   // Compare the field value with the option key
                                   defaultChecked={fieldValue === optionKey}
                                   ref={el => registerFieldRef(field.id, el)}
-                                  onBlur={() =>
+                                  onBlur={() => {
                                     handleFieldChange(field, optionKey)
-                                  }
+                                    saveCurrentPageData()
+                                  }}
                                 />
                                 <span>{optionLabel}</span>
                               </label>
@@ -187,7 +191,6 @@ export default function Form() {
                         <div>
                           {/* Selected Options Display as Removable Tags */}
                           <div className='mb-4 flex flex-wrap gap-2'>
-                            
                             {Array.isArray(formData[step.id]?.[field.id]) &&
                             formData[step.id][field.id].length > 0 ? (
                               formData[step.id][field.id].map(
@@ -274,7 +277,10 @@ export default function Form() {
                               }))
                             }}
                             onBlur={e => {
-                              const selectedKeys = Array.from(e.target.selectedOptions, option => option.value);
+                              const selectedKeys = Array.from(
+                                e.target.selectedOptions,
+                                option => option.value
+                              )
                               handleFieldChange(field, selectedKeys)
                               saveCurrentPageData()
                             }}

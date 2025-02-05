@@ -125,17 +125,34 @@ const getLabelsOptionsAndTypes = (
   options: Record<string, Record<string, string[]>>
   types: Record<string, any>
   cardinalityRules: Record<string, any>
+  conformance: Record<string, any>
+  entryCodes: Record<string, any>
+  characterEncoding: Record<string, any>
+  format: Record<string, any>
 } => {
   const entity = findBundleByCaptureBase(captureBase, bundle, dependencies)
 
   if (!entity) {
-    return { labels: {}, options: {}, types: {}, cardinalityRules: {} }
+    return {
+      labels: {},
+      options: {},
+      types: {},
+      cardinalityRules: {},
+      conformance: {},
+      entryCodes: {},
+      characterEncoding: {},
+      format: {}
+    }
   }
 
   const labels: Record<string, Record<string, string>> = {}
   const options: Record<string, Record<string, string[]>> = {}
   const types: Record<string, any> = {}
   const cardinalityRules: Record<string, any> = {}
+  const conformance: Record<string, any> = {}
+  const entryCodes: Record<string, string[] | undefined> = {}
+  const characterEncoding: Record<string, any> = {}
+  const format: Record<string, any> = {}
 
   ;(entity.overlays?.label || []).forEach((labelOverlay: any) => {
     const lang = labelOverlay.language
@@ -165,7 +182,51 @@ const getLabelsOptionsAndTypes = (
     types[key] = interaction[key]
   })
 
-  return { labels, options, types, cardinalityRules }
+  // Collect conformance
+  if (entity.overlays?.conformance?.attribute_conformance) {
+    const conformanceOverlay = entity.overlays.conformance.attribute_conformance
+    Object.entries(conformanceOverlay).forEach(([fieldId, confValue]) => {
+      conformance[fieldId] = confValue
+    })
+  }
+
+  // Collect entry codes
+  if (entity.overlays?.entry_code) {
+    const entryCodeOverlay = entity.overlays.entry_code;
+    Object.entries(entryCodeOverlay.attribute_entry_codes).forEach(
+      ([fieldId, codes]) => {
+        entryCodes[fieldId] = codes;
+      }
+    );
+  }
+
+  // Collect character encoding
+  if (entity.overlays?.character_encoding?.attribute_character_encoding) {
+    const encodingOverlay =
+      entity.overlays.character_encoding.attribute_character_encoding
+    Object.entries(encodingOverlay).forEach(([fieldId, encValue]) => {
+      characterEncoding[fieldId] = encValue
+    })
+  }
+
+  // Collect format
+  if (entity.overlays?.format?.attribute_formats) {
+    const formatOverlay = entity.overlays.format.attribute_formats
+    Object.entries(formatOverlay).forEach(([fieldId, fmtValue]) => {
+      format[fieldId] = fmtValue
+    })
+  }
+
+  return {
+    labels,
+    options,
+    types,
+    cardinalityRules,
+    conformance,
+    entryCodes,
+    characterEncoding,
+    format
+  }
 }
 
 const getStepMeta = (
@@ -275,8 +336,16 @@ export const parseJsonToFormStructure = (): any[] => {
     const relationships = parseRelationships(bundle, dependencies, presentation)
 
     Object.entries(relationships).forEach(([captureBase, relationship]) => {
-      const { labels, options, types, cardinalityRules } =
-        getLabelsOptionsAndTypes(captureBase, bundle, dependencies)
+      const {
+        labels,
+        options,
+        types,
+        cardinalityRules,
+        conformance,
+        entryCodes,
+        characterEncoding,
+        format
+      } = getLabelsOptionsAndTypes(captureBase, bundle, dependencies)
       const { names, descriptions } = getStepMeta(
         captureBase,
         bundle,
@@ -284,18 +353,6 @@ export const parseJsonToFormStructure = (): any[] => {
       )
 
       const fields = Object.keys(labels['eng'] || {}).map(fieldId => {
-        const conformance =
-          bundle.overlays?.conformance?.attribute_conformance?.[fieldId]
-        const entryCodes =
-          bundle.overlays?.entry_code?.attribute_entry_codes?.[fieldId]
-        const characterEncoding =
-          bundle.overlays?.character_encoding?.attribute_character_encoding?.[
-            fieldId
-          ]
-        const format = bundle.overlays?.format?.attribute_formats?.[fieldId]
-        const cardinality =
-          bundle.overlays?.cardinality?.attribute_cardinality?.[fieldId]
-
         const fieldLabels = Object.fromEntries(
           Object.entries(labels).map(([lang, langLabels]) => [
             lang,
@@ -310,6 +367,12 @@ export const parseJsonToFormStructure = (): any[] => {
           ])
         )
 
+        // console.log(
+        //   'entry code',
+        //   bundle.overlays?.entry_code?.attribute_entry_codes?.[fieldId]
+        // )
+        console.log('entryCodes[fieldId]', entryCodes[fieldId])
+
         let field = {
           id: fieldId,
           labels: fieldLabels,
@@ -321,10 +384,10 @@ export const parseJsonToFormStructure = (): any[] => {
           value: types[fieldId]?.value || null,
           ref: null,
           validation: {
-            conformance,
-            entryCodes,
-            characterEncoding,
-            format,
+            conformance: conformance[fieldId],
+            entryCodes: entryCodes[fieldId],
+            characterEncoding: characterEncoding[fieldId],
+            format: format[fieldId],
             cardinality: cardinalityRules[fieldId]
           }
         }
