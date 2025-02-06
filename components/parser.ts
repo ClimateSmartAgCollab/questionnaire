@@ -371,7 +371,7 @@ export const parseJsonToFormStructure = (): any[] => {
         //   'entry code',
         //   bundle.overlays?.entry_code?.attribute_entry_codes?.[fieldId]
         // )
-        console.log('entryCodes[fieldId]', entryCodes[fieldId])
+        // console.log('entryCodes[fieldId]', entryCodes[fieldId])
 
         let field = {
           id: fieldId,

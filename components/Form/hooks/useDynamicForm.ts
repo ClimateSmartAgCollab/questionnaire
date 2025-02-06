@@ -474,6 +474,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
     saveCurrentPageData,
     fieldErrors,
     handleFieldChange,
-    registerFieldRef
+    registerFieldRef,
+    stepTree
   }
 }

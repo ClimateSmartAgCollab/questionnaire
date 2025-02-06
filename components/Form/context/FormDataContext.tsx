@@ -15,6 +15,7 @@ interface ParentFormData {
 
 interface ChildRecord {
   id: string 
+  parentId: string
   stepId: string 
   data: { [fieldId: string]: any } 
 }
@@ -28,7 +29,7 @@ interface FormDataContextType {
   childrenData: ChildrenData
   setChildrenData: React.Dispatch<React.SetStateAction<ChildrenData>>
 
-  createNewChild: (stepId: string | undefined) => ChildRecord
+  createNewChild: (parentId: string, stepId: string | undefined) => ChildRecord
   editExistingChild: (childId: string) => ChildRecord | null
   saveChildData: (childId: string, newData: Record<string, any>) => void
 
@@ -54,9 +55,10 @@ export function FormDataProvider({
   const [childrenData, setChildrenData] =
     useState<ChildrenData>(initialChildrenData)
 
-  const createNewChild = useCallback((stepId: string | undefined) => {
+  const createNewChild = useCallback((parentId: string, stepId: string | undefined) => {
     const newChild: ChildRecord = {
       id: uuidv4(),
+      parentId,
       stepId: stepId || 'defaultStepId',
       data: {}
     }

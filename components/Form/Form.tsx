@@ -3,7 +3,7 @@
 
 import { motion } from 'framer-motion'
 import { parseJsonToFormStructure } from '../parser'
-import { Field } from '../type'
+import { Field, Step } from '../type'
 import { useDynamicForm, isValid__UTF8 } from './hooks/useDynamicForm'
 import { NavigationItem } from '../Form/NavigationItem'
 import DateTimeField from '../Form/DateTimeField'
@@ -11,8 +11,96 @@ import styles from './Form.module.css'
 import Footer from '../../Footer/footer'
 import { useFormData } from '../Form/context/FormDataContext'
 
-const parsedSteps = parseJsonToFormStructure()
-console.log('Parsed Steps:', parsedSteps)
+
+/**
+ * Extracts all referenced ids from the pages/sections/fields of a step.
+ */
+const extractRefs = (step: Step): string[] => {
+  const refs: string[] = [];
+  if (step.pages && Array.isArray(step.pages)) {
+    step.pages.forEach(page => {
+      if (page.sections && Array.isArray(page.sections)) {
+        page.sections.forEach(section => {
+          if (section.fields && Array.isArray(section.fields)) {
+            section.fields.forEach((field: any) => {
+              if (field.ref) {
+                refs.push(field.ref);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  return refs;
+};
+
+
+export const sortStepsByReferences = (steps: Step[]): Step[] => {
+  const stepsMap = new Map<string, Step>(steps.map(step => [step.id, step]));
+
+  const graph: Record<string, string[]> = {};
+  const inDegree: Record<string, number> = {};
+
+  steps.forEach(step => {
+    graph[step.id] = [];
+    inDegree[step.id] = 0;
+  });
+
+  // Build graph edges: for each step, if any field inside it references another step,
+  // then add an edge from the current step (parent) to the referenced step (child).
+  steps.forEach(step => {
+    const refs = extractRefs(step);
+    refs.forEach(refId => {
+      if (stepsMap.has(refId)) {
+        graph[step.id].push(refId);
+        inDegree[refId] = (inDegree[refId] || 0) + 1;
+      } else {
+        console.warn(`Referenced step with id "${refId}" not found for step "${step.id}"`);
+      }
+    });
+  });
+
+  // Kahn’s algorithm: start with nodes that have no incoming edges.
+  // We force the root (first step in the original array) to be first (if possible).
+  const queue: string[] = [];
+  const rootId = steps[0].id;
+  if (inDegree[rootId] === 0) {
+    queue.push(rootId);
+  }
+  // Add the rest of the nodes with zero in-degree (but avoid duplicating the root).
+  steps.forEach(step => {
+    if (step.id !== rootId && inDegree[step.id] === 0) {
+      queue.push(step.id);
+    }
+  });
+
+  const sortedIds: string[] = [];
+  while (queue.length) {
+    const currentId = queue.shift()!;
+    sortedIds.push(currentId);
+
+    for (const neighbor of graph[currentId]) {
+      inDegree[neighbor]--;
+      if (inDegree[neighbor] === 0) {
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  if (sortedIds.length !== steps.length) {
+    console.warn('Cycle detected or missing nodes. Returning unsorted steps.');
+    return steps;
+  }
+
+  return sortedIds.map(id => stepsMap.get(id)!);
+};
+
+const unsortedSteps = parseJsonToFormStructure();
+const parsedSteps = sortStepsByReferences(unsortedSteps);
+console.log('Sorted Steps:', parsedSteps);
+
+
 
 export default function Form() {
   const {
@@ -43,9 +131,12 @@ export default function Form() {
     saveCurrentPageData,
     fieldErrors,
     handleFieldChange,
-    registerFieldRef
+    registerFieldRef,
+    stepTree
   } = useDynamicForm(parsedSteps)
 
+  console.log("step tree", stepTree)
+  
   const { childrenData } = useFormData()
 
   if (!parsedSteps || parsedSteps.length === 0) {
@@ -130,7 +221,6 @@ export default function Form() {
                           ref={el => registerFieldRef(field.id, el)}
                           onBlur={e => {
                             handleFieldChange(field, e.target.value)
-                            saveCurrentPageData()
                           }}
                           onPaste={e => {
                             const pastedText = e.clipboardData.getData('text')
@@ -277,12 +367,12 @@ export default function Form() {
                               }))
                             }}
                             onBlur={e => {
+                              saveCurrentPageData()
                               const selectedKeys = Array.from(
                                 e.target.selectedOptions,
                                 option => option.value
                               )
                               handleFieldChange(field, selectedKeys)
-                              saveCurrentPageData()
                             }}
                           >
                             {Object.entries(field.options[language] || {}).map(
@@ -322,7 +412,10 @@ export default function Form() {
                             type='button'
                             onClick={() => {
                               // Create a new child record in context
-                              const newChild = createNewChild(field.ref)
+                              const newChild = createNewChild(
+                                field.id,
+                                field.ref
+                              )
                               // Mark that we are editing this brand-new child
                               setCurrentChildId(newChild.id)
 
@@ -359,7 +452,11 @@ export default function Form() {
                               </h4>
                               <ul>
                                 {childrenData
-                                  .filter(child => child.stepId === field.ref)
+                                  .filter(
+                                    child =>
+                                      child.stepId === field.ref &&
+                                      child.parentId === field.id
+                                  )
                                   .map(child => (
                                     <li
                                       key={child.id}
@@ -395,6 +492,7 @@ export default function Form() {
                           )}
                         </div>
                       )}
+
                       {/* Show Validation Errors */}
                       {fieldErrors[field.id] && (
                         <div className='mt-1 text-sm text-red-600'>
