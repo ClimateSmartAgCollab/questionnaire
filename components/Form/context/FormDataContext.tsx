@@ -4,20 +4,32 @@
 import React, { createContext, useContext, useState, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
-interface ParentFormData {
-  [stepId: string]: {
-    [fieldId: string]: any
-    childrenData?: {
-      [childStepId: string]: ChildRecord[]
-    }
+// interface ParentFormData {
+//   [stepId: string]: {
+//     [fieldId: string]: any
+//     childrenData?: {
+//       [childStepId: string]: ChildRecord[]
+//     }
+//   }
+// }
+
+interface ParentRecord {
+  // Arbitrary parent-level fields
+  [fieldId: string]: any
+  childrenData?: {
+    [childStepId: string]: ChildRecord[]
   }
 }
 
+interface ParentFormData {
+  [parentId: string]: ParentRecord
+}
+
 interface ChildRecord {
-  id: string 
+  id: string
   parentId: string
-  stepId: string 
-  data: { [fieldId: string]: any } 
+  stepId: string
+  data: { [fieldId: string]: any }
 }
 
 type ChildrenData = ChildRecord[]
@@ -29,12 +41,20 @@ interface FormDataContextType {
   childrenData: ChildrenData
   setChildrenData: React.Dispatch<React.SetStateAction<ChildrenData>>
 
-  createNewChild: (parentId: string, stepId: string | undefined) => ChildRecord
-  editExistingChild: (childId: string) => ChildRecord | null
-  saveChildData: (childId: string, newData: Record<string, any>) => void
+  createNewChild: (parentId: string, childStepId: string) => ChildRecord
+  editExistingChild: (parentId: string, childId: string) => ChildRecord | null
+  saveChildData: (
+    parentId: string,
+    childId: string,
+    newData: Record<string, any>
+  ) => void
 
-  getChildById: (childId: string) => ChildRecord | null
-  updateChildById: (childId: string, newData: Record<string, any>) => void
+  getChildById: (parentId: string, childId: string) => ChildRecord | null
+  updateChildById: (
+    parentId: string,
+    childId: string,
+    newData: Record<string, any>
+  ) => void
 }
 
 const FormDataContext = createContext<FormDataContextType | undefined>(
@@ -55,52 +75,130 @@ export function FormDataProvider({
   const [childrenData, setChildrenData] =
     useState<ChildrenData>(initialChildrenData)
 
-  const createNewChild = useCallback((parentId: string, stepId: string | undefined) => {
+  const createNewChild = useCallback((parentId: string, stepId: string) => {
     const newChild: ChildRecord = {
       id: uuidv4(),
       parentId,
       stepId: stepId || 'defaultStepId',
       data: {}
     }
-    setChildrenData(prev => [...prev, newChild])
+
+    setParentFormData(prev => {
+      // Get the current parent's record (or start with an empty object)
+      const parentRecord = prev[parentId] || {}
+      // Get the current children array for the childStepId (or start with an empty array)
+      const currentChildren = parentRecord.childrenData?.[stepId] || []
+      const updatedChildren = [...currentChildren, newChild]
+
+      return {
+        ...prev,
+        [parentId]: {
+          ...parentRecord,
+          childrenData: {
+            // Preserve any other child groups already stored on this parent
+            ...(parentRecord.childrenData || {}),
+            [stepId]: updatedChildren
+          }
+        }
+      }
+    })
+
     return newChild
   }, [])
 
   const editExistingChild = useCallback(
-    (childId: string) => {
-      return childrenData.find(child => child.id === childId) || null
+    (parentId: string, childId: string) => {
+      const parentRecord = parentFormData[parentId]
+      if (!parentRecord || !parentRecord.childrenData) return null
+
+      // Search through each child group
+      for (const childStep in parentRecord.childrenData) {
+        const child = parentRecord.childrenData[childStep].find(
+          child => child.id === childId
+        )
+        if (child) return child
+      }
+      return null
     },
-    [childrenData]
+    [parentFormData]
   )
 
   const saveChildData = useCallback(
-    (childId: string, newData: Record<string, any>) => {
-      setChildrenData(prev =>
-        prev.map(child =>
-          child.id === childId
-            ? { ...child, data: { ...child.data, ...newData } }
-            : child
-        )
-      )
+    (parentId: string, childId: string, newData: Record<string, any>) => {
+      setParentFormData(prev => {
+        const parentRecord = prev[parentId]
+        if (!parentRecord || !parentRecord.childrenData) return prev
+
+        // Create a shallow copy of the parent's childrenData to update immutably
+        const updatedChildrenData = { ...parentRecord.childrenData }
+
+        // Loop through each child group to find the child
+        for (const childStep in updatedChildrenData) {
+          const childrenArray = updatedChildrenData[childStep]
+          const index = childrenArray.findIndex(child => child.id === childId)
+          if (index !== -1) {
+            childrenArray[index] = {
+              ...childrenArray[index],
+              data: { ...childrenArray[index].data, ...newData }
+            }
+            break
+          }
+        }
+        return {
+          ...prev,
+          [parentId]: {
+            ...parentRecord,
+            childrenData: updatedChildrenData
+          }
+        }
+      })
     },
     []
   )
 
   const getChildById = useCallback(
-    (childId: string) =>
-      childrenData.find(child => child.id === childId) || null,
-    [childrenData]
+    (parentId: string, childId: string) => {
+      const parentRecord = parentFormData[parentId]
+      if (!parentRecord || !parentRecord.childrenData) return null
+
+      for (const childStep in parentRecord.childrenData) {
+        const child = parentRecord.childrenData[childStep].find(
+          child => child.id === childId
+        )
+        if (child) return child
+      }
+      return null
+    },
+    [parentFormData]
   )
 
   const updateChildById = useCallback(
-    (childId: string, newData: Record<string, any>) => {
-      setChildrenData(prev =>
-        prev.map(child =>
-          child.id === childId
-            ? { ...child, data: { ...child.data, ...newData } }
-            : child
-        )
-      )
+    (parentId: string, childId: string, newData: Record<string, any>) => {
+      setParentFormData(prev => {
+        const parentRecord = prev[parentId]
+        if (!parentRecord || !parentRecord.childrenData) return prev
+
+        const updatedChildrenData = { ...parentRecord.childrenData }
+
+        for (const childStep in updatedChildrenData) {
+          const childrenArray = updatedChildrenData[childStep]
+          const index = childrenArray.findIndex(child => child.id === childId)
+          if (index !== -1) {
+            childrenArray[index] = {
+              ...childrenArray[index],
+              data: { ...childrenArray[index].data, ...newData }
+            }
+            break
+          }
+        }
+        return {
+          ...prev,
+          [parentId]: {
+            ...parentRecord,
+            childrenData: updatedChildrenData
+          }
+        }
+      })
     },
     []
   )

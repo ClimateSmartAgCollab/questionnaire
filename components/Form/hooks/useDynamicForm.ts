@@ -118,6 +118,9 @@ export function useDynamicForm(parsedSteps: Step[]) {
   const [visitedSteps, setVisitedSteps] = useState<Set<string>>(
     new Set([parsedSteps[0]?.id])
   )
+  const [currentChildParentId, setCurrentChildParentId] = useState<
+    string | null
+  >(null)
   const [formData, setFormData] = useState<Record<string, any>>({})
   const [currentChildId, setCurrentChildId] = useState<string | null>(null)
   const [expandedStep, setExpandedStep] = useState<string | null>(
@@ -260,7 +263,9 @@ export function useDynamicForm(parsedSteps: Step[]) {
 
       if (currentChildId) {
         try {
-          saveChildData(currentChildId, finalData)
+          if (currentChildParentId && currentChildId) {
+            saveChildData(currentChildParentId, currentChildId, finalData)
+          }
         } catch (error) {
           console.error('Error saving child data:', error)
         }
@@ -445,6 +450,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
     }
 
     setCurrentChildId(null)
+    setCurrentChildParentId(null)
 
     const referencingStep = getReferencingStep(stepObj.id, parsedSteps)
     if (referencingStep) {
@@ -467,6 +473,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   const cancelHandler = useCallback(() => {
     saveCurrentPageData()
     setCurrentChildId(null)
+    setCurrentChildParentId(null)
     setCurrentStep(0)
   }, [saveCurrentPageData])
 
@@ -481,7 +488,10 @@ export function useDynamicForm(parsedSteps: Step[]) {
     let stepData = formData[stepObj.id] || {}
 
     if (currentChildId) {
-      const child = editExistingChild(currentChildId)
+      const child =
+        currentChildParentId && currentChildId
+          ? editExistingChild(currentChildParentId, currentChildId)
+          : null
       if (child) {
         stepData = child.data
       }
@@ -537,12 +547,13 @@ export function useDynamicForm(parsedSteps: Step[]) {
     visitedSteps,
     formData,
     setFormData,
-    parentSteps,
+    parentSteps: getParentSteps(parsedSteps),
     onNavigate,
     finishHandler,
     cancelHandler,
     isParentStep,
     setCurrentChildId,
+    setCurrentChildParentId,
     createNewChild,
     pageIndexByStep,
     expandedStep,
@@ -551,10 +562,13 @@ export function useDynamicForm(parsedSteps: Step[]) {
     handleNextPage,
     handlePreviousPage,
     isVeryLastPageOfLastStep,
-    currentPage,
+    currentPage:
+      parsedSteps[currentStep]?.pages[
+        pageIndexByStep[parsedSteps[currentStep]?.id] ?? 0
+      ],
     isLastPageOfThisStep,
     isFirstPageOfThisStep,
-    step,
+    step: parsedSteps[currentStep],
     saveCurrentPageData,
     fieldErrors,
     handleFieldChange,
