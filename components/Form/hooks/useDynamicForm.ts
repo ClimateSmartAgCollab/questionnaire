@@ -11,7 +11,6 @@ import { useFormData } from '../context/FormDataContext'
 
 type FieldErrors = Record<string, string>
 
-
 export function isValid__UTF8(text: string): boolean {
   try {
     if (!text) return true
@@ -26,6 +25,88 @@ export function isValid__UTF8(text: string): boolean {
   } catch (error) {
     return false
   }
+}
+
+const extractRefs = (step: Step): string[] => {
+  const refs: string[] = []
+  if (step.pages && Array.isArray(step.pages)) {
+    step.pages.forEach(page => {
+      if (page.sections && Array.isArray(page.sections)) {
+        page.sections.forEach(section => {
+          if (section.fields && Array.isArray(section.fields)) {
+            section.fields.forEach((field: any) => {
+              if (field.ref) {
+                refs.push(field.ref)
+              }
+            })
+          }
+        })
+      }
+    })
+  }
+  return refs
+}
+
+export const sortStepsByReferences = (steps: Step[]): Step[] => {
+  const stepsMap = new Map<string, Step>(steps.map(step => [step.id, step]))
+
+  const graph: Record<string, string[]> = {}
+  const inDegree: Record<string, number> = {}
+
+  steps.forEach(step => {
+    graph[step.id] = []
+    inDegree[step.id] = 0
+  })
+
+  // Build graph edges: for each step, if any field inside it references another step,
+  // then add an edge from the current step (parent) to the referenced step (child).
+  steps.forEach(step => {
+    const refs = extractRefs(step)
+    refs.forEach(refId => {
+      if (stepsMap.has(refId)) {
+        graph[step.id].push(refId)
+        inDegree[refId] = (inDegree[refId] || 0) + 1
+      } else {
+        console.warn(
+          `Referenced step with id "${refId}" not found for step "${step.id}"`
+        )
+      }
+    })
+  })
+
+  // Kahn’s algorithm: start with nodes that have no incoming edges.
+  // We force the root (first step in the original array) to be first (if possible).
+  const queue: string[] = []
+  const rootId = steps[0].id
+  if (inDegree[rootId] === 0) {
+    queue.push(rootId)
+  }
+  // Add the rest of the nodes with zero in-degree (but avoid duplicating the root).
+  steps.forEach(step => {
+    if (step.id !== rootId && inDegree[step.id] === 0) {
+      queue.push(step.id)
+    }
+  })
+
+  const sortedIds: string[] = []
+  while (queue.length) {
+    const currentId = queue.shift()!
+    sortedIds.push(currentId)
+
+    for (const neighbor of graph[currentId]) {
+      inDegree[neighbor]--
+      if (inDegree[neighbor] === 0) {
+        queue.push(neighbor)
+      }
+    }
+  }
+
+  if (sortedIds.length !== steps.length) {
+    console.warn('Cycle detected or missing nodes. Returning unsorted steps.')
+    return steps
+  }
+
+  return sortedIds.map(id => stepsMap.get(id)!)
 }
 
 export function useDynamicForm(parsedSteps: Step[]) {
@@ -73,14 +154,18 @@ export function useDynamicForm(parsedSteps: Step[]) {
     []
   )
 
-
-
   const handleFieldChange = useCallback(
     (field: Field, newValue: string | string[]) => {
-      const finalValue =newValue
-      const normalizedValue = typeof finalValue === 'string' ? finalValue.normalize('NFC') : finalValue
+      const finalValue = newValue
+      const normalizedValue =
+        typeof finalValue === 'string'
+          ? finalValue.normalize('NFC')
+          : finalValue
 
-      if (typeof normalizedValue === 'string' && !isValid__UTF8(normalizedValue)) {
+      if (
+        typeof normalizedValue === 'string' &&
+        !isValid__UTF8(normalizedValue)
+      ) {
         console.warn(`Input for ${field.id} contains invalid characters.`)
       }
 
@@ -95,8 +180,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
         }
       }))
 
-
-      console.log("normalizedValue\n", normalizedValue)
+      console.log('normalizedValue\n', normalizedValue)
       const errorMessage = validateField(field, normalizedValue, language)
       setFieldErrors(prev => ({
         ...prev,
@@ -475,6 +559,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
     fieldErrors,
     handleFieldChange,
     registerFieldRef,
-    stepTree
+    sortStepsByReferences
   }
 }
