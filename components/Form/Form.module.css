@@ -60,6 +60,20 @@
   font-size: 0.875rem;
 }
 
+
+.fullPageReview {
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewMainContent {
+  flex: 1;
+  padding: 2rem;
+  margin-right: 250px;
+}
+
+
 @media (max-width: 768px) {
   .sidebar {
     width: 200px;

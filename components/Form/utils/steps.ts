@@ -81,8 +81,6 @@ export function validateField(
   const { conformance, format, entryCodes, characterEncoding } =
     field.validation
 
-    console.log("input", userInput)
-
   if (conformance === 'M' && !userInput) {
     return 'This field is required.'
   }

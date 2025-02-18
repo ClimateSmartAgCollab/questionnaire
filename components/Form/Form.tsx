@@ -17,7 +17,7 @@ import { useFormData } from '../Form/context/FormDataContext'
 
 const unsortedSteps = parseJsonToFormStructure()
 const parsedSteps = sortStepsByReferences(unsortedSteps)
-// console.log('Sorted Steps:', parsedSteps);
+console.log('Sorted Steps:', parsedSteps)
 
 export default function Form() {
   const {
@@ -49,12 +49,14 @@ export default function Form() {
     fieldErrors,
     handleFieldChange,
     registerFieldRef,
-    setCurrentChildParentId
+    setCurrentChildParentId,
+    reviewOutput,
+    setReviewOutput,
+    handleSubmit
   } = useDynamicForm(parsedSteps)
 
-
   const { parentFormData } = useFormData()
-  console.log('parentFormData', parentFormData)
+  // console.log('parentFormData', parentFormData)
 
   if (!parsedSteps || parsedSteps.length === 0) {
     return <div>Loading form structure...</div>
@@ -63,6 +65,220 @@ export default function Form() {
   const getIndex = (stepId: string) => {
     return parsedSteps.findIndex(s => s.id === stepId)
   }
+
+
+function ChildReview({
+  field,
+  parentFormData,
+  parsedSteps,
+  language
+}: {
+  field: any;
+  parentFormData: any;
+  parsedSteps: any;
+  language: string;
+}) {
+  const children =
+    parentFormData[field.id]?.childrenData?.[field.ref] || [];
+  return (
+    <div className="mt-2 ml-4 p-2 border-l-4 border-blue-500">
+      <h5 className="text-md font-semibold text-blue-700">
+        Child Entries for "
+        {field.labels[language]?.[field.id] ||
+          field.labels.eng?.[field.id] ||
+          "Field"}
+        "
+      </h5>
+      {children.map((child: any) => {
+        const childStep = parsedSteps.find(
+          (s: any) => s.id === child.stepId
+        );
+        return (
+          <div key={child.id} className="mt-2 p-2 bg-gray-100">
+            {childStep ? (
+              childStep.pages.map((cPage: any) => (
+                <div key={cPage.pageKey} className="ml-4">
+                  {cPage.sections.map((cSection: any) => (
+                    <div key={cSection.sectionKey} className="ml-4">
+                      <h6 className="text-lg font-medium">
+                        {cSection.sectionLabel[language] ||
+                          cSection.sectionLabel.eng}
+                      </h6>
+                      {cSection.fields.map((cField: any) => {
+                        const nestedChildren =
+                          cField.type === "reference" &&
+                          cField.ref &&
+                          parentFormData[cField.id]?.childrenData?.[cField.ref] &&
+                          parentFormData[cField.id].childrenData[cField.ref].length > 0;
+                        if (nestedChildren) {
+                          return (
+                            <div key={cField.id} className="mb-1 ml-4">
+                              <label className="block text-sm font-semibold text-gray-800">
+                                {cField.labels[language]?.[cField.id] ||
+                                  cField.labels.eng?.[cField.id] ||
+                                  cField.id}
+                              </label>
+                              <ChildReview
+                                field={cField}
+                                parentFormData={parentFormData}
+                                parsedSteps={parsedSteps}
+                                language={language}
+                              />
+                            </div>
+                          );
+                        }
+                        const childAnswer = child.data[cField.id];
+                        return (
+                          <div key={cField.id} className="mb-1 ml-4">
+                            <strong>
+                              {cField.labels[language]?.[cField.id] ||
+                                cField.labels.eng?.[cField.id] ||
+                                cField.id}
+                              :{" "}
+                            </strong>
+                            <span>
+                              {Array.isArray(childAnswer)
+                                ? childAnswer.join(", ")
+                                : childAnswer?.toString() ||
+                                  "No response provided"}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+              ))
+            ) : (
+              <p className="ml-4 text-gray-500">No child structure found.</p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+if (reviewOutput) {
+  const childStepIds = new Set<string>();
+  parsedSteps.forEach((step: any) => {
+    step.pages.forEach((page: any) => {
+      page.sections.forEach((section: any) => {
+        section.fields.forEach((field: any) => {
+          if (field.ref) {
+            childStepIds.add(field.ref);
+          }
+        });
+      });
+    });
+  });
+  const parentStepsForReview = parsedSteps.filter(
+    (step: any) => !childStepIds.has(step.id)
+  );
+
+  return (
+    <section className={`${styles.formLayout} ${styles.fullPageReview}`}>
+      <header className={`${styles.header} border-b pb-4`}>
+        <h1 className="text-3xl font-bold text-center mb-2">
+          {reviewOutput.title || "Review Your Responses"}
+        </h1>
+        <p className="text-lg text-gray-600 text-center">
+          Please review your responses below.
+        </p>
+      </header>
+      <main className={`${styles.mainContent} p-4`}>
+        <div className="space-y-6">
+          {parentStepsForReview.map((step: any) => (
+            <div key={step.id} className="mb-6">
+              <h2 className="text-2xl font-bold">
+                {step.names[language] || step.names.eng}
+              </h2>
+              {step.pages.map((page: any) => (
+                <div
+                  key={page.pageKey}
+                  className="mb-4 pl-4 border-l-2 border-gray-300"
+                >
+                  <h3 className="text-xl font-semibold">
+                    {page.pageLabel[language] || page.pageLabel.eng}
+                  </h3>
+                  {page.sections.map((section: any) => (
+                    <div
+                      key={section.sectionKey}
+                      className="mb-4 pl-4 border-l-2 border-gray-200"
+                    >
+                      <h4 className="text-lg font-medium">
+                        {section.sectionLabel[language] ||
+                          section.sectionLabel.eng}
+                      </h4>
+                      {section.fields.map((field: any) => {
+                        const hasChildren =
+                          field.type === "reference" &&
+                          field.ref &&
+                          parentFormData[field.id] &&
+                          parentFormData[field.id].childrenData &&
+                          parentFormData[field.id]?.childrenData?.[field.ref] &&
+                          (parentFormData[field.id]?.childrenData?.[field.ref] ?? []).length > 0;
+                        if (hasChildren) {
+                          return (
+                            <div key={field.id} className="mb-2">
+                              <label className="block text-sm font-semibold text-gray-800">
+                                {field.labels[language]?.[field.id] ||
+                                  field.labels.eng?.[field.id] ||
+                                  "No label"}
+                              </label>
+                              <ChildReview
+                                field={field}
+                                parentFormData={parentFormData}
+                                parsedSteps={parsedSteps}
+                                language={language}
+                              />
+                            </div>
+                          );
+                        } else {
+                          const fieldAnswer =
+                            formData[step.id]?.[field.id] ?? field.value;
+                          return (
+                            <div key={field.id} className="mb-2">
+                              <label className="block text-sm font-semibold text-gray-800">
+                                {field.labels[language]?.[field.id] ||
+                                  field.labels.eng?.[field.id]}
+                              </label>
+                              <div className="mt-1 rounded border p-2 bg-gray-50 text-gray-900">
+                                {Array.isArray(fieldAnswer)
+                                  ? fieldAnswer.join(", ")
+                                  : fieldAnswer?.toString() || (
+                                      <span className="text-gray-500">
+                                        No response provided
+                                      </span>
+                                    )}
+                              </div>
+                            </div>
+                          );
+                        }
+                      })}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center mt-8">
+          <button
+            type="button"
+            onClick={() => setReviewOutput(null)}
+            className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
+          >
+            Back to Form
+          </button>
+        </div>
+      </main>
+      <Footer currentPage={currentStep} />
+    </section>
+  );
+}
+
+
 
   return (
     <section className={styles.formLayout}>
@@ -153,7 +369,10 @@ export default function Form() {
                       {field.type === 'DateTime' && (
                         <DateTimeField
                           field={field}
-                          format={field.validation.format || 'defaultFormat'}
+                          format={
+                            field.validation.format ||
+                            'defaultFormat: YYYY-MM-DD'
+                          }
                           fieldValue={fieldValue}
                           registerFieldRef={registerFieldRef}
                           handleFieldChange={handleFieldChange}
@@ -445,9 +664,7 @@ export default function Form() {
                 {isVeryLastPageOfLastStep ? (
                   <button
                     type='button'
-                    onClick={() => {
-                      alert('Submit clicked (no-op)')
-                    }}
+                    onClick={handleSubmit}
                     className='rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600'
                   >
                     Submit

@@ -1,7 +1,9 @@
 import { Root, Bundle, Dependency, Presentation } from './type'
 // import metadataJson from '../public/getting_to_know_single_level_presentation.json'
 // import metadataJson from '../public/sampleQuestionnaire_V2.json'
-import metadataJson from '../public/multi_level_package_presentation.json'
+// import metadataJson from '../public/multi_level_package_presentation.json'
+import metadataJson from '../public/OpenAIRE_OCA_package.json'
+
 
 // Normalize entry codes in dependencies
 const normalizeEntryCodes = (dependencies: Dependency[]): void => {
@@ -168,8 +170,8 @@ const getLabelsOptionsAndTypes = (
     Object.entries(cardinalityOverlay.attribute_cardinality).forEach(
       ([key, range]) => {
         const parts = range.split('-')
-        const min = parts[0] ? Number(parts[0]) : 0
-        const max = parts[1] ? Number(parts[1]) : 999999999999999999
+        const min = parts[0] && !isNaN(Number(parts[0])) ? Number(parts[0]) : 0;
+        const max = parts[1] && !isNaN(Number(parts[1])) ? Number(parts[1]) : 999999999999999999;
         cardinalityRules[key] = { min, max }
       }
     )

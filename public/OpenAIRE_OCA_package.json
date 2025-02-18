@@ -1,0 +1,2121 @@
+{
+  "d": "ELFQbADu3w__7hDbaF6iY_1nOa68LgJWmqf3B_dTV0e5",
+  "type": "oca_package/1.0",
+  "oca_bundle": {
+    "v": "OCAA11JSON0017ff_",
+    "bundle": {
+      "v": "OCAS11JSON0017e2_",
+      "d": "ECCmcOBQWZc_Ck5q4BmDvlrvPabUTuXQkXYt_2TeAyNV",
+      "capture_base": {
+        "d": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+        "type": "spec/capture_base/1.0",
+        "attributes": {
+          "alternateIdentifier": "refs:EGuoVu4Ep6kYXqFPfyZ7-E1zHtdpvdLzmnFilUmiSNqk",
+          "contributor": "refs:EOMiPMGfcv6zVdV4JNYuA9JnVLim7CWR5PPDOwDE5pzF",
+          "creator": "refs:EHcB39W8bifSG0kVkx7GXrPWmR17HfrjpdgIBtylyHwG",
+          "date": "refs:EMAWmG8vqzXDOIcCTGXK4YidxSKa9wgSivFXio6CmuuJ",
+          "description": "refs:EFGcf9gFUJoVXKW74RucQOF0wGA1suqIv9FthvVqUq2J",
+          "format": "refs:EPBRAC_zZAzKS2Ssjl0Te8EhCznfdB21SknBo9d5QkLI",
+          "geoLocation": "refs:EJKOmLwMcEBxbQAX8mZBdYtRfpS4cResDgjpz6PbWyy2",
+          "identifier": "Text",
+          "identifierType": "Text",
+          "language": "Text",
+          "publicationYear": "DateTime",
+          "publisher": "Text",
+          "relatedIdentifier": "refs:EGWGmr7tUPNjvSJek8FgYT1Iv7JnueiGqEhncJ97MBCo",
+          "resourceType": "refs:EF19xlHbr2EA5hbFiD17ipikuUjAlq80Z2zAzHmo7kNo",
+          "rights": "refs:EAwXb3qQ1NzoXYU1VR2kr0tnW0JGi0O343JHxdTqHreb",
+          "size": "refs:EABgwQGu7D6hYDd9pGf0B1vSSxGAFOJ9oA9c1I8FppYH",
+          "subject": "refs:EBO60Czpzdl6gLL3WtQkknw53aJLDQa6AG35GzRbesD3",
+          "title": "refs:EPwmGPRMak9-wBF9qs9BQAio0dnxIVB3WEOTB_Z4u9O_",
+          "version": "Text"
+        },
+        "classification": "",
+        "flagged_attributes": []
+      },
+      "overlays": {
+        "cardinality": {
+          "d": "EIoV8MIAURfCeRahWQOIYB-wHJ2qHAWQuzyAUhHdsbMa",
+          "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+          "type": "spec/overlays/cardinality/1.0",
+          "attribute_cardinality": {
+            "alternateIdentifier": "0-n",
+            "contributor": "0-n",
+            "creator": "1-n",
+            "date": "0-n",
+            "description": "0-n",
+            "format": "0-n",
+            "geoLocation": "0-n",
+            "relatedIdentifier": "0-n",
+            "rights": "0-n",
+            "size": "0-n",
+            "subject": "0-n",
+            "title": "1-n"
+          }
+        },
+        "character_encoding": {
+          "d": "EHId8MmAg1PxRGg_6Z7x_ySQ6w8euUvYR5iPgN0GMKEC",
+          "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+          "type": "spec/overlays/character_encoding/1.0",
+          "attribute_character_encoding": {
+            "alternateIdentifier": "utf-8",
+            "contributor": "utf-8",
+            "creator": "utf-8",
+            "date": "utf-8",
+            "description": "utf-8",
+            "format": "utf-8",
+            "geoLocation": "utf-8",
+            "identifier": "utf-8",
+            "identifierType": "utf-8",
+            "language": "utf-8",
+            "publicationYear": "utf-8",
+            "publisher": "utf-8",
+            "relatedIdentifier": "utf-8",
+            "resourceType": "utf-8",
+            "rights": "utf-8",
+            "size": "utf-8",
+            "subject": "utf-8",
+            "title": "utf-8",
+            "version": "utf-8"
+          }
+        },
+        "conformance": {
+          "d": "EMaaCL5YH_kryCyIilyIx6l9TyEKURMcrp5p5_Adz3jj",
+          "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+          "type": "spec/overlays/conformance/1.0",
+          "attribute_conformance": {
+            "alternateIdentifier": "O",
+            "contributor": "O",
+            "creator": "O",
+            "date": "M",
+            "description": "O",
+            "format": "O",
+            "geoLocation": "O",
+            "identifier": "M",
+            "identifierType": "M",
+            "language": "M",
+            "publicationYear": "M",
+            "publisher": "M",
+            "relatedIdentifier": "O",
+            "resourceType": "O",
+            "rights": "O",
+            "size": "O",
+            "subject": "O",
+            "title": "O",
+            "version": "O"
+          }
+        },
+        "entry": [
+          {
+            "d": "EAw_J-o01wYMsTDs_PNGfsHovz9UrE4hIqLISBwzJCG0",
+            "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+            "type": "spec/overlays/entry/1.0",
+            "language": "eng",
+            "attribute_entries": {
+              "identifierType": {
+                "ARK": "Archival Resource Key",
+                "DOI": "Digital Object Identifier",
+                "Handle": "Handle System",
+                "PURL": "Persistent Uniform Resource Locator",
+                "URL": "Uniform Resource Locator",
+                "URN": "Uniform Resource Name"
+              }
+            }
+          }
+        ],
+        "entry_code": {
+          "d": "EANjFOVF-LqNe0hEYzHlz6TAijbNoBkh7Z3dyWl-sHJo",
+          "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+          "type": "spec/overlays/entry_code/1.0",
+          "attribute_entry_codes": {
+            "identifierType": [
+              "ARK",
+              "DOI",
+              "Handle",
+              "PURL",
+              "URL",
+              "URN"
+            ]
+          }
+        },
+        "information": [
+          {
+            "d": "EDO5DlNaeXNm96IZF7p_B54W97HZMthx04tX7QvVs52u",
+            "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+            "type": "spec/overlays/information/1.0",
+            "language": "eng",
+            "attribute_information": {
+              "alternateIdentifier": "An identifier or identifiers other than the primary Identifier applied to the resource.",
+              "contributor": "The institution or person responsible for contributing to the development of the resource.",
+              "creator": "The main researchers involved in producing the data, or the authors of the publication, in priority order",
+              "date": "Different dates relevant to the work.",
+              "description": "All additional information that does not fit in any other category.",
+              "format": "Technical format of the resource.",
+              "geoLocation": "Spatial region or named place where the data was gathered or focused.",
+              "identifier": "The Identifier is a unique string that identifies a resource.",
+              "identifierType": "The type of the Identifier.",
+              "language": "The primary language of the resource. Allowed values are taken from IETF BCP 47, ISO 639-1 language codes.",
+              "publicationYear": "The year when the data was or will be made publicly available.",
+              "publisher": "The name of the entity that holds, archives, or publishes the resource.",
+              "relatedIdentifier": "Identifiers of related resources, which must be globally unique.",
+              "resourceType": "A description of the resource.",
+              "rights": "Any rights information for this resource.",
+              "size": "Unstructured size information about the resource.",
+              "subject": "Subject, keyword, classification code, or key phrase describing the resource.",
+              "title": "A name or title by which a resource is known",
+              "version": "The version number of the resource."
+            }
+          }
+        ],
+        "label": [
+          {
+            "d": "ENXVPHa7ahNOCO9j3_yjUjioRCxVdC0OC1TtPRY8kXTS",
+            "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+            "type": "spec/overlays/label/1.0",
+            "language": "eng",
+            "attribute_categories": [],
+            "attribute_labels": {
+              "alternateIdentifier": "Alternate Identifier",
+              "contributor": "Contributor",
+              "creator": "Creator",
+              "date": "Date",
+              "description": "Description",
+              "format": "Format",
+              "geoLocation": "GeoLocation",
+              "identifier": "Identifier",
+              "identifierType": "Identifier Type",
+              "language": "Language",
+              "publicationYear": "Publication Year",
+              "publisher": "Publisher",
+              "relatedIdentifier": "Related Identifier",
+              "resourceType": "Resource Type",
+              "rights": "Rights",
+              "size": "Size",
+              "subject": "Subject",
+              "title": "Title",
+              "version": "Version"
+            },
+            "category_labels": {}
+          }
+        ],
+        "meta": [
+          {
+            "d": "EONwMwpe4qcSx9mQWl7Ayd_o9ufmK1tY0DwjPxgiJ-Cl",
+            "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+            "type": "spec/overlays/meta/1.0",
+            "language": "eng",
+            "description": "Top-level element referencing the building blocks of the OpenAIRE Application Profile.",
+            "name": "OpenAIRE Application Profile Parent"
+          }
+        ]
+      }
+    },
+    "dependencies": [
+      {
+        "v": "OCAS11JSON00064e_",
+        "d": "EGuoVu4Ep6kYXqFPfyZ7-E1zHtdpvdLzmnFilUmiSNqk",
+        "capture_base": {
+          "d": "EDSz07MuHT8BKIm_8zXLPgV-zbNF3UAEBEXcfDdDdWpg",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "alternateIdentifier": "Text",
+            "alternateIdentifierType": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EIMR_q1mhSrh9HDBUKGE2SMlvbctqIKXy-opZP4EFNjS",
+            "capture_base": "EDSz07MuHT8BKIm_8zXLPgV-zbNF3UAEBEXcfDdDdWpg",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "alternateIdentifier": "M",
+              "alternateIdentifierType": "M"
+            }
+          },
+          "information": [
+            {
+              "d": "EMZfT00UKzTx8UavgewvfgeT0WGKX8JinNoklzQq4vpv",
+              "capture_base": "EDSz07MuHT8BKIm_8zXLPgV-zbNF3UAEBEXcfDdDdWpg",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "alternateIdentifier": "An identifier or identifiers other than the primary Identifier applied to the resource.",
+                "alternateIdentifierType": "The type of the AlternateIdentifier."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "ENfG7pI_wYPtgnLfuqe5TuBX-Pt1PVnbBtKt0--ghBbL",
+              "capture_base": "EDSz07MuHT8BKIm_8zXLPgV-zbNF3UAEBEXcfDdDdWpg",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "alternateIdentifier": "Alternate Identifier",
+                "alternateIdentifierType": "Alternate Identifier Type"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EBqIlErqFIZdjX0ZmkcaJtIAWAorT42e56Nq8zf0eSGY",
+              "capture_base": "EDSz07MuHT8BKIm_8zXLPgV-zbNF3UAEBEXcfDdDdWpg",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "An identifier or identifiers other than the primary Identifier applied to the resource being registered.",
+              "name": "AlternateIdentifier"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON000f2a_",
+        "d": "EOMiPMGfcv6zVdV4JNYuA9JnVLim7CWR5PPDOwDE5pzF",
+        "capture_base": {
+          "d": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "affiliation": "Text",
+            "contributorName": "Text",
+            "contributorType": "Text",
+            "nameIdentifier": "Text",
+            "nameIdentifierScheme": "Text",
+            "schemeURI": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "cardinality": {
+            "d": "EG998fAJ6gEKqo6GN8RTyWYYr0W48-dr7z-D2ShQmXG1",
+            "capture_base": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+            "type": "spec/overlays/cardinality/1.0",
+            "attribute_cardinality": {
+              "contributorName": "1-1",
+              "contributorType": "1-1",
+              "nameIdentifier": "0-1",
+              "nameIdentifierScheme": "1-1",
+              "schemeURI": "0-1"
+            }
+          },
+          "conformance": {
+            "d": "EOSKTITT5aW_Dx9SgMTXOKve62oXkJz7fc2afhWYJfyH",
+            "capture_base": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "affiliation": "O",
+              "contributorName": "O",
+              "contributorType": "O",
+              "nameIdentifier": "O",
+              "nameIdentifierScheme": "O",
+              "schemeURI": "O"
+            }
+          },
+          "entry": [
+            {
+              "d": "EISzuQamERqLZAbtJQ5edi2sNAFppY3rk-kRmQEItywN",
+              "capture_base": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "contributorType": {
+                  "ContactPerson": "Contact Person",
+                  "DataCollector": "Data Collector",
+                  "DataCurator": "Data Curator",
+                  "DataManager": "Data Manager",
+                  "Distributor": "Distributor",
+                  "Editor": "Editor",
+                  "Funder": "Funder",
+                  "HostingInstitution": "Hosting Institution",
+                  "Other": "Other",
+                  "Producer": "Producer",
+                  "ProjectLeader": "Project Leader",
+                  "ProjectManager": "Project Manager",
+                  "ProjectMember": "Project Member",
+                  "RegistrationAgency": "Registration Agency",
+                  "RegistrationAuthority": "Registration Authority",
+                  "RelatedPerson": "Related Person",
+                  "ResearchGroup": "Research Group",
+                  "Researcher": "Researcher",
+                  "RightsHolder": "Rights Holder",
+                  "Sponsor": "Sponsor",
+                  "Supervisor": "Supervisor",
+                  "WorkPackageLeader": "Work Package Leader"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EBCZcY9drwdcWC3P3EXsWq_GLfsB1AURFWgpIdDJd8iV",
+            "capture_base": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "contributorType": [
+                "ContactPerson",
+                "DataCollector",
+                "DataCurator",
+                "DataManager",
+                "Distributor",
+                "Editor",
+                "Funder",
+                "HostingInstitution",
+                "Other",
+                "Producer",
+                "ProjectLeader",
+                "ProjectManager",
+                "ProjectMember",
+                "RegistrationAgency",
+                "RegistrationAuthority",
+                "RelatedPerson",
+                "ResearchGroup",
+                "Researcher",
+                "RightsHolder",
+                "Sponsor",
+                "Supervisor",
+                "WorkPackageLeader"
+              ]
+            }
+          },
+          "information": [
+            {
+              "d": "EOMGuk4CVIUnb0mCo_W8sJLO_YTjNoJGmYiuVdWzKDKO",
+              "capture_base": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "affiliation": "The organizational or institutional affiliation of the contributor.",
+                "contributorName": "The name of the contributor.",
+                "contributorType": "The type of contributor of the resource.",
+                "nameIdentifier": "Uniquely identifies an individual or legal entity, according to various schemes.",
+                "nameIdentifierScheme": "The name of the name identifier scheme.",
+                "schemeURI": "The URI of the name identifier scheme."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EKtxk9-AT5qcWTHc-T6k5XFFdoHk0cwBtChZPoysBd0e",
+              "capture_base": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "affiliation": "Affiliation",
+                "contributorName": "Contributor Name",
+                "contributorType": "Contributor Type",
+                "nameIdentifier": "Name Identifier",
+                "nameIdentifierScheme": "Name Identifier Scheme",
+                "schemeURI": "Scheme URI"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EOH-f2wXvz4L8hOTf_XhBTAGHYpbLwJARiwZKNfslzev",
+              "capture_base": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "The institution or person responsible for collecting, managing, distributing, or otherwise contributing to the development of the resource.",
+              "name": "Contributor"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON000c19_",
+        "d": "EHcB39W8bifSG0kVkx7GXrPWmR17HfrjpdgIBtylyHwG",
+        "capture_base": {
+          "d": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "affiliation": "Text",
+            "creatorName": "Text",
+            "nameIdentifier": "Text",
+            "nameIdentifierScheme": "Text",
+            "schemeURI": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "character_encoding": {
+            "d": "EDWa-Uvxy7HtkPcExUh9pOM1eV27VcJbqXJqKstSyWw8",
+            "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+            "type": "spec/overlays/character_encoding/1.0",
+            "attribute_character_encoding": {
+              "affiliation": "utf-8",
+              "creatorName": "utf-8",
+              "nameIdentifier": "utf-8",
+              "nameIdentifierScheme": "utf-8",
+              "schemeURI": "utf-8"
+            }
+          },
+          "conformance": {
+            "d": "EBt4T1IZO91OoiQtroePcuXNbHQ6KFLMdEGeLp570x7l",
+            "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "affiliation": "O",
+              "creatorName": "M",
+              "nameIdentifier": "O",
+              "nameIdentifierScheme": "O",
+              "schemeURI": "O"
+            }
+          },
+          "entry": [
+            {
+              "d": "EGF_kZAvFyx95TPR7jqyoLxSbveEVhrC0Nqmbrgslp7S",
+              "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "nameIdentifierScheme": {
+                  "ISNI": "International Standard Name Identifier",
+                  "ORCID": "Open Researcher and Contributor ID"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EFW7xstPY3YT75SanzUWjEZ_4c6pJT9hjIjbnl8-y1y1",
+            "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "nameIdentifierScheme": [
+                "ISNI",
+                "ORCID"
+              ]
+            }
+          },
+          "format": {
+            "d": "EDZe60TkOik0UwNoTrhbTbV_SlmXCTyv3jDQpCzYTfFy",
+            "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+            "type": "spec/overlays/format/1.0",
+            "attribute_formats": {
+              "creatorName": "^[A-Za-zÀ-ÿ'-]+\\s*,\\s*[A-Za-zÀ-ÿ'-]+$",
+              "schemeURI": "^https?:\\/\\/(www\\.)?[a-zA-Z0-9\\-\\.]+\\.[a-z]{2,}\\/?$"
+            }
+          },
+          "information": [
+            {
+              "d": "EL9Ghw-LD93vBJq10U-Z8ZJggJe2l9W3tHbY_jA2pqHx",
+              "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "affiliation": "The organizational or institutional affiliation of the creator.",
+                "creatorName": "The name of the creator.",
+                "nameIdentifier": "Uniquely identifies an individual or legal entity, according to various schemes.",
+                "nameIdentifierScheme": "The name of the name identifier scheme.",
+                "schemeURI": "The URI of the name identifier scheme."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EKQNatdB0bWy2_faYmN9tP0GC522bb5_rxy-PH67xaKO",
+              "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "affiliation": "Affiliation",
+                "creatorName": "Creator Name",
+                "nameIdentifier": "Name Identifier",
+                "nameIdentifierScheme": "Name Identifier Scheme",
+                "schemeURI": "Scheme URI"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EG_3pfGLeakb_k1uVTOLBPNLQ4qicxXi4-UGDMiokZKB",
+              "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Main researchers involved in producing the data, or authors of the publication.",
+              "name": "Creator"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON0007e8_",
+        "d": "EMAWmG8vqzXDOIcCTGXK4YidxSKa9wgSivFXio6CmuuJ",
+        "capture_base": {
+          "d": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "date": "DateTime",
+            "dateType": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "ELlgXNhj5HoGFDspvMO-2j1nhCnpVp7zKGp4QRP1J-uR",
+            "capture_base": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "date": "M",
+              "dateType": "M"
+            }
+          },
+          "entry": [
+            {
+              "d": "EJ8zeF4ZeiaKvwQuqLQ9VrQAGmWOysFWpsuOQEzBNFtv",
+              "capture_base": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "dateType": {
+                  "Accepted": "Accepted",
+                  "Available": "Available",
+                  "Collected": "Collected",
+                  "Copyrighted": "Copyrighted",
+                  "Created": "Created",
+                  "Issued": "Issued",
+                  "Submitted": "Submitted",
+                  "Updated": "Updated",
+                  "Valid": "Valid"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EOGGbK0F0x4sm5Fe8bY5npLiKTYK1vYcj0ePNFBIRo5W",
+            "capture_base": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "dateType": [
+                "Accepted",
+                "Available",
+                "Collected",
+                "Copyrighted",
+                "Created",
+                "Issued",
+                "Submitted",
+                "Updated",
+                "Valid"
+              ]
+            }
+          },
+          "information": [
+            {
+              "d": "EKmAJstmoeAlbd0cg8q2CrXqIryk31_OO6aWyaEZ-2AP",
+              "capture_base": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "date": "Different dates relevant to the work.",
+                "dateType": "The type of date."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EFLS3SSLEdf1ecYV7hPghADLeRI_iaQK_qTeWxlm4tc3",
+              "capture_base": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "date": "Date",
+                "dateType": "Date Type"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "ECD9qn0BK2JcFL6mUMQaR3gOdSgJZcGLgQEM3IZFV765",
+              "capture_base": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Different dates relevant to the work.",
+              "name": "Date"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON00088c_",
+        "d": "EFGcf9gFUJoVXKW74RucQOF0wGA1suqIv9FthvVqUq2J",
+        "capture_base": {
+          "d": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "description": "Text",
+            "descriptionType": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EMEwGSrf0BKA9pG0UDxQHiD60yivkAveaS_aN33dWAnV",
+            "capture_base": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "description": "M",
+              "descriptionType": "M"
+            }
+          },
+          "entry": [
+            {
+              "d": "ECeSGE8Fxasqvzo7wb8iAAf001srbp3WbaaODGI79cXi",
+              "capture_base": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "descriptionType": {
+                  "Abstract": "Abstract",
+                  "Methods": "Methods",
+                  "Other": "Other",
+                  "SeriesInformation": "Series Information",
+                  "TableOfContents": "Table of Contents"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EAGhu8UKetoBLONaV3_BBXGrVkdZMm0IgU56JECGk9CC",
+            "capture_base": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "descriptionType": [
+                "Abstract",
+                "Methods",
+                "Other",
+                "SeriesInformation",
+                "TableOfContents"
+              ]
+            }
+          },
+          "information": [
+            {
+              "d": "EJRSINX3lz2Puf4qD9pRYYgMtMrxJq4QuWWmfSFajMw8",
+              "capture_base": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "description": "All additional information that does not fit in any of the other categories. May be used for technical information.",
+                "descriptionType": "The type of the Description."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EJtyCkWmh8F_8k96gh1FWya_fHJqyYMEFrT6JDmvEGo_",
+              "capture_base": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "description": "Description",
+                "descriptionType": "Description Type"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EKefuQQa-j1paaEn6ia_VtsUw0TCdJlx3CI9jG58UGdQ",
+              "capture_base": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "All additional information that does not fit in any of the other categories. May be used for technical information.",
+              "name": "Description"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON00053a_",
+        "d": "EPBRAC_zZAzKS2Ssjl0Te8EhCznfdB21SknBo9d5QkLI",
+        "capture_base": {
+          "d": "EEXeQGZ_hAgLxBjKd6frIV4GDhswBoO6wsojXG7sYbSP",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "format": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EDzkiX6HsLAQ5YIUSsy6HqBXa59qwMCgzt0ATAz9nG76",
+            "capture_base": "EEXeQGZ_hAgLxBjKd6frIV4GDhswBoO6wsojXG7sYbSP",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "format": "M"
+            }
+          },
+          "information": [
+            {
+              "d": "EBEYGcSrXCIOixRccTV3heihOZ2Il0qN9VvIvh3QjBL4",
+              "capture_base": "EEXeQGZ_hAgLxBjKd6frIV4GDhswBoO6wsojXG7sYbSP",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "format": "Technical format of the resource. Use file extension or MIME type where possible, e.g., PDF, XML, MPG or application/pdf, text/xml, video/mpeg."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "ELzIlYtWAgVquCH1kBJ5uTvBjF5krZzEN85fYY1E1Id5",
+              "capture_base": "EEXeQGZ_hAgLxBjKd6frIV4GDhswBoO6wsojXG7sYbSP",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "format": "Format"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EGTZXimmIHFHqwawXZTvWhydpU-g-tJFG7g_YLLKv0wW",
+              "capture_base": "EEXeQGZ_hAgLxBjKd6frIV4GDhswBoO6wsojXG7sYbSP",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Technical format of the resource.",
+              "name": "Format"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON00068e_",
+        "d": "EJKOmLwMcEBxbQAX8mZBdYtRfpS4cResDgjpz6PbWyy2",
+        "capture_base": {
+          "d": "ELuKIZZJ2QXa6fF0ytTEIpHOH_cIYUKVE4LvkOAgk0_c",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "geoLocationBox": "Text",
+            "geoLocationPlace": "Text",
+            "geoLocationPoint": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EPE_dEXfbhHVW95ZM0MngtsKh5aE5SR8l5DcphdYoHA8",
+            "capture_base": "ELuKIZZJ2QXa6fF0ytTEIpHOH_cIYUKVE4LvkOAgk0_c",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "geoLocationBox": "O",
+              "geoLocationPlace": "O",
+              "geoLocationPoint": "O"
+            }
+          },
+          "information": [
+            {
+              "d": "EKdf8PUWohCJANEwwm8G-DZbECIuljOTCJCwGfGP-a06",
+              "capture_base": "ELuKIZZJ2QXa6fF0ytTEIpHOH_cIYUKVE4LvkOAgk0_c",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "geoLocationBox": "The spatial limits of a place. Two latitude-longitude pairs.",
+                "geoLocationPlace": "Description of a geographic location.",
+                "geoLocationPoint": "A point location in space. A single latitude-longitude pair."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "ECKYP092icVdFgA3aXF_9PZq7afoLwios-5g5kbqN-2r",
+              "capture_base": "ELuKIZZJ2QXa6fF0ytTEIpHOH_cIYUKVE4LvkOAgk0_c",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "geoLocationBox": "GeoLocation Box",
+                "geoLocationPlace": "GeoLocation Place",
+                "geoLocationPoint": "GeoLocation Point"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EDFCn2-X7S1sLUPuEHLN00hXidn-NNFuoVrjADIICsd9",
+              "capture_base": "ELuKIZZJ2QXa6fF0ytTEIpHOH_cIYUKVE4LvkOAgk0_c",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Spatial region or named place where the data was gathered or about which the data is focused.",
+              "name": "GeoLocation"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON001851_",
+        "d": "EGWGmr7tUPNjvSJek8FgYT1Iv7JnueiGqEhncJ97MBCo",
+        "capture_base": {
+          "d": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "relatedIdentifier": "Text",
+            "relatedIdentifierType": "Text",
+            "relatedMetadataScheme": "Text",
+            "relationType": "Text",
+            "schemeType": "Text",
+            "schemeURI": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EAIfyHvBGbER65aSyb9d_t4g8Ds2Dj1p67texuLeHtRR",
+            "capture_base": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "relatedIdentifier": "M",
+              "relatedIdentifierType": "M",
+              "relatedMetadataScheme": "O",
+              "relationType": "M",
+              "schemeType": "O",
+              "schemeURI": "O"
+            }
+          },
+          "entry": [
+            {
+              "d": "EJjnqzdU7-ifR9QWHiCbQdsTbhvVohsek2zzH4Y_FLU6",
+              "capture_base": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "relatedIdentifierType": {
+                  "ARK": "Archival Resource Key",
+                  "DOI": "Digital Object Identifier",
+                  "EAN13": "International Article Number",
+                  "EISSN": "Electronic International Standard Serial Number",
+                  "Handle": "Handle System Identifier",
+                  "ISBN": "International Standard Book Number",
+                  "ISSN": "International Standard Serial Number",
+                  "ISTC": "International Standard Text Code",
+                  "LISSN": "Linked International Standard Serial Number",
+                  "LSID": "Life Science Identifier",
+                  "PMID": "PubMed Identifier",
+                  "PURL": "Persistent Uniform Resource Locator",
+                  "UPC": "Universal Product Code",
+                  "URL": "Uniform Resource Locator",
+                  "URN": "Uniform Resource Name",
+                  "arXiv": "arXiv Identifier",
+                  "bibcode": "NASA ADS Bibcode"
+                },
+                "relationType": {
+                  "Cites": "The resource being registered (A) includes the related resource (B) in a citation",
+                  "Compiles": "The related resource (B) is the result of a compilation or creation event using the resource being registered (A)",
+                  "Continues": "The resource being registered (A) is a continuation of the related resource (B)",
+                  "Documents": "The resource being registered (A) is documentation about/explaining the related resource (B)",
+                  "HasMetadata": "The resource being registered (A) has additional metadata provided by the related resource (B)",
+                  "HasPart": "The resource being registered (A) includes the related resource (B) as a part",
+                  "IsCitedBy": "The related resource (B) includes the resource being registered (A) in a citation",
+                  "IsCompiledBy": "The resource being registered (A) is compiled or created using the related resource (B)",
+                  "IsContinuedBy": "The resource being registered (A) is continued by the related resource (B)",
+                  "IsDerivedFrom": "The resource being registered (A) is derived from the related resource (B)",
+                  "IsDocumentedBy": "The related resource (B) is documentation about/explaining the resource being registered (A)",
+                  "IsIdenticalTo": "The resource being registered (A) is identical to the related resource (B)",
+                  "IsMetadataFor": "The resource being registered (A) provides additional metadata for the related resource (B)",
+                  "IsNewVersionOf": "The resource being registered (A) is a new version of the related resource (B)",
+                  "IsOriginalFormOf": "The resource being registered (A) is the original form of the related resource (B)",
+                  "IsPartOf": "The resource being registered (A) is part of the related resource (B)",
+                  "IsPreviousVersionOf": "The resource being registered (A) is a previous version of the related resource (B)",
+                  "IsReferencedBy": "The resource being registered (A) is used as a source of information by the related resource (B)",
+                  "IsReviewedBy": "The resource being registered (A) is reviewed by the related resource (B)",
+                  "IsSourceOf": "The resource being registered (A) is the source for the related resource (B)",
+                  "IsSupplementTo": "The resource being registered (A) is a supplement to the related resource (B)",
+                  "IsSupplementedBy": "The related resource (B) is a supplement to the resource being registered (A)",
+                  "IsVariantFormOf": "The resource being registered (A) is a variant or different form of the related resource (B)",
+                  "References": "The resource being registered (A) uses the related resource (B) as a source of information",
+                  "Reviews": "The resource being registered (A) is a review of the related resource (B)"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EOGYwtN34E8kobCW8YPJnpKGAYMpXOGPKwQP390yhACI",
+            "capture_base": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "relatedIdentifierType": [
+                "ARK",
+                "DOI",
+                "EAN13",
+                "EISSN",
+                "Handle",
+                "ISBN",
+                "ISSN",
+                "ISTC",
+                "LISSN",
+                "LSID",
+                "PMID",
+                "PURL",
+                "UPC",
+                "URL",
+                "URN",
+                "arXiv",
+                "bibcode"
+              ],
+              "relationType": [
+                "Cites",
+                "Compiles",
+                "Continues",
+                "Documents",
+                "HasMetadata",
+                "HasPart",
+                "IsCitedBy",
+                "IsCompiledBy",
+                "IsContinuedBy",
+                "IsDerivedFrom",
+                "IsDocumentedBy",
+                "IsIdenticalTo",
+                "IsMetadataFor",
+                "IsNewVersionOf",
+                "IsOriginalFormOf",
+                "IsPartOf",
+                "IsPreviousVersionOf",
+                "IsReferencedBy",
+                "IsReviewedBy",
+                "IsSourceOf",
+                "IsSupplementTo",
+                "IsSupplementedBy",
+                "IsVariantFormOf",
+                "References",
+                "Reviews"
+              ]
+            }
+          },
+          "information": [
+            {
+              "d": "EGefYkEdEOEPmoWbuJCai7-GjVW2it_r3we6wb3ckbxW",
+              "capture_base": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "relatedIdentifier": "Identifiers of related resources. These must be globally unique.",
+                "relatedIdentifierType": "The type of the Related Identifier.",
+                "relatedMetadataScheme": "The name of the metadata scheme.",
+                "relationType": "Description of the relationship between the resource being registered (A) and the related resource (B).",
+                "schemeType": "The type of the metadata scheme.",
+                "schemeURI": "The URI of the metadata scheme."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EHjei0z3dZucyC1DGQ6Kwaj_dhyZw8ZJyVLtqiwuZ9Qg",
+              "capture_base": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "relatedIdentifier": "Related Identifier",
+                "relatedIdentifierType": "Related Identifier Type",
+                "relatedMetadataScheme": "Related Metadata Scheme",
+                "relationType": "Relation Type",
+                "schemeType": "Scheme Type",
+                "schemeURI": "Scheme URI"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EBt7e7lMm1g1hruOusEtEDNkPmOUO888dQTL8MsrzrIa",
+              "capture_base": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Identifiers of related resources. These must be globally unique.",
+              "name": "RelatedIdentifier"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON000912_",
+        "d": "EF19xlHbr2EA5hbFiD17ipikuUjAlq80Z2zAzHmo7kNo",
+        "capture_base": {
+          "d": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "resourceType": "Text",
+            "resourceTypeGeneral": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EE6o-HrDMxBvXYkfPzBwJQHqZYGIVqCa6BQdfggAPfUT",
+            "capture_base": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "resourceType": "M",
+              "resourceTypeGeneral": "M"
+            }
+          },
+          "entry": [
+            {
+              "d": "EPXGUyblynN0zJvRFMOeQ_p4rXJx62yW9LDPlCGoafUT",
+              "capture_base": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "resourceTypeGeneral": {
+                  "Audiovisual": "Audiovisual",
+                  "Collection": "Collection",
+                  "Dataset": "Dataset",
+                  "Event": "Event",
+                  "Image": "Image",
+                  "InteractiveResource": "Interactive Resource",
+                  "Model": "Model",
+                  "Other": "Other",
+                  "PhysicalObject": "Physical Object",
+                  "Service": "Service",
+                  "Software": "Software",
+                  "Sound": "Sound",
+                  "Text": "Text",
+                  "Workflow": "Workflow"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EJ5tVYA_HWlQPjg6gcEnwhfOjeasptMlR6cCLwB5JOi7",
+            "capture_base": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "resourceTypeGeneral": [
+                "Audiovisual",
+                "Collection",
+                "Dataset",
+                "Event",
+                "Image",
+                "InteractiveResource",
+                "Model",
+                "Other",
+                "PhysicalObject",
+                "Service",
+                "Software",
+                "Sound",
+                "Text",
+                "Workflow"
+              ]
+            }
+          },
+          "information": [
+            {
+              "d": "EFdh5jArFh0muaj96L6V5BEOk-xFyDCo0MM_kfxxwcl9",
+              "capture_base": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "resourceType": "A description of the resource.",
+                "resourceTypeGeneral": "The general type of the resource."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EKd8FFIt8V7naP7bRci8dEtqd3TyyXGWUDhpED9EhR5q",
+              "capture_base": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "resourceType": "Resource Type",
+                "resourceTypeGeneral": "Resource Type General"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EEGKn634bqUn_DJ7cPDy0SCv_8fvaoxvgAGnYgq9drJB",
+              "capture_base": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "A description of the resource.",
+              "name": "ResourceType"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON0005a8_",
+        "d": "EAwXb3qQ1NzoXYU1VR2kr0tnW0JGi0O343JHxdTqHreb",
+        "capture_base": {
+          "d": "EG4F5F-ZAWP-Pk3sjCQSezReEwRtcQNSqZZAkRZydeb6",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "rights": "Text",
+            "rightsURI": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EPWb59kQgHUJvLRphNBF_qss4QnTtq9qlWdsUPU7g_Mv",
+            "capture_base": "EG4F5F-ZAWP-Pk3sjCQSezReEwRtcQNSqZZAkRZydeb6",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "rights": "M",
+              "rightsURI": "O"
+            }
+          },
+          "information": [
+            {
+              "d": "EImuDT-Q3TnGR2QQc4sDMmRjeYZmF6XFKCsKzz21XNpH",
+              "capture_base": "EG4F5F-ZAWP-Pk3sjCQSezReEwRtcQNSqZZAkRZydeb6",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "rights": "Any rights information for this resource. Provide a rights management statement or reference a service providing such information.",
+                "rightsURI": "The URI of the license or access rights."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EMHOqBUEbdlNRtQbBvbQ_RpppaWGOQjM8P8jvuKDD-Wv",
+              "capture_base": "EG4F5F-ZAWP-Pk3sjCQSezReEwRtcQNSqZZAkRZydeb6",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "rights": "Rights",
+                "rightsURI": "Rights URI"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EJ-nsj0lKWsLBipacezrlKu1ylMxAtSO3zYz5FBLEH8u",
+              "capture_base": "EG4F5F-ZAWP-Pk3sjCQSezReEwRtcQNSqZZAkRZydeb6",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Any rights information for this resource.",
+              "name": "Rights"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON0004e0_",
+        "d": "EABgwQGu7D6hYDd9pGf0B1vSSxGAFOJ9oA9c1I8FppYH",
+        "capture_base": {
+          "d": "EMBvdywONxYedkEFSwRDtQQNgqWgKo9s7P1xWuoZiL3b",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "size": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EOFvAIsmbn-6aLcoFC2lzY-a2f6tLqH2woTOnB4FCMZp",
+            "capture_base": "EMBvdywONxYedkEFSwRDtQQNgqWgKo9s7P1xWuoZiL3b",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "size": "O"
+            }
+          },
+          "information": [
+            {
+              "d": "EDoLf9gZV507FZuqC9uFTbkEMMcsKsQIW6rr1dWdkE1s",
+              "capture_base": "EMBvdywONxYedkEFSwRDtQQNgqWgKo9s7P1xWuoZiL3b",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "size": "Unstructured size information about the resource."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EKZIVsBTm2WNkzz5DCrHrH4GHbtiHHoCcZd8xrS7QTYT",
+              "capture_base": "EMBvdywONxYedkEFSwRDtQQNgqWgKo9s7P1xWuoZiL3b",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "size": "Size"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EDlR8sd5gL2_wHGvBmdIBi5ycL7ouTewzslSVSpdkATa",
+              "capture_base": "EMBvdywONxYedkEFSwRDtQQNgqWgKo9s7P1xWuoZiL3b",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Unstructured size information about the resource.",
+              "name": "Size"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON00064f_",
+        "d": "EBO60Czpzdl6gLL3WtQkknw53aJLDQa6AG35GzRbesD3",
+        "capture_base": {
+          "d": "EM1v137QT176gEjZBFQzFg2grKCdyaeDuxtcJ6lxx99f",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "schemeURI": "Text",
+            "subject": "Text",
+            "subjectScheme": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EGZHgywBlZbVtpWs7s5bzYemRhFEO8DzsJFvDmP6t-em",
+            "capture_base": "EM1v137QT176gEjZBFQzFg2grKCdyaeDuxtcJ6lxx99f",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "schemeURI": "O",
+              "subject": "O",
+              "subjectScheme": "O"
+            }
+          },
+          "information": [
+            {
+              "d": "ECJIIinc3SnLbZEO0M3zr3LUXU9W_7C_H4H773L_p2sR",
+              "capture_base": "EM1v137QT176gEjZBFQzFg2grKCdyaeDuxtcJ6lxx99f",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "schemeURI": "The URI of the subject identifier scheme.",
+                "subject": "Subject, keyword, classification code, or key phrase describing the resource.",
+                "subjectScheme": "The name of the subject scheme or classification code or authority if one is used."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EKg4z8RdwGhJoEyg-w8s7_p3NhAbLEAExgpTWjQc1YY8",
+              "capture_base": "EM1v137QT176gEjZBFQzFg2grKCdyaeDuxtcJ6lxx99f",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "schemeURI": "Scheme URI",
+                "subject": "Subject",
+                "subjectScheme": "Subject Scheme"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "ECVeltai4GiuVLViM2600AXMSMIST_LbxcyPINm6SWNk",
+              "capture_base": "EM1v137QT176gEjZBFQzFg2grKCdyaeDuxtcJ6lxx99f",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "Subject, keyword, classification code, or key phrase describing the resource.",
+              "name": "Subject"
+            }
+          ]
+        }
+      },
+      {
+        "v": "OCAS11JSON00076e_",
+        "d": "EPwmGPRMak9-wBF9qs9BQAio0dnxIVB3WEOTB_Z4u9O_",
+        "capture_base": {
+          "d": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
+          "type": "spec/capture_base/1.0",
+          "attributes": {
+            "title": "Text",
+            "titleType": "Text"
+          },
+          "classification": "",
+          "flagged_attributes": []
+        },
+        "overlays": {
+          "conformance": {
+            "d": "EIon9mf37tipVraJyseyMRI6vy-djyqwboHdTJ1_iOeg",
+            "capture_base": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
+            "type": "spec/overlays/conformance/1.0",
+            "attribute_conformance": {
+              "title": "M",
+              "titleType": "O"
+            }
+          },
+          "entry": [
+            {
+              "d": "EOdmeV5J8GiWF9rXDMRrxc-0GMS_nCm3WZt5xIJbj3P9",
+              "capture_base": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
+              "type": "spec/overlays/entry/1.0",
+              "language": "eng",
+              "attribute_entries": {
+                "titleType": {
+                  "AlternativeTitle": "Alternative Title",
+                  "Subtitle": "Subtitle",
+                  "TranslatedTitle": "Translated Title"
+                }
+              }
+            }
+          ],
+          "entry_code": {
+            "d": "EMgJG68qoyDbvV86b9uraN0hQdDkgiy5Rz5wXtLAko9P",
+            "capture_base": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
+            "type": "spec/overlays/entry_code/1.0",
+            "attribute_entry_codes": {
+              "titleType": [
+                "AlternativeTitle",
+                "Subtitle",
+                "TranslatedTitle"
+              ]
+            }
+          },
+          "information": [
+            {
+              "d": "EJLAXTsCUIYAJsWHnOHaGxSvqIuT6XXQVSQGyLEna54Y",
+              "capture_base": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
+              "type": "spec/overlays/information/1.0",
+              "language": "eng",
+              "attribute_information": {
+                "title": "A name or title by which a resource is known.",
+                "titleType": "The type of Title."
+              }
+            }
+          ],
+          "label": [
+            {
+              "d": "EGnTOD-QFoAOW-pnzUArs-ndyiS8MSTsjKMarlzjSrdP",
+              "capture_base": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
+              "type": "spec/overlays/label/1.0",
+              "language": "eng",
+              "attribute_categories": [],
+              "attribute_labels": {
+                "title": "Title",
+                "titleType": "Title Type"
+              },
+              "category_labels": {}
+            }
+          ],
+          "meta": [
+            {
+              "d": "EG-VqCPU_3UNaryG2PjhAlhe4f5GgQBabxq2jEW_RtkN",
+              "capture_base": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
+              "type": "spec/overlays/meta/1.0",
+              "language": "eng",
+              "description": "A name or title by which a resource is known.",
+              "name": "Title"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "extensions": {
+    "form": [
+      {
+        "d": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "alternateIdentifier",
+              "contributor",
+              "creator",
+              "date",
+              "description",
+              "format",
+              "geoLocation",
+              "identifier",
+              "identifierType",
+              "language",
+              "publicationYear",
+              "publisher",
+              "relatedIdentifier",
+              "resourceType",
+              "rights",
+              "size",
+              "subject",
+              "title",
+              "version"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "alternateIdentifier": {
+                "type": "reference"
+              },
+              "contributor": {
+                "type": "reference"
+              },
+              "creator": {
+                "type": "reference"
+              },
+              "date": {
+                "type": "reference"
+              },
+              "description": {
+                "type": "reference"
+              },
+              "format": {
+                "type": "reference"
+              },
+              "geoLocation": {
+                "type": "reference"
+              },
+              "identifier": {
+                "type": "textarea"
+              },
+              "identifierType": {
+                "type": "textarea"
+              },
+              "language": {
+                "type": "textarea"
+              },
+              "publicationYear": {
+                "type": "DateTime"
+              },
+              "publisher": {
+                "type": "textarea"
+              },
+              "relatedIdentifier": {
+                "type": "reference"
+              },
+              "resourceType": {
+                "type": "reference"
+              },
+              "rights": {
+                "type": "reference"
+              },
+              "size": {
+                "type": "reference"
+              },
+              "subject": {
+                "type": "reference"
+              },
+              "title": {
+                "type": "reference"
+              },
+              "version": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EDSz07MuHT8BKIm_8zXLPgV-zbNF3UAEBEXcfDdDdWpg",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EDSz07MuHT8BKIm_8zXLPgV-zbNF3UAEBEXcfDdDdWpg",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "alternateIdentifier",
+              "alternateIdentifierType"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "alternateIdentifier": {
+                "type": "textarea"
+              },
+              "alternateIdentifierType": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "affiliation",
+              "contributorName",
+              "contributorType",
+              "nameIdentifier",
+              "nameIdentifierScheme",
+              "schemeURI"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "affiliation": {
+                "type": "textarea"
+              },
+              "contributorName": {
+                "type": "textarea"
+              },
+              "contributorType": {
+                "type": "textarea"
+              },
+              "nameIdentifier": {
+                "type": "textarea"
+              },
+              "nameIdentifierScheme": {
+                "type": "textarea"
+              },
+              "schemeURI": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "affiliation",
+              "creatorName",
+              "nameIdentifier",
+              "nameIdentifierScheme",
+              "schemeURI"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "affiliation": {
+                "type": "textarea"
+              },
+              "creatorName": {
+                "type": "textarea"
+              },
+              "nameIdentifier": {
+                "type": "textarea"
+              },
+              "nameIdentifierScheme": {
+                "type": "textarea"
+              },
+              "schemeURI": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "date",
+              "dateType"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "date": {
+                "type": "DateTime"
+              },
+              "dateType": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "description",
+              "descriptionType"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "description": {
+                "type": "textarea"
+              },
+              "descriptionType": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EEXeQGZ_hAgLxBjKd6frIV4GDhswBoO6wsojXG7sYbSP",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EEXeQGZ_hAgLxBjKd6frIV4GDhswBoO6wsojXG7sYbSP",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "format"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "format": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "ELuKIZZJ2QXa6fF0ytTEIpHOH_cIYUKVE4LvkOAgk0_c",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "ELuKIZZJ2QXa6fF0ytTEIpHOH_cIYUKVE4LvkOAgk0_c",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "geoLocationBox",
+              "geoLocationPlace",
+              "geoLocationPoint"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "geoLocationBox": {
+                "type": "textarea"
+              },
+              "geoLocationPlace": {
+                "type": "textarea"
+              },
+              "geoLocationPoint": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "relatedIdentifier",
+              "relatedIdentifierType",
+              "relatedMetadataScheme",
+              "relationType",
+              "schemeType",
+              "schemeURI"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "relatedIdentifier": {
+                "type": "textarea"
+              },
+              "relatedIdentifierType": {
+                "type": "textarea"
+              },
+              "relatedMetadataScheme": {
+                "type": "textarea"
+              },
+              "relationType": {
+                "type": "textarea"
+              },
+              "schemeType": {
+                "type": "textarea"
+              },
+              "schemeURI": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "resourceType",
+              "resourceTypeGeneral"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "resourceType": {
+                "type": "textarea"
+              },
+              "resourceTypeGeneral": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EG4F5F-ZAWP-Pk3sjCQSezReEwRtcQNSqZZAkRZydeb6",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EG4F5F-ZAWP-Pk3sjCQSezReEwRtcQNSqZZAkRZydeb6",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "rights",
+              "rightsURI"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "rights": {
+                "type": "textarea"
+              },
+              "rightsURI": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EMBvdywONxYedkEFSwRDtQQNgqWgKo9s7P1xWuoZiL3b",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EMBvdywONxYedkEFSwRDtQQNgqWgKo9s7P1xWuoZiL3b",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "size"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "size": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "EM1v137QT176gEjZBFQzFg2grKCdyaeDuxtcJ6lxx99f",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "EM1v137QT176gEjZBFQzFg2grKCdyaeDuxtcJ6lxx99f",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "schemeURI",
+              "subject",
+              "subjectScheme"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "schemeURI": {
+                "type": "textarea"
+              },
+              "subject": {
+                "type": "textarea"
+              },
+              "subjectScheme": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "d": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
+        "type": "community/adc/presentation/v1.0",
+        "capture_base": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
+        "language": [
+          "eng",
+          "fra"
+        ],
+        "pages": [
+          {
+            "named_section": "page-1",
+            "attribute_order": [
+              "title",
+              "titleType"
+            ]
+          }
+        ],
+        "page_order": [
+          "page-1"
+        ],
+        "page_labels": {
+          "eng": {
+            "page-1": "Page 1: Default"
+          },
+          "fra": {
+            "page-1": "Page 1: Default"
+          }
+        },
+        "interaction": [
+          {
+            "arguments": {
+              "title": {
+                "type": "textarea"
+              },
+              "titleType": {
+                "type": "textarea"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

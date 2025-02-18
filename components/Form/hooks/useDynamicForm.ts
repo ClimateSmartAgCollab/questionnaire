@@ -110,6 +110,7 @@ export const sortStepsByReferences = (steps: Step[]): Step[] => {
 }
 
 export function useDynamicForm(parsedSteps: Step[]) {
+  const [reviewOutput, setReviewOutput] = useState<any>(null)
   const [language, setLanguage] = useState('eng')
   const [currentStep, setCurrentStep] = useState(0)
   const [pageIndexByStep, setPageIndexByStep] = useState<{
@@ -133,7 +134,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
   const {
     createNewChild,
     editExistingChild,
-    saveChildData
+    saveChildData,
+    parentFormData
     // childrenData, getChildById, ...
   } = useFormData()
 
@@ -183,7 +185,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
         }
       }))
 
-      console.log('normalizedValue\n', normalizedValue)
+      // console.log('normalizedValue\n', normalizedValue)
       const errorMessage = validateField(field, normalizedValue, language)
       setFieldErrors(prev => ({
         ...prev,
@@ -284,8 +286,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
 
   const onNavigate = useCallback(
     (index: number) => {
-      const isPageValid = validateCurrentPageData()
-      if (!isPageValid) {
+      if (!validateCurrentPageData()) {
         console.warn('Please fix errors before continuing.')
         // return
       }
@@ -300,6 +301,83 @@ export function useDynamicForm(parsedSteps: Step[]) {
     },
     [parsedSteps, validateCurrentPageData, saveCurrentPageData]
   )
+
+  const handleSubmit = () => {
+    const questions: Array<{
+      id: string;
+      label: string;
+      type: string;
+      answer: any;
+      children?: Array<{
+        childId: string;
+        questions: Array<{
+          id: string;
+          label: string;
+          type: string;
+          answer: any;
+        }>;
+      }>;
+    }> = [];
+  
+    const parentStepsForReview = getParentSteps(parsedSteps);
+    parentStepsForReview.forEach(step => {
+      step.pages.forEach(page => {
+        page.sections.forEach(section => {
+          section.fields.forEach(field => {
+            const questionObj: any = {
+              id: field.id,
+              label:
+                field.labels[language]?.[field.id] ||
+                field.labels['eng']?.[field.id] ||
+                'No label',
+              type: field.type,
+              answer: formData[step.id]?.[field.id] ?? ''
+            };
+  
+            if (field.type === 'reference' && field.ref) {
+              const childrenData = parentFormData[field.id]?.childrenData?.[field.ref];
+              if (childrenData && Array.isArray(childrenData)) {
+                questionObj.children = childrenData.map(child => {
+                  const childQuestions: Array<{
+                    id: string;
+                    label: string;
+                    type: string;
+                    answer: any;
+                  }> = [];
+  
+                  for (const key in child.data) {
+                    childQuestions.push({
+                      id: key,
+                      label: key, 
+                      type: 'childField',
+                      answer: child.data[key]
+                    });
+                  }
+  
+                  return {
+                    childId: child.id,
+                    questions: childQuestions
+                  };
+                });
+              }
+            }
+  
+            questions.push(questionObj);
+          });
+        });
+      });
+    });
+  
+    setReviewOutput({
+      title: 'Questionnaire Review',
+      questions
+    });
+  
+    //to immediately submit data to backend,
+    //call submission API here (or wait until the user confirms on the review page).
+  };
+  
+
 
   const handleNavigate = useCallback(
     (stepIndex: number, pageIndex: number = 0) => {
@@ -573,6 +651,9 @@ export function useDynamicForm(parsedSteps: Step[]) {
     fieldErrors,
     handleFieldChange,
     registerFieldRef,
-    sortStepsByReferences
+    sortStepsByReferences,
+    reviewOutput,
+    setReviewOutput,
+    handleSubmit
   }
 }
