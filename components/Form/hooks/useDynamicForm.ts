@@ -135,7 +135,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
     createNewChild,
     editExistingChild,
     saveChildData,
-    parentFormData
+    parentFormData,
+    deleteChild
     // childrenData, getChildById, ...
   } = useFormData()
 
@@ -159,6 +160,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
     []
   )
 
+
+  
   const handleFieldChange = useCallback(
     (field: Field, newValue: string | string[]) => {
       const finalValue = newValue
@@ -508,6 +511,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
     }
   }
 
+  
   const finishHandler = useCallback(() => {
     if (!validateCurrentPageData()) {
       console.warn('Please fix errors before continuing.')
@@ -654,6 +658,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
     sortStepsByReferences,
     reviewOutput,
     setReviewOutput,
-    handleSubmit
+    handleSubmit,
+    deleteChild
   }
 }

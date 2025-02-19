@@ -55,6 +55,8 @@ interface FormDataContextType {
     childId: string,
     newData: Record<string, any>
   ) => void
+
+  deleteChild: (childId: string, parentId: string, childStepId: string) => void
 }
 
 const FormDataContext = createContext<FormDataContextType | undefined>(
@@ -203,6 +205,38 @@ export function FormDataProvider({
     []
   )
 
+  const deleteChild = useCallback(
+    (childId: string, parentId: string, childStepId: string) => {
+      setParentFormData(prev => {
+        const parentRecord = prev[parentId]
+        if (
+          !parentRecord ||
+          !parentRecord.childrenData ||
+          !parentRecord.childrenData[childStepId]
+        ) {
+          return prev
+        }
+
+        // Filter out the child with the matching ID
+        const updatedChildren = parentRecord.childrenData[childStepId].filter(
+          child => child.id !== childId
+        )
+
+        return {
+          ...prev,
+          [parentId]: {
+            ...parentRecord,
+            childrenData: {
+              ...parentRecord.childrenData,
+              [childStepId]: updatedChildren
+            }
+          }
+        }
+      })
+    },
+    []
+  )
+
   const value: FormDataContextType = {
     parentFormData,
     setParentFormData,
@@ -214,7 +248,8 @@ export function FormDataProvider({
     editExistingChild,
     getChildById,
     updateChildById,
-    saveChildData
+    saveChildData,
+    deleteChild
   }
 
   return (

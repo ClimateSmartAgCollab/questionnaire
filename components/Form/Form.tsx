@@ -52,7 +52,8 @@ export default function Form() {
     setCurrentChildParentId,
     reviewOutput,
     setReviewOutput,
-    handleSubmit
+    handleSubmit,
+    deleteChild
   } = useDynamicForm(parsedSteps)
 
   const { parentFormData } = useFormData()
@@ -66,219 +67,222 @@ export default function Form() {
     return parsedSteps.findIndex(s => s.id === stepId)
   }
 
-
-function ChildReview({
-  field,
-  parentFormData,
-  parsedSteps,
-  language
-}: {
-  field: any;
-  parentFormData: any;
-  parsedSteps: any;
-  language: string;
-}) {
-  const children =
-    parentFormData[field.id]?.childrenData?.[field.ref] || [];
-  return (
-    <div className="mt-2 ml-4 p-2 border-l-4 border-blue-500">
-      <h5 className="text-md font-semibold text-blue-700">
-        Child Entries for "
-        {field.labels[language]?.[field.id] ||
-          field.labels.eng?.[field.id] ||
-          "Field"}
-        "
-      </h5>
-      {children.map((child: any) => {
-        const childStep = parsedSteps.find(
-          (s: any) => s.id === child.stepId
-        );
-        return (
-          <div key={child.id} className="mt-2 p-2 bg-gray-100">
-            {childStep ? (
-              childStep.pages.map((cPage: any) => (
-                <div key={cPage.pageKey} className="ml-4">
-                  {cPage.sections.map((cSection: any) => (
-                    <div key={cSection.sectionKey} className="ml-4">
-                      <h6 className="text-lg font-medium">
-                        {cSection.sectionLabel[language] ||
-                          cSection.sectionLabel.eng}
-                      </h6>
-                      {cSection.fields.map((cField: any) => {
-                        const nestedChildren =
-                          cField.type === "reference" &&
-                          cField.ref &&
-                          parentFormData[cField.id]?.childrenData?.[cField.ref] &&
-                          parentFormData[cField.id].childrenData[cField.ref].length > 0;
-                        if (nestedChildren) {
+  function ChildReview({
+    field,
+    parentFormData,
+    parsedSteps,
+    language
+  }: {
+    field: any
+    parentFormData: any
+    parsedSteps: any
+    language: string
+  }) {
+    const children = parentFormData[field.id]?.childrenData?.[field.ref] || []
+    return (
+      <div className='ml-4 mt-2 border-l-4 border-blue-500 p-2'>
+        <h5 className='text-md font-semibold text-blue-700'>
+          Child Entries for "
+          {field.labels[language]?.[field.id] ||
+            field.labels.eng?.[field.id] ||
+            'Field'}
+          "
+        </h5>
+        {children.map((child: any) => {
+          const childStep = parsedSteps.find((s: any) => s.id === child.stepId)
+          return (
+            <div key={child.id} className='mt-2 bg-gray-100 p-2'>
+              {childStep ? (
+                childStep.pages.map((cPage: any) => (
+                  <div key={cPage.pageKey} className='ml-4'>
+                    {cPage.sections.map((cSection: any) => (
+                      <div key={cSection.sectionKey} className='ml-4'>
+                        <h6 className='text-lg font-medium'>
+                          {cSection.sectionLabel[language] ||
+                            cSection.sectionLabel.eng}
+                        </h6>
+                        {cSection.fields.map((cField: any) => {
+                          const nestedChildren =
+                            cField.type === 'reference' &&
+                            cField.ref &&
+                            parentFormData[cField.id]?.childrenData?.[
+                              cField.ref
+                            ] &&
+                            parentFormData[cField.id].childrenData[cField.ref]
+                              .length > 0
+                          if (nestedChildren) {
+                            return (
+                              <div key={cField.id} className='mb-1 ml-4'>
+                                <label className='block text-sm font-semibold text-gray-800'>
+                                  {cField.labels[language]?.[cField.id] ||
+                                    cField.labels.eng?.[cField.id] ||
+                                    cField.id}
+                                </label>
+                                <ChildReview
+                                  field={cField}
+                                  parentFormData={parentFormData}
+                                  parsedSteps={parsedSteps}
+                                  language={language}
+                                />
+                              </div>
+                            )
+                          }
+                          const childAnswer = child.data[cField.id]
                           return (
-                            <div key={cField.id} className="mb-1 ml-4">
-                              <label className="block text-sm font-semibold text-gray-800">
+                            <div key={cField.id} className='mb-1 ml-4'>
+                              <strong>
                                 {cField.labels[language]?.[cField.id] ||
                                   cField.labels.eng?.[cField.id] ||
                                   cField.id}
-                              </label>
-                              <ChildReview
-                                field={cField}
-                                parentFormData={parentFormData}
-                                parsedSteps={parsedSteps}
-                                language={language}
-                              />
+                                :{' '}
+                              </strong>
+                              <span>
+                                {Array.isArray(childAnswer)
+                                  ? childAnswer.join(', ')
+                                  : childAnswer?.toString() ||
+                                    'No response provided'}
+                              </span>
                             </div>
-                          );
-                        }
-                        const childAnswer = child.data[cField.id];
-                        return (
-                          <div key={cField.id} className="mb-1 ml-4">
-                            <strong>
-                              {cField.labels[language]?.[cField.id] ||
-                                cField.labels.eng?.[cField.id] ||
-                                cField.id}
-                              :{" "}
-                            </strong>
-                            <span>
-                              {Array.isArray(childAnswer)
-                                ? childAnswer.join(", ")
-                                : childAnswer?.toString() ||
-                                  "No response provided"}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ))}
-                </div>
-              ))
-            ) : (
-              <p className="ml-4 text-gray-500">No child structure found.</p>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-if (reviewOutput) {
-  const childStepIds = new Set<string>();
-  parsedSteps.forEach((step: any) => {
-    step.pages.forEach((page: any) => {
-      page.sections.forEach((section: any) => {
-        section.fields.forEach((field: any) => {
-          if (field.ref) {
-            childStepIds.add(field.ref);
-          }
-        });
-      });
-    });
-  });
-  const parentStepsForReview = parsedSteps.filter(
-    (step: any) => !childStepIds.has(step.id)
-  );
-
-  return (
-    <section className={`${styles.formLayout} ${styles.fullPageReview}`}>
-      <header className={`${styles.header} border-b pb-4`}>
-        <h1 className="text-3xl font-bold text-center mb-2">
-          {reviewOutput.title || "Review Your Responses"}
-        </h1>
-        <p className="text-lg text-gray-600 text-center">
-          Please review your responses below.
-        </p>
-      </header>
-      <main className={`${styles.mainContent} p-4`}>
-        <div className="space-y-6">
-          {parentStepsForReview.map((step: any) => (
-            <div key={step.id} className="mb-6">
-              <h2 className="text-2xl font-bold">
-                {step.names[language] || step.names.eng}
-              </h2>
-              {step.pages.map((page: any) => (
-                <div
-                  key={page.pageKey}
-                  className="mb-4 pl-4 border-l-2 border-gray-300"
-                >
-                  <h3 className="text-xl font-semibold">
-                    {page.pageLabel[language] || page.pageLabel.eng}
-                  </h3>
-                  {page.sections.map((section: any) => (
-                    <div
-                      key={section.sectionKey}
-                      className="mb-4 pl-4 border-l-2 border-gray-200"
-                    >
-                      <h4 className="text-lg font-medium">
-                        {section.sectionLabel[language] ||
-                          section.sectionLabel.eng}
-                      </h4>
-                      {section.fields.map((field: any) => {
-                        const hasChildren =
-                          field.type === "reference" &&
-                          field.ref &&
-                          parentFormData[field.id] &&
-                          parentFormData[field.id].childrenData &&
-                          parentFormData[field.id]?.childrenData?.[field.ref] &&
-                          (parentFormData[field.id]?.childrenData?.[field.ref] ?? []).length > 0;
-                        if (hasChildren) {
-                          return (
-                            <div key={field.id} className="mb-2">
-                              <label className="block text-sm font-semibold text-gray-800">
-                                {field.labels[language]?.[field.id] ||
-                                  field.labels.eng?.[field.id] ||
-                                  "No label"}
-                              </label>
-                              <ChildReview
-                                field={field}
-                                parentFormData={parentFormData}
-                                parsedSteps={parsedSteps}
-                                language={language}
-                              />
-                            </div>
-                          );
-                        } else {
-                          const fieldAnswer =
-                            formData[step.id]?.[field.id] ?? field.value;
-                          return (
-                            <div key={field.id} className="mb-2">
-                              <label className="block text-sm font-semibold text-gray-800">
-                                {field.labels[language]?.[field.id] ||
-                                  field.labels.eng?.[field.id]}
-                              </label>
-                              <div className="mt-1 rounded border p-2 bg-gray-50 text-gray-900">
-                                {Array.isArray(fieldAnswer)
-                                  ? fieldAnswer.join(", ")
-                                  : fieldAnswer?.toString() || (
-                                      <span className="text-gray-500">
-                                        No response provided
-                                      </span>
-                                    )}
-                              </div>
-                            </div>
-                          );
-                        }
-                      })}
-                    </div>
-                  ))}
-                </div>
-              ))}
+                          )
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                ))
+              ) : (
+                <p className='ml-4 text-gray-500'>No child structure found.</p>
+              )}
             </div>
-          ))}
-        </div>
-        <div className="flex justify-center mt-8">
-          <button
-            type="button"
-            onClick={() => setReviewOutput(null)}
-            className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
-          >
-            Back to Form
-          </button>
-        </div>
-      </main>
-      <Footer currentPage={currentStep} />
-    </section>
-  );
-}
+          )
+        })}
+      </div>
+    )
+  }
 
+  if (reviewOutput) {
+    const childStepIds = new Set<string>()
+    parsedSteps.forEach((step: any) => {
+      step.pages.forEach((page: any) => {
+        page.sections.forEach((section: any) => {
+          section.fields.forEach((field: any) => {
+            if (field.ref) {
+              childStepIds.add(field.ref)
+            }
+          })
+        })
+      })
+    })
+    const parentStepsForReview = parsedSteps.filter(
+      (step: any) => !childStepIds.has(step.id)
+    )
 
+    return (
+      <section className={`${styles.formLayout} ${styles.fullPageReview}`}>
+        <header className={`${styles.header} border-b pb-4`}>
+          <h1 className='mb-2 text-center text-3xl font-bold'>
+            {reviewOutput.title || 'Review Your Responses'}
+          </h1>
+          <p className='text-center text-lg text-gray-600'>
+            Please review your responses below.
+          </p>
+        </header>
+        <main className={`${styles.mainContent} p-4`}>
+          <div className='space-y-6'>
+            {parentStepsForReview.map((step: any) => (
+              <div key={step.id} className='mb-6'>
+                <h2 className='text-2xl font-bold'>
+                  {step.names[language] || step.names.eng}
+                </h2>
+                {step.pages.map((page: any) => (
+                  <div
+                    key={page.pageKey}
+                    className='mb-4 border-l-2 border-gray-300 pl-4'
+                  >
+                    <h3 className='text-xl font-semibold'>
+                      {page.pageLabel[language] || page.pageLabel.eng}
+                    </h3>
+                    {page.sections.map((section: any) => (
+                      <div
+                        key={section.sectionKey}
+                        className='mb-4 border-l-2 border-gray-200 pl-4'
+                      >
+                        <h4 className='text-lg font-medium'>
+                          {section.sectionLabel[language] ||
+                            section.sectionLabel.eng}
+                        </h4>
+                        {section.fields.map((field: any) => {
+                          const hasChildren =
+                            field.type === 'reference' &&
+                            field.ref &&
+                            parentFormData[field.id] &&
+                            parentFormData[field.id].childrenData &&
+                            parentFormData[field.id]?.childrenData?.[
+                              field.ref
+                            ] &&
+                            (
+                              parentFormData[field.id]?.childrenData?.[
+                                field.ref
+                              ] ?? []
+                            ).length > 0
+                          if (hasChildren) {
+                            return (
+                              <div key={field.id} className='mb-2'>
+                                <label className='block text-sm font-semibold text-gray-800'>
+                                  {field.labels[language]?.[field.id] ||
+                                    field.labels.eng?.[field.id] ||
+                                    'No label'}
+                                </label>
+                                <ChildReview
+                                  field={field}
+                                  parentFormData={parentFormData}
+                                  parsedSteps={parsedSteps}
+                                  language={language}
+                                />
+                              </div>
+                            )
+                          } else {
+                            const fieldAnswer =
+                              formData[step.id]?.[field.id] ?? field.value
+                            return (
+                              <div key={field.id} className='mb-2'>
+                                <label className='block text-sm font-semibold text-gray-800'>
+                                  {field.labels[language]?.[field.id] ||
+                                    field.labels.eng?.[field.id]}
+                                </label>
+                                <div className='mt-1 rounded border bg-gray-50 p-2 text-gray-900'>
+                                  {Array.isArray(fieldAnswer)
+                                    ? fieldAnswer.join(', ')
+                                    : fieldAnswer?.toString() || (
+                                        <span className='text-gray-500'>
+                                          No response provided
+                                        </span>
+                                      )}
+                                </div>
+                              </div>
+                            )
+                          }
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className='mt-8 flex justify-center'>
+            <button
+              type='button'
+              onClick={() => setReviewOutput(null)}
+              className='rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600'
+            >
+              Back to Form
+            </button>
+          </div>
+        </main>
+        <Footer currentPage={currentStep} />
+      </section>
+    )
+  }
 
   return (
     <section className={styles.formLayout}>
@@ -577,54 +581,79 @@ if (reviewOutput) {
                             ] || 'Child Step'}
                           </button>
 
-                          {/* Display child data if it exists in formData */}
+                          {/* Only display the table if there is at least one child */}
                           {parentFormData[field.id] &&
                             parentFormData[field.id].childrenData &&
-                            parentFormData[field.id]?.childrenData?.[
-                              field.ref
-                            ] && (
+                            (parentFormData[field.id]?.childrenData?.[field.ref] ?? []).length > 0 && (
                               <div className='mt-4 rounded border bg-gray-100 p-4'>
-                                <h4 className='text-lg font-semibold'>
+                                <h4 className='mb-2 text-lg font-semibold'>
                                   {
                                     parsedSteps.find(s => s.id === field.ref)
                                       ?.names[language]
                                   }
                                 </h4>
-                                <ul>
-                                  {parentFormData[field.id]?.childrenData?.[
-                                    field.ref
-                                  ].map(child => (
-                                    <li
-                                      key={child.id}
-                                      className='flex items-center space-x-2'
-                                    >
-                                      <span>
-                                        {/* Display child name or some field */}
-                                        {child.data[
-                                          Object.keys(child.data)[0]
-                                        ] || '(No Name)'}
-                                      </span>
-                                      <button
-                                        type='button'
-                                        onClick={() => {
-                                          // Put us into "edit mode"
-                                          setCurrentChildId(child.id)
-                                          setCurrentChildParentId(field.id)
-                                          // Navigate to that child’s step
-                                          const idx = parsedSteps.findIndex(
-                                            s => s.id === child.stepId
-                                          )
-                                          if (idx >= 0) {
-                                            onNavigate(idx)
-                                          }
-                                        }}
-                                        className='text-sm text-blue-700 underline'
-                                      >
-                                        Edit
-                                      </button>
-                                    </li>
-                                  ))}
-                                </ul>
+                                <table className='w-full table-fixed border border-gray-300'>
+                                  <thead className='bg-gray-200'>
+                                    <tr>
+                                      {/* Fixed-width Name column */}
+                                      <th className='w-64 border border-gray-300 px-4 py-2 text-left'>
+                                        Name
+                                      </th>
+                                      {/* Fixed-width actions column without a header title */}
+                                      <th className='w-32 border border-gray-300 px-4 py-2'></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {(parentFormData[field.id]?.childrenData ?? {})[
+                                      field.ref
+                                    ].map(child => (
+                                      <tr key={child.id}>
+                                        <td className='break-words border border-gray-300 px-4 py-2'>
+                                          {child.data[
+                                            Object.keys(child.data)[0]
+                                          ] || '(No Name)'}
+                                        </td>
+                                        <td className='border border-gray-300 px-4 py-2 text-center'>
+                                          <div className='flex justify-center space-x-2'>
+                                            <button
+                                              type='button'
+                                              onClick={() => {
+                                                // Enter "edit mode"
+                                                setCurrentChildId(child.id)
+                                                setCurrentChildParentId(
+                                                  field.id
+                                                )
+                                                const idx =
+                                                  parsedSteps.findIndex(
+                                                    s => s.id === child.stepId
+                                                  )
+                                                if (idx >= 0) {
+                                                  onNavigate(idx)
+                                                }
+                                              }}
+                                              className='rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600'
+                                            >
+                                              Edit
+                                            </button>
+                                            <button
+                                              type='button'
+                                              onClick={() => {
+                                                deleteChild(
+                                                  child.id,
+                                                  field.id,
+                                                  field.ref!
+                                                )
+                                              }}
+                                              className='rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600'
+                                            >
+                                              Delete
+                                            </button>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
                               </div>
                             )}
                         </div>
