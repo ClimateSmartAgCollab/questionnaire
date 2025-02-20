@@ -353,11 +353,14 @@ export default function Form() {
                       {field.type === 'textarea' && (
                         <textarea
                           name={field.id}
-                          defaultValue={fieldValue}
+                          value={fieldValue}
                           className='w-full rounded border p-2'
                           ref={el => registerFieldRef(field.id, el)}
-                          onBlur={e => {
+                          onChange={e => {
                             handleFieldChange(field, e.target.value)
+                          }}
+                          onBlur={e => {
+                            saveCurrentPageData()
                           }}
                           onPaste={e => {
                             const pastedText = e.clipboardData.getData('text')
@@ -370,6 +373,7 @@ export default function Form() {
                           }}
                         />
                       )}
+
                       {field.type === 'DateTime' && (
                         <DateTimeField
                           field={field}
@@ -380,6 +384,7 @@ export default function Form() {
                           fieldValue={fieldValue}
                           registerFieldRef={registerFieldRef}
                           handleFieldChange={handleFieldChange}
+                          saveCurrentPageData={saveCurrentPageData}
                         />
                       )}
 
@@ -584,7 +589,11 @@ export default function Form() {
                           {/* Only display the table if there is at least one child */}
                           {parentFormData[field.id] &&
                             parentFormData[field.id].childrenData &&
-                            (parentFormData[field.id]?.childrenData?.[field.ref] ?? []).length > 0 && (
+                            (
+                              parentFormData[field.id]?.childrenData?.[
+                                field.ref
+                              ] ?? []
+                            ).length > 0 && (
                               <div className='mt-4 rounded border bg-gray-100 p-4'>
                                 <h4 className='mb-2 text-lg font-semibold'>
                                   {
@@ -604,9 +613,8 @@ export default function Form() {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {(parentFormData[field.id]?.childrenData ?? {})[
-                                      field.ref
-                                    ].map(child => (
+                                    {(parentFormData[field.id]?.childrenData ??
+                                      {})[field.ref].map(child => (
                                       <tr key={child.id}>
                                         <td className='break-words border border-gray-300 px-4 py-2'>
                                           {child.data[

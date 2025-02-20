@@ -1,8 +1,8 @@
 import { Root, Bundle, Dependency, Presentation } from './type'
 // import metadataJson from '../public/getting_to_know_single_level_presentation.json'
 // import metadataJson from '../public/sampleQuestionnaire_V2.json'
-// import metadataJson from '../public/multi_level_package_presentation.json'
-import metadataJson from '../public/OpenAIRE_OCA_package.json'
+import metadataJson from '../public/multi_level_package_presentation.json'
+// import metadataJson from '../public/OpenAIRE_OCA_package.json'
 
 
 // Normalize entry codes in dependencies
