@@ -148,6 +148,9 @@ export interface Presentation {
   pages: Page[]
   page_order: string[]
   page_labels: Record<string, Record<string, string>>
+  sidebar_label: Record<string, Record<string, string>>
+  subheading: Record<string, Record<string, string>>
+  title?: Record<string, Record<string, string>>
   interaction: Interaction[]
 }
 
@@ -189,6 +192,9 @@ export interface Field {
   orientation?: 'vertical' | 'horizontal'
   value?: string
   ref?: string
+  placeholder?: Record<string, string>
+  reference_button_text?: Record<string, string>
+  showing_attribute?: string[]
   validation: {
     conformance: 'M' | 'O'
     format?: string
@@ -207,6 +213,7 @@ export interface Section {
 export interface Page_parsed {
   pageKey: string
   pageLabel: Record<string, string>
+  subheading: Record<string, string>
   sections: Section[]
   captureBase: string
 }
@@ -218,4 +225,7 @@ export interface Step {
   parent?: string | null
   pages: Page_parsed[]
   children?: Step[] 
+  sidebar_label?: Record<string, string>
+  title?: Record<string, string>
+  subheading?: Record<string, string>
 }

@@ -1,9 +1,9 @@
 import { Root, Bundle, Dependency, Presentation } from './type'
 // import metadataJson from '../public/getting_to_know_single_level_presentation.json'
 // import metadataJson from '../public/sampleQuestionnaire_V2.json'
-import metadataJson from '../public/multi_level_package_presentation.json'
+// import metadataJson from '../public/multi_level_package_presentation.json'
 // import metadataJson from '../public/OpenAIRE_OCA_package.json'
-
+import metadataJson from '../public/test.json'
 
 // Normalize entry codes in dependencies
 const normalizeEntryCodes = (dependencies: Dependency[]): void => {
@@ -170,8 +170,11 @@ const getLabelsOptionsAndTypes = (
     Object.entries(cardinalityOverlay.attribute_cardinality).forEach(
       ([key, range]) => {
         const parts = range.split('-')
-        const min = parts[0] && !isNaN(Number(parts[0])) ? Number(parts[0]) : 0;
-        const max = parts[1] && !isNaN(Number(parts[1])) ? Number(parts[1]) : 999999999999999999;
+        const min = parts[0] && !isNaN(Number(parts[0])) ? Number(parts[0]) : 0
+        const max =
+          parts[1] && !isNaN(Number(parts[1]))
+            ? Number(parts[1])
+            : 999999999999999999
         cardinalityRules[key] = { min, max }
       }
     )
@@ -194,12 +197,12 @@ const getLabelsOptionsAndTypes = (
 
   // Collect entry codes
   if (entity.overlays?.entry_code) {
-    const entryCodeOverlay = entity.overlays.entry_code;
+    const entryCodeOverlay = entity.overlays.entry_code
     Object.entries(entryCodeOverlay.attribute_entry_codes).forEach(
       ([fieldId, codes]) => {
-        entryCodes[fieldId] = codes;
+        entryCodes[fieldId] = codes
       }
-    );
+    )
   }
 
   // Collect character encoding
@@ -254,22 +257,24 @@ const getStepMeta = (
   return { names, descriptions }
 }
 
+// Helper: gets all labels from an overlay by page/section key
+const getAllLabels = (
+  labelsObj: Record<string, Record<string, string>> | undefined,
+  key: string
+) => {
+  const result: Record<string, string> = {}
+  if (!labelsObj) return result
+  Object.keys(labelsObj).forEach(lang => {
+    result[lang] = labelsObj[lang]?.[key] || ''
+  })
+  return result
+}
+
 const parsePresentation = (
   presentation: Presentation,
   labels: Record<string, Record<string, string>>,
   fields: any[]
 ) => {
-  const getAllLabels = (
-    labels: Record<string, Record<string, string>>,
-    key: string
-  ) => {
-    const result: Record<string, string> = {}
-    Object.keys(labels).forEach(lang => {
-      result[lang] = labels[lang]?.[key] || ''
-    })
-    return result
-  }
-
   const pages = presentation.page_order.map(pageKey => {
     const page = presentation.pages.find(p => p.named_section === pageKey)
     if (!page) return null
@@ -278,7 +283,7 @@ const parsePresentation = (
       if (typeof sectionOrField === 'string') {
         return {
           sectionKey: sectionOrField,
-          sectionLabel: {},
+          sectionLabel: {}, // no overlay for a simple string
           fields: fields.filter(f => f.id === sectionOrField)
         }
       } else if (typeof sectionOrField === 'object') {
@@ -298,6 +303,8 @@ const parsePresentation = (
     return {
       pageKey,
       pageLabel: getAllLabels(presentation.page_labels, pageKey),
+      sidebar_label: getAllLabels(presentation.sidebar_label, pageKey),
+      subheading: getAllLabels(presentation.subheading, pageKey),
       sections: sections.filter(Boolean),
       captureBase: presentation.capture_base
     }
@@ -333,6 +340,18 @@ export const parseJsonToFormStructure = (): any[] => {
     return []
   }
 
+
+  let mainTitle: Record<string, string> = { eng: '', fra: '' }
+  const mainPresentation = presentationsSorted.find(
+    pres => pres.capture_base === mainCaptureBase
+  )
+  if (mainPresentation && mainPresentation.title) {
+    mainTitle = {
+      eng: typeof mainPresentation.title.eng === 'string' ? mainPresentation.title.eng : '',
+      fra: typeof mainPresentation.title.fra === 'string' ? mainPresentation.title.fra : ''
+    }
+  }
+  
   const allSteps: Record<string, any> = {}
   presentationsSorted.forEach(presentation => {
     const relationships = parseRelationships(bundle, dependencies, presentation)
@@ -355,6 +374,7 @@ export const parseJsonToFormStructure = (): any[] => {
       )
 
       const fields = Object.keys(labels['eng'] || {}).map(fieldId => {
+        // Build labels per language for this field
         const fieldLabels = Object.fromEntries(
           Object.entries(labels).map(([lang, langLabels]) => [
             lang,
@@ -369,13 +389,7 @@ export const parseJsonToFormStructure = (): any[] => {
           ])
         )
 
-        // console.log(
-        //   'entry code',
-        //   bundle.overlays?.entry_code?.attribute_entry_codes?.[fieldId]
-        // )
-        // console.log('entryCodes[fieldId]', entryCodes[fieldId])
-
-        let field = {
+        let field: any = {
           id: fieldId,
           labels: fieldLabels,
           options: fieldOptions,
@@ -392,6 +406,16 @@ export const parseJsonToFormStructure = (): any[] => {
             format: format[fieldId],
             cardinality: cardinalityRules[fieldId]
           }
+        }
+
+        if (types[fieldId]?.reference_button_text) {
+          field.reference_button_text = types[fieldId].reference_button_text
+        }
+        if (types[fieldId]?.showing_attribute) {
+          field.showing_attribute = types[fieldId].showing_attribute
+        }
+        if (types[fieldId]?.placeholder) {
+          field.placeholder = types[fieldId].placeholder
         }
 
         if (field.type === 'reference') {
@@ -413,12 +437,11 @@ export const parseJsonToFormStructure = (): any[] => {
       const uniqueCaptureBases = new Set()
 
       pages.forEach(page => {
-        const captureBase = page?.captureBase || ''
-
-        if (!uniqueCaptureBases.has(captureBase)) {
-          uniqueCaptureBases.add(captureBase)
+        const capBase = page?.captureBase || ''
+        if (!uniqueCaptureBases.has(capBase)) {
+          uniqueCaptureBases.add(capBase)
           uniquePresentations.push({
-            captureBase,
+            captureBase: capBase,
             names,
             descriptions,
             parent: relationship.parent,
@@ -426,7 +449,7 @@ export const parseJsonToFormStructure = (): any[] => {
           })
         } else {
           const existingPresentation = uniquePresentations.find(
-            presentation => presentation.captureBase === captureBase
+            pres => pres.captureBase === capBase
           )
           if (existingPresentation) {
             existingPresentation.pages.push(page)
@@ -434,12 +457,12 @@ export const parseJsonToFormStructure = (): any[] => {
         }
       })
 
-      uniquePresentations.forEach(presentation => {
-        const { captureBase, names, descriptions, parent, pages } = presentation
-
+      uniquePresentations.forEach(pres => {
+        const { captureBase, names, descriptions, parent, pages } = pres
         if (!allSteps[captureBase]) {
           allSteps[captureBase] = {
             id: captureBase,
+            title: captureBase === mainCaptureBase ? mainTitle : '',
             names,
             descriptions,
             parent: relationship.parent || null,

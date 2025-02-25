@@ -1130,12 +1130,44 @@
             "page-2": "Page 2: Auteurs",
             "page-3": "Page 3: Collaborateurs"
           }
+        },  
+        "sidebar_label": {
+          "eng": {
+            "page-1": "Page 1: Introduction",
+            "page-2": "Page 2: Authors",
+            "page-3": "Page 3: Collaborators"
+          },
+          "fra": {
+            "page-1": "Page 1: Introduction", 
+            "page-2": "Page 2: Auteurs",
+            "page-3": "Page 3: Collaborateurs"
+          }
+        },      
+        "subheading": {
+          "eng": {
+            "page-1": "Introduction",
+            "section-1": "Personal Name",
+            "section-2": "Birth Date",
+            "page-2": "Authors",
+            "page-3": "Collaborators"
+          },
+          "fra": {
+            "page-1": "Introduction",
+            "section-1": "Nom personnel",
+            "section-2": "Date de naissance",
+            "page-2": "Auteurs",
+            "page-3": "Collaborateurs"
+          }
         },
         "interaction": [
           {
             "arguments": {
               "q1": {
-                "type": "textarea"
+                "type": "textarea",
+                "placeholder": {
+                  "eng": "Enter your full name",
+                  "fra": "Entrez votre nom complet"
+                }
               },
               "q2": {
                 "type": "DateTime"
@@ -1153,13 +1185,25 @@
                 "orientation": "vertical"
               },
               "q6": {
-                "type": "textarea"
+                "type": "textarea",
+                "placeholder": {
+                  "eng": "Type your comments here",
+                  "fra": "Tapez vos commentaires ici"
+                }
               },
               "q7": {
-                "type": "reference"
+                "type": "reference",
+                "reference_button_text": {
+                  "eng": "Author",
+                  "fra": "Auteur"
+                }
               },
               "q8": {
-                "type": "reference"
+                "type": "reference",
+                "reference_button_text": {
+                  "eng": "Collaborator",
+                  "fra": "collaborateur"
+                }
               }
             }
           }

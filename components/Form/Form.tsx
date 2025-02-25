@@ -17,7 +17,12 @@ import { useFormData } from '../Form/context/FormDataContext'
 
 const unsortedSteps = parseJsonToFormStructure()
 const parsedSteps = sortStepsByReferences(unsortedSteps)
-console.log('Sorted Steps:', parsedSteps)
+// console.log('Sorted Steps:', parsedSteps)
+
+const formTitle = parsedSteps[0].title || {
+  eng: 'Default Title',
+  fra: 'Titre par défaut'
+}
 
 export default function Form() {
   const {
@@ -285,10 +290,12 @@ export default function Form() {
   }
 
   return (
-    <section className={styles.formLayout}>
+    <form className={styles.formLayout}>
       {/* Main content area */}
       <header className={styles.header}>
-        <h1 className='text-3xl font-bold'>Questionnaire</h1>
+        <h1 className='text-3xl font-bold'>
+          {formTitle[language] || formTitle.eng}
+        </h1>
         <div className='flex items-center space-x-4'>
           <label
             htmlFor='language'
@@ -327,6 +334,11 @@ export default function Form() {
                   currentPage.pageLabel['eng']}
               </h2>
             )}
+            {currentPage.subheading && (
+              <p className='text-md mb-4 italic text-gray-600'>
+                {currentPage.subheading[language] || currentPage.subheading.eng}
+              </p>
+            )}
             {/* Sections */}
             {currentPage.sections.map(section => (
               <div key={section.sectionKey} className='mb-8 bg-gray-50 p-4'>
@@ -354,6 +366,11 @@ export default function Form() {
                         <textarea
                           name={field.id}
                           value={fieldValue}
+                          placeholder={
+                            field.placeholder?.[language] ||
+                            field.placeholder?.eng ||
+                            ''
+                          }
                           className='w-full rounded border p-2'
                           ref={el => registerFieldRef(field.id, el)}
                           onChange={e => {
@@ -581,11 +598,10 @@ export default function Form() {
                             className='mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
                           >
                             +{' '}
-                            {parsedSteps.find(s => s.id === field.ref)?.names[
-                              language
-                            ] || 'Child Step'}
+                            {field.reference_button_text?.[language] ||
+                              field.reference_button_text?.eng ||
+                              '+ Child Step'}
                           </button>
-
                           {/* Only display the table if there is at least one child */}
                           {parentFormData[field.id] &&
                             parentFormData[field.id].childrenData &&
@@ -606,7 +622,7 @@ export default function Form() {
                                     <tr>
                                       {/* Fixed-width Name column */}
                                       <th className='w-64 border border-gray-300 px-4 py-2 text-left'>
-                                        Name
+                                        Attributes
                                       </th>
                                       {/* Fixed-width actions column without a header title */}
                                       <th className='w-32 border border-gray-300 px-4 py-2'></th>
@@ -617,9 +633,21 @@ export default function Form() {
                                       {})[field.ref].map(child => (
                                       <tr key={child.id}>
                                         <td className='break-words border border-gray-300 px-4 py-2'>
-                                          {child.data[
-                                            Object.keys(child.data)[0]
-                                          ] || '(No Name)'}
+                                          {/* Render each attribute value specified in field.showing_attribute */}
+                                          {field.showing_attribute?.map(
+                                            attr => (
+                                              <div
+                                                key={attr}
+                                                className='mt-2 text-sm text-gray-700'
+                                              >
+                                                <strong>{attr}: </strong>
+                                                <span>
+                                                  {child.data[attr] ||
+                                                    '(No Data)'}
+                                                </span>
+                                              </div>
+                                            )
+                                          )}
                                         </td>
                                         <td className='border border-gray-300 px-4 py-2 text-center'>
                                           <div className='flex justify-center space-x-2'>
@@ -808,6 +836,6 @@ export default function Form() {
           © 2025 University of Guelph. All rights reserved.
         </p>
       </div>
-    </section>
+    </form>
   )
 }

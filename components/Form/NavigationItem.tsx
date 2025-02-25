@@ -48,7 +48,12 @@ export const NavigationItem = React.memo(function NavigationItem({
         onClick={toggleExpand}
         className={`flex w-full items-center justify-between rounded px-4 py-2 text-left transition-all ${stepButtonClass}`}
       >
-        <span>{step.names[language] || step.names['eng']}</span>
+        {/* Use sidebar_label as the second option if available */}
+        <span>
+          {step.sidebar_label?.[language] ||
+            step.names[language] ||
+            step.names['eng']}
+        </span>
         {step.pages.length > 1 && (
           <motion.div
             animate={{ rotate: isExpanded ? 1 : 0 }}
