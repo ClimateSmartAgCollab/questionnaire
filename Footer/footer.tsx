@@ -1,7 +1,7 @@
 import React from 'react'
 import UofG from '../assets/UofG_Cornerstone_wTagline_blk_rgb.png'
 import logoG from '../assets/R.jpg'
-import logoOntarioG from '../assets/OIP.jpg'
+import logoOntarioG from '../assets/OIP.png'
 import { Stack, Divider, Box, Typography } from '@mui/material'
 
 interface FooterProps {
