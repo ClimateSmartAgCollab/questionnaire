@@ -129,6 +129,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   )
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
+  const [isNewChild, setIsNewChild] = useState(false)
 
   // Context
   const {
@@ -136,7 +137,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
     editExistingChild,
     saveChildData,
     parentFormData,
-    deleteChild
+    deleteChild,
+    updateChildById
     // childrenData, getChildById, ...
   } = useFormData()
 
@@ -160,8 +162,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
     []
   )
 
-
-  
   const handleFieldChange = useCallback(
     (field: Field, newValue: string | string[]) => {
       const finalValue = newValue
@@ -177,16 +177,24 @@ export function useDynamicForm(parsedSteps: Step[]) {
         console.warn(`Input for ${field.id} contains invalid characters.`)
       }
 
-      const stepObj = parsedSteps[currentStep]
-      if (!stepObj) return
-      const stepId = stepObj.id
-      setFormData(prev => ({
-        ...prev,
-        [stepId]: {
-          ...(prev[stepId] || {}),
+      // If editing a child, update the child's data immediately.
+      if (currentChildId && currentChildParentId) {
+        updateChildById(currentChildParentId, currentChildId, {
           [field.id]: normalizedValue
-        }
-      }))
+        })
+      } else {
+        // Otherwise, update parent's formData.
+        const stepObj = parsedSteps[currentStep]
+        if (!stepObj) return
+        const stepId = stepObj.id
+        setFormData(prev => ({
+          ...prev,
+          [stepId]: {
+            ...(prev[stepId] || {}),
+            [field.id]: normalizedValue
+          }
+        }))
+      }
 
       // console.log('normalizedValue\n', normalizedValue)
       const errorMessage = validateField(field, normalizedValue, language)
@@ -195,7 +203,14 @@ export function useDynamicForm(parsedSteps: Step[]) {
         [field.id]: errorMessage || ''
       }))
     },
-    [parsedSteps, currentStep]
+    [
+      parsedSteps,
+      currentStep,
+      currentChildId,
+      currentChildParentId,
+      language,
+      updateChildById
+    ]
   )
 
   const validateCurrentPageData = useCallback((): boolean => {
@@ -307,22 +322,22 @@ export function useDynamicForm(parsedSteps: Step[]) {
 
   const handleSubmit = () => {
     const questions: Array<{
-      id: string;
-      label: string;
-      type: string;
-      answer: any;
+      id: string
+      label: string
+      type: string
+      answer: any
       children?: Array<{
-        childId: string;
+        childId: string
         questions: Array<{
-          id: string;
-          label: string;
-          type: string;
-          answer: any;
-        }>;
-      }>;
-    }> = [];
-  
-    const parentStepsForReview = getParentSteps(parsedSteps);
+          id: string
+          label: string
+          type: string
+          answer: any
+        }>
+      }>
+    }> = []
+
+    const parentStepsForReview = getParentSteps(parsedSteps)
     parentStepsForReview.forEach(step => {
       step.pages.forEach(page => {
         page.sections.forEach(section => {
@@ -335,52 +350,51 @@ export function useDynamicForm(parsedSteps: Step[]) {
                 'No label',
               type: field.type,
               answer: formData[step.id]?.[field.id] ?? ''
-            };
-  
+            }
+
             if (field.type === 'reference' && field.ref) {
-              const childrenData = parentFormData[field.id]?.childrenData?.[field.ref];
+              const childrenData =
+                parentFormData[field.id]?.childrenData?.[field.ref]
               if (childrenData && Array.isArray(childrenData)) {
                 questionObj.children = childrenData.map(child => {
                   const childQuestions: Array<{
-                    id: string;
-                    label: string;
-                    type: string;
-                    answer: any;
-                  }> = [];
-  
+                    id: string
+                    label: string
+                    type: string
+                    answer: any
+                  }> = []
+
                   for (const key in child.data) {
                     childQuestions.push({
                       id: key,
-                      label: key, 
+                      label: key,
                       type: 'childField',
                       answer: child.data[key]
-                    });
+                    })
                   }
-  
+
                   return {
                     childId: child.id,
                     questions: childQuestions
-                  };
-                });
+                  }
+                })
               }
             }
-  
-            questions.push(questionObj);
-          });
-        });
-      });
-    });
-  
+
+            questions.push(questionObj)
+          })
+        })
+      })
+    })
+
     setReviewOutput({
       title: 'Questionnaire Review',
       questions
-    });
-  
+    })
+
     //to immediately submit data to backend,
     //call submission API here (or wait until the user confirms on the review page).
-  };
-  
-
+  }
 
   const handleNavigate = useCallback(
     (stepIndex: number, pageIndex: number = 0) => {
@@ -511,7 +525,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
     }
   }
 
-  
   const finishHandler = useCallback(() => {
     if (!validateCurrentPageData()) {
       console.warn('Please fix errors before continuing.')
@@ -567,21 +580,22 @@ export function useDynamicForm(parsedSteps: Step[]) {
     const currentPage = stepObj.pages[currentPageIndex]
     if (!currentPage) return
 
-    let stepData = formData[stepObj.id] || {}
-
+    // Use empty data if it's a new child
+    let stepData: Record<string, any> = {}
     if (currentChildId) {
       const child =
         currentChildParentId && currentChildId
           ? editExistingChild(currentChildParentId, currentChildId)
           : null
-      if (child) {
-        stepData = child.data
-      }
+      // If the child record exists, use its data. Otherwise (new child), leave it empty.
+      stepData = child ? child.data : {}
+    } else {
+      stepData = formData[stepObj.id] || {}
     }
 
     currentPage.sections.forEach(section => {
       section.fields.forEach(field => {
-        const fieldValue = stepData[field.id] || ''
+        const fieldValue = stepData[field.id as string] || ''
 
         if (field.type === 'select' || field.type === 'dropdown') {
           const selectElement = document.querySelector(
@@ -616,12 +630,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
     editExistingChild
   ])
 
-  useEffect(() => {
-    const newStepId = parsedSteps[currentStep]?.id
-    setExpandedStep(newStepId)
-    prefillCurrentPageData()
-  }, [currentStep, prefillCurrentPageData])
-
   return {
     language,
     setLanguage,
@@ -635,7 +643,9 @@ export function useDynamicForm(parsedSteps: Step[]) {
     cancelHandler,
     isParentStep,
     setCurrentChildId,
+    currentChildId,
     setCurrentChildParentId,
+    currentChildParentId,
     createNewChild,
     pageIndexByStep,
     expandedStep,
@@ -659,6 +669,9 @@ export function useDynamicForm(parsedSteps: Step[]) {
     reviewOutput,
     setReviewOutput,
     handleSubmit,
-    deleteChild
+    deleteChild,
+    isNewChild,
+    setIsNewChild,
+    editExistingChild
   }
 }

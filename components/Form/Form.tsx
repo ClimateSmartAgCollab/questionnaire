@@ -38,6 +38,7 @@ export default function Form() {
     cancelHandler,
     isParentStep,
     setCurrentChildId,
+    currentChildId,
     createNewChild,
     pageIndexByStep,
     expandedStep,
@@ -55,10 +56,14 @@ export default function Form() {
     handleFieldChange,
     registerFieldRef,
     setCurrentChildParentId,
+    currentChildParentId,
     reviewOutput,
     setReviewOutput,
     handleSubmit,
-    deleteChild
+    deleteChild,
+    editExistingChild,
+    setIsNewChild,
+    isNewChild
   } = useDynamicForm(parsedSteps)
 
   const { parentFormData } = useFormData()
@@ -323,7 +328,7 @@ export default function Form() {
         {/* Render the current step's content */}
         {currentPage ? (
           <motion.div
-            key={currentPage.pageKey}
+            key={currentChildId || currentPage.pageKey}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
@@ -352,7 +357,11 @@ export default function Form() {
                 {/* Fields */}
                 {section.fields.map((field: Field) => {
                   const fieldValue =
-                    formData[step.id]?.[field.id] ?? field.value ?? ''
+                    currentChildId && currentChildParentId
+                      ? (editExistingChild(currentChildParentId, currentChildId)
+                          ?.data[field.id] ?? '')
+                      : (formData[step.id]?.[field.id] ?? '')
+
                   return (
                     <div key={field.id} className='mb-4'>
                       {/* Field Label */}
@@ -365,7 +374,15 @@ export default function Form() {
                       {field.type === 'textarea' && (
                         <textarea
                           name={field.id}
-                          value={fieldValue}
+                          value={
+                            // For a child page, check if we're in child mode and use its data
+                            currentChildId && currentChildParentId
+                              ? (editExistingChild(
+                                  currentChildParentId,
+                                  currentChildId
+                                )?.data[field.id] ?? '')
+                              : (formData[step.id]?.[field.id] ?? '')
+                          }
                           placeholder={
                             field.placeholder?.[language] ||
                             field.placeholder?.eng ||
@@ -580,6 +597,13 @@ export default function Form() {
 
                               setCurrentChildId(newChild.id)
                               setCurrentChildParentId(field.id)
+
+                              setFormData(prev => ({
+                                ...prev,
+                                [field.ref!]: {} // assuming the child page corresponds to the referenced step id
+                              }))
+
+                              setIsNewChild(false)
 
                               // Navigate to the child step
                               const targetIndex = parsedSteps.findIndex(

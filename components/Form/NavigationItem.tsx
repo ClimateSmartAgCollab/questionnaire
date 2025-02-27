@@ -89,7 +89,7 @@ export const NavigationItem = React.memo(function NavigationItem({
                       : 'bg-gray-100 text-gray-800'
                   }`}
                 >
-                  {page.pageLabel[language] || page.pageLabel['eng']}
+                  {page.sidebar_label[language] || page.sidebar_label['eng']}
                 </button>
               </motion.li>
             )

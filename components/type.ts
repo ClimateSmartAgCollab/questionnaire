@@ -214,6 +214,7 @@ export interface Page_parsed {
   pageKey: string
   pageLabel: Record<string, string>
   subheading: Record<string, string>
+  sidebar_label: Record<string, string>
   sections: Section[]
   captureBase: string
 }
