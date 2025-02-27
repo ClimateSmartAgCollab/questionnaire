@@ -387,10 +387,15 @@ export function useDynamicForm(parsedSteps: Step[]) {
       })
     })
 
-    setReviewOutput({
+    const submission = {
       title: 'Questionnaire Review',
-      questions
-    })
+      questions,
+      submittedAt: new Date().toISOString()
+    }
+  
+    setReviewOutput(submission)
+  
+    console.log('Submission JSON:', JSON.stringify(submission, null, 2))
 
     //to immediately submit data to backend,
     //call submission API here (or wait until the user confirms on the review page).
