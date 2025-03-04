@@ -230,3 +230,142 @@ export interface Step {
   title?: Record<string, string>
   subheading?: Record<string, string>
 }
+
+
+
+export interface ChildQuestion {
+  id: string;
+  label: string;
+  type: string;
+  answer: any;
+}
+
+export interface QuestionChild {
+  childId: string;
+  questions: ChildQuestion[];
+}
+
+export interface Question {
+  id: string;
+  label: string;
+  type: string;
+  answer: any;
+  children?: QuestionChild[];
+}
+
+export interface Submission {
+  data: {
+    id: string;
+    type: string;
+    attributes: {
+      doi: string;
+      prefix: string;
+      suffix: string;
+      identifiers: any[];
+      alternateIdentifiers: {
+        alternateIdentifier: string;
+        alternateIdentifierType: string;
+      }[];
+      creators: {
+        name: string;
+        nameType: string;
+        givenName: string | null;
+        familyName: string | null;
+        affiliation: { name: string }[];
+        nameIdentifiers: {
+          schemeUri: string | null;
+          nameIdentifier: string;
+          nameIdentifierScheme: string;
+        }[];
+      }[];
+      titles: {
+        lang: string | null;
+        title: string;
+        titleType: string | null;
+      }[];
+      publisher: {
+        name: string;
+      };
+      container: Record<string, any>;
+      publicationYear: number;
+      subjects: {
+        subject: string;
+        valueUri: string | null;
+        schemeUri: string | null;
+        subjectScheme: string | null;
+      }[];
+      contributors: {
+        name: string;
+        nameType: string;
+        givenName: string | null;
+        familyName: string | null;
+        affiliation: { name: string }[];
+        contributorType: string;
+        nameIdentifiers: {
+          schemeUri: string | null;
+          nameIdentifier: string;
+          nameIdentifierScheme: string;
+        }[];
+      }[];
+      dates: { date: string; dateType: string }[];
+      language: string | null;
+      types: {
+        ris: string;
+        bibtex: string;
+        citeproc: string;
+        schemaOrg: string;
+        resourceTypeGeneral: string;
+      };
+      relatedIdentifiers: {
+        relatedIdentifier: string;
+        relatedIdentifierType: string;
+        relationType: string;
+        relatedMetadataScheme: string;
+        schemeType: string;
+        schemeUri: string;
+      }[];
+      relatedItems: any[];
+      sizes: string[];
+      formats: string[];
+      version: string;
+      rightsList: {
+        rights: string | null;
+        rightsUri: string | null;
+        schemeUri: string | null;
+        rightsIdentifier: string | null;
+        rightsIdentifierScheme: string | null;
+      }[];
+      descriptions: {
+        lang: string | null;
+        description: string;
+        descriptionType: string;
+      }[];
+      geoLocations: any[];
+      fundingReferences: any[];
+      xml: string;
+      url: string | null;
+      contentUrl: string | null;
+      metadataVersion: number;
+      schemaVersion: string;
+      source: string;
+      isActive: boolean;
+      state: string;
+      reason: string | null;
+      viewCount: number;
+      viewsOverTime: any[];
+      downloadCount: number;
+      downloadsOverTime: any[];
+      referenceCount: number;
+      citationCount: number;
+      citationsOverTime: any[];
+      partCount: number;
+      partOfCount: number;
+      versions: { data: any[] };
+      versionOf: { data: any[] };
+      created: string | null;
+      registered: string | null;
+      published: string;
+      updated: string;
+    };
+  };
+}

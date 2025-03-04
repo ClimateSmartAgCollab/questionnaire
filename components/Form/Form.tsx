@@ -59,7 +59,7 @@ export default function Form() {
     currentChildParentId,
     reviewOutput,
     setReviewOutput,
-    handleSubmit,
+    handleSubmit_openAIRE,
     deleteChild,
     editExistingChild,
     setIsNewChild,
@@ -753,7 +753,7 @@ export default function Form() {
                 {isVeryLastPageOfLastStep ? (
                   <button
                     type='button'
-                    onClick={handleSubmit}
+                    onClick={handleSubmit_openAIRE}
                     className='rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600'
                   >
                     Submit

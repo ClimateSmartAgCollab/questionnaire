@@ -1,6 +1,13 @@
 // src/hooks/useDynamicForm.ts
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
-import { Page_parsed, Step, Field } from '../../type'
+import {
+  Page_parsed,
+  Step,
+  Field,
+  ChildQuestion,
+  Question,
+  Submission
+} from '../../type'
 import {
   buildStepTree,
   getParentSteps,
@@ -320,29 +327,379 @@ export function useDynamicForm(parsedSteps: Step[]) {
     [parsedSteps, validateCurrentPageData, saveCurrentPageData]
   )
 
-  const handleSubmit = () => {
-    const questions: Array<{
-      id: string
-      label: string
-      type: string
-      answer: any
-      children?: Array<{
-        childId: string
-        questions: Array<{
-          id: string
-          label: string
-          type: string
-          answer: any
-        }>
-      }>
-    }> = []
+  // const handleSubmit = () => {
+  //   const questions: Array<{
+  //     id: string
+  //     label: string
+  //     type: string
+  //     answer: any
+  //     children?: Array<{
+  //       childId: string
+  //       questions: Array<{
+  //         id: string
+  //         label: string
+  //         type: string
+  //         answer: any
+  //       }>
+  //     }>
+  //   }> = []
+
+  //   const parentStepsForReview = getParentSteps(parsedSteps)
+  //   parentStepsForReview.forEach(step => {
+  //     step.pages.forEach(page => {
+  //       page.sections.forEach(section => {
+  //         section.fields.forEach(field => {
+  //           const questionObj: any = {
+  //             id: field.id,
+  //             label:
+  //               field.labels[language]?.[field.id] ||
+  //               field.labels['eng']?.[field.id] ||
+  //               'No label',
+  //             type: field.type,
+  //             answer: formData[step.id]?.[field.id] ?? ''
+  //           }
+
+  //           if (field.type === 'reference' && field.ref) {
+  //             const childrenData =
+  //               parentFormData[field.id]?.childrenData?.[field.ref]
+  //             if (childrenData && Array.isArray(childrenData)) {
+  //               questionObj.children = childrenData.map(child => {
+  //                 const childQuestions: Array<{
+  //                   id: string
+  //                   label: string
+  //                   type: string
+  //                   answer: any
+  //                 }> = []
+
+  //                 for (const key in child.data) {
+  //                   childQuestions.push({
+  //                     id: key,
+  //                     label: key,
+  //                     type: 'childField',
+  //                     answer: child.data[key]
+  //                   })
+  //                 }
+
+  //                 return {
+  //                   childId: child.id,
+  //                   questions: childQuestions
+  //                 }
+  //               })
+  //             }
+  //           }
+
+  //           questions.push(questionObj)
+  //         })
+  //       })
+  //     })
+  //   })
+
+  //   const submission = {
+  //     title: 'Questionnaire Review',
+  //     questions,
+  //     submittedAt: new Date().toISOString()
+  //   }
+
+  //   setReviewOutput(submission)
+
+  //   console.log('Submission JSON:', JSON.stringify(submission, null, 2))
+
+  //   //to immediately submit data to backend,
+  //   //call submission API here (or wait until the user confirms on the review page).
+  // }
+
+  
+
+
+
+
+  const parseName = (
+    fullName: string
+  ): { familyName: string | null; givenName: string | null } => {
+    const parts = fullName.split(',')
+    if (parts.length >= 2) {
+      return {
+        familyName: parts[0].trim(),
+        givenName: parts[1].trim()
+      }
+    }
+    return { familyName: null, givenName: null }
+  }
+
+type MappingFunction = (
+    q: Question
+  ) => Partial<Submission['data']['attributes']>
+
+  const fieldMapping: { [key: string]: MappingFunction } = {
+    identifier: q => {
+      const doi = q.answer
+      const parts = doi.split('/')
+      return {
+        doi,
+        prefix: parts[0] || '',
+        suffix: parts.slice(1).join('/') || ''
+      }
+    },
+
+    alternateIdentifier: q => ({
+      alternateIdentifiers:
+        q.children?.map(child => {
+          const altId =
+            child.questions.find(cq => cq.id === 'alternateIdentifier')
+              ?.answer || ''
+          const altIdType =
+            child.questions.find(cq => cq.id === 'alternateIdentifierType')
+              ?.answer || ''
+          return {
+            alternateIdentifier: altId,
+            alternateIdentifierType: altIdType
+          }
+        }) || []
+    }),
+
+    creator: q => ({
+      creators:
+        q.children?.map(child => {
+          const creatorName =
+            child.questions.find(cq => cq.id === 'creatorName')?.answer || ''
+          const { familyName, givenName } = parseName(creatorName)
+          const affiliation =
+            child.questions.find(cq => cq.id === 'affiliation')?.answer || ''
+          const nameIdentifier =
+            child.questions.find(cq => cq.id === 'nameIdentifier')?.answer || ''
+          const nameIdentifierScheme =
+            child.questions.find(cq => cq.id === 'nameIdentifierScheme')
+              ?.answer || ''
+          const schemeUri =
+            child.questions.find(cq => cq.id === 'schemeURI')?.answer || ''
+          return {
+            name: creatorName,
+            nameType: 'Personal', // default
+            givenName,
+            familyName,
+            affiliation: [{ name: affiliation }],
+            nameIdentifiers: [
+              {
+                nameIdentifier,
+                nameIdentifierScheme,
+                schemeUri: schemeUri || null
+              }
+            ]
+          }
+        }) || []
+    }),
+
+    contributor: q => ({
+      contributors:
+        q.children?.map(child => {
+          const contributorName =
+            child.questions.find(cq => cq.id === 'contributorName')?.answer ||
+            ''
+          const { familyName, givenName } = parseName(contributorName)
+          const contributorType =
+            child.questions.find(cq => cq.id === 'contributorType')?.answer ||
+            ''
+          const affiliation =
+            child.questions.find(cq => cq.id === 'affiliation')?.answer || ''
+          const nameIdentifier =
+            child.questions.find(cq => cq.id === 'nameIdentifier')?.answer || ''
+          const nameIdentifierScheme =
+            child.questions.find(cq => cq.id === 'nameIdentifierScheme')
+              ?.answer || ''
+          const schemeUri =
+            child.questions.find(cq => cq.id === 'schemeURI')?.answer || ''
+          return {
+            name: contributorName,
+            nameType: 'Organizational', // default
+            givenName,
+            familyName,
+            affiliation: [{ name: affiliation }],
+            contributorType,
+            nameIdentifiers: [
+              {
+                nameIdentifier,
+                nameIdentifierScheme,
+                schemeUri: schemeUri || null
+              }
+            ]
+          }
+        }) || []
+    }),
+
+    title: q => ({
+      titles:
+        q.children?.map(child => {
+          const title =
+            child.questions.find(cq => cq.id === 'title')?.answer || ''
+          const titleType =
+            child.questions.find(cq => cq.id === 'titleType')?.answer || null
+          return { lang: null, title, titleType }
+        }) || []
+    }),
+
+    publisher: q => ({
+      publisher: { name: q.answer }
+    }),
+
+    publicationYear: q => ({
+      publicationYear: parseInt(q.answer.split('-')[0], 10)
+    }),
+
+    subject: q => ({
+      subjects:
+        q.children?.map(child => {
+          const subject =
+            child.questions.find(cq => cq.id === 'subject')?.answer || ''
+          const subjectScheme =
+            child.questions.find(cq => cq.id === 'subjectScheme')?.answer ||
+            null
+          const schemeUri =
+            child.questions.find(cq => cq.id === 'schemeURI')?.answer || null
+          return { subject, valueUri: null, schemeUri, subjectScheme }
+        }) || []
+    }),
+
+    date: q => ({
+      dates:
+        q.children?.map(child => {
+          const date =
+            child.questions.find(cq => cq.id === 'date')?.answer || ''
+          const dateType =
+            child.questions.find(cq => cq.id === 'dateType')?.answer || ''
+          return { date, dateType }
+        }) || []
+    }),
+
+    language: q => ({
+      language: q.answer || null
+    }),
+
+    resourceType: q => {
+      const resourceTypeGeneral =
+        q.children
+          ?.find(child =>
+            child.questions.some(cq => cq.id === 'resourceTypeGeneral')
+          )
+          ?.questions.find(cq => cq.id === 'resourceTypeGeneral')?.answer || ''
+      return {
+        resourceTypeGeneral,
+        types: {
+          ris: 'DATA',
+          bibtex: 'misc',
+          citeproc: 'dataset',
+          schemaOrg: 'Dataset',
+          resourceTypeGeneral
+        }
+      }
+    },
+
+    relatedIdentifier: q => ({
+      relatedIdentifiers:
+        q.children?.map(child => {
+          const relatedIdentifier =
+            child.questions.find(cq => cq.id === 'relatedIdentifier')?.answer ||
+            ''
+          const relatedIdentifierType =
+            child.questions.find(cq => cq.id === 'relatedIdentifierType')
+              ?.answer || ''
+          const relationType =
+            child.questions.find(cq => cq.id === 'relationType')?.answer || ''
+          const relatedMetadataScheme =
+            child.questions.find(cq => cq.id === 'relatedMetadataScheme')
+              ?.answer || ''
+          const schemeType =
+            child.questions.find(cq => cq.id === 'schemeType')?.answer || ''
+          const schemeUri =
+            child.questions.find(cq => cq.id === 'schemeURI')?.answer || ''
+          return {
+            relatedIdentifier,
+            relatedIdentifierType,
+            relationType,
+            relatedMetadataScheme,
+            schemeType,
+            schemeUri
+          }
+        }) || []
+    }),
+
+    geoLocation: q => ({
+      geoLocations:
+        q.children?.map(child => {
+          const geoLocationPlace =
+            child.questions.find(cq => cq.id === 'geoLocationPlace')?.answer ||
+            ''
+          const geoLocationBox =
+            child.questions.find(cq => cq.id === 'geoLocationBox')?.answer || ''
+          const geoLocationPoint =
+            child.questions.find(cq => cq.id === 'geoLocationPoint')?.answer ||
+            ''
+          return { geoLocationPlace, geoLocationBox, geoLocationPoint }
+        }) || []
+    }),
+
+    format: q => ({
+      formats:
+        q.children?.reduce<string[]>((acc, child) => {
+          child.questions.forEach(cq => {
+            if (cq.id === 'format') acc.push(cq.answer)
+          })
+          return acc
+        }, []) || []
+    }),
+
+    size: q => ({
+      sizes:
+        q.children?.reduce<string[]>((acc, child) => {
+          child.questions.forEach(cq => {
+            if (cq.id === 'size') acc.push(cq.answer)
+          })
+          return acc
+        }, []) || []
+    }),
+
+    description: q => ({
+      descriptions:
+        q.children?.map(child => {
+          const description =
+            child.questions.find(cq => cq.id === 'description')?.answer || ''
+          const descriptionType =
+            child.questions.find(cq => cq.id === 'descriptionType')?.answer ||
+            ''
+          return { lang: 'en', description, descriptionType }
+        }) || []
+    }),
+
+    version: q => ({
+      version: q.answer
+    }),
+
+    rights: q => ({
+      rightsList:
+        q.children?.map(child => {
+          const rights =
+            child.questions.find(cq => cq.id === 'rights')?.answer || null
+          const rightsUri =
+            child.questions.find(cq => cq.id === 'rightsURI')?.answer || null
+          return {
+            rights,
+            rightsUri,
+            schemeUri: null,
+            rightsIdentifier: null,
+            rightsIdentifierScheme: null
+          }
+        }) || []
+    })
+  }
+
+const handleSubmit_openAIRE = (): void => {
+    const questions: Question[] = []
 
     const parentStepsForReview = getParentSteps(parsedSteps)
     parentStepsForReview.forEach(step => {
-      step.pages.forEach(page => {
-        page.sections.forEach(section => {
-          section.fields.forEach(field => {
-            const questionObj: any = {
+      step.pages.forEach((page: any) => {
+        page.sections.forEach((section: any) => {
+          section.fields.forEach((field: any) => {
+            const questionObj: Question = {
               id: field.id,
               label:
                 field.labels[language]?.[field.id] ||
@@ -356,14 +713,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
               const childrenData =
                 parentFormData[field.id]?.childrenData?.[field.ref]
               if (childrenData && Array.isArray(childrenData)) {
-                questionObj.children = childrenData.map(child => {
-                  const childQuestions: Array<{
-                    id: string
-                    label: string
-                    type: string
-                    answer: any
-                  }> = []
-
+                questionObj.children = childrenData.map((child: any) => {
+                  const childQuestions: ChildQuestion[] = []
                   for (const key in child.data) {
                     childQuestions.push({
                       id: key,
@@ -372,11 +723,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
                       answer: child.data[key]
                     })
                   }
-
-                  return {
-                    childId: child.id,
-                    questions: childQuestions
-                  }
+                  return { childId: child.id, questions: childQuestions }
                 })
               }
             }
@@ -387,18 +734,105 @@ export function useDynamicForm(parsedSteps: Step[]) {
       })
     })
 
-    const submission = {
-      title: 'Questionnaire Review',
-      questions,
-      submittedAt: new Date().toISOString()
+
+    // todo: how to order the attributes?
+    const dataAttributes: Submission['data']['attributes'] = {
+      doi: '',
+      prefix: '',
+      suffix: '',
+      identifiers: [],
+      alternateIdentifiers: [],
+      creators: [],
+      contributors: [],
+      titles: [],
+      publisher: { name: '' },
+      container: {},
+      publicationYear: 0,
+      subjects: [],
+      dates: [],
+      language: null,
+      types: {
+        ris: 'DATA',
+        bibtex: 'misc',
+        citeproc: 'dataset',
+        schemaOrg: 'Dataset',
+        resourceTypeGeneral: ''
+      },
+      relatedIdentifiers: [],
+      relatedItems: [],
+      sizes: [],
+      formats: [],
+      version: '',
+      rightsList: [],
+      descriptions: [],
+      geoLocations: [],
+      fundingReferences: [],
+      xml: '',
+      url: null,
+      contentUrl: null,
+      metadataVersion: 5,
+      schemaVersion: 'http://datacite.org/schema/kernel-4',
+      source: 'fabricaForm',
+      isActive: true,
+      state: 'findable',
+      reason: null,
+      viewCount: 0,
+      viewsOverTime: [],
+      downloadCount: 0,
+      downloadsOverTime: [],
+      referenceCount: 0,
+      citationCount: 0,
+      citationsOverTime: [],
+      partCount: 0,
+      partOfCount: 0,
+      versions: { data: [] },
+      versionOf: { data: [] },
+      created: null,
+      registered: null,
+      published: '', 
+      updated: ''
     }
-  
+
+    let doiValue = ''
+
+    questions.forEach(q => {
+      const mapper = fieldMapping[q.id]
+      if (mapper) {
+        const result = mapper(q)
+        Object.keys(result).forEach(key => {
+          const value = (result as any)[key]
+          if (Array.isArray(value)) {
+            ;(dataAttributes as any)[key] = (dataAttributes as any)[key].concat(
+              value
+            )
+          } else {
+            ;(dataAttributes as any)[key] = value
+          }
+        })
+      }
+      if (q.id === 'identifier') {
+        doiValue = q.answer
+      }
+    })
+
+    dataAttributes.published = dataAttributes.publicationYear.toString()
+    dataAttributes.updated = new Date().toISOString()
+
+    const submission: Submission = {
+      data: {
+        id: doiValue,
+        type: 'dois',
+        attributes: {
+          ...dataAttributes
+        }
+      }
+    }
+
     setReviewOutput(submission)
-  
     console.log('Submission JSON:', JSON.stringify(submission, null, 2))
 
-    //to immediately submit data to backend,
-    //call submission API here (or wait until the user confirms on the review page).
+    // To immediately submit data to the backend,
+    // call your submission API here (or wait until the user confirms on the review page).
   }
 
   const handleNavigate = useCallback(
@@ -673,7 +1107,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
     sortStepsByReferences,
     reviewOutput,
     setReviewOutput,
-    handleSubmit,
+    handleSubmit_openAIRE,
     deleteChild,
     isNewChild,
     setIsNewChild,
