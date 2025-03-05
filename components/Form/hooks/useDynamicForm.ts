@@ -408,11 +408,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
   //   //call submission API here (or wait until the user confirms on the review page).
   // }
 
-  
-
-
-
-
   const parseName = (
     fullName: string
   ): { familyName: string | null; givenName: string | null } => {
@@ -426,7 +421,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
     return { familyName: null, givenName: null }
   }
 
-type MappingFunction = (
+  type MappingFunction = (
     q: Question
   ) => Partial<Submission['data']['attributes']>
 
@@ -691,7 +686,7 @@ type MappingFunction = (
     })
   }
 
-const handleSubmit_openAIRE = (): void => {
+  const handleSubmit_openAIRE = (): void => {
     const questions: Question[] = []
 
     const parentStepsForReview = getParentSteps(parsedSteps)
@@ -733,7 +728,6 @@ const handleSubmit_openAIRE = (): void => {
         })
       })
     })
-
 
     // todo: how to order the attributes?
     const dataAttributes: Submission['data']['attributes'] = {
@@ -789,7 +783,7 @@ const handleSubmit_openAIRE = (): void => {
       versionOf: { data: [] },
       created: null,
       registered: null,
-      published: '', 
+      published: '',
       updated: ''
     }
 
@@ -831,8 +825,49 @@ const handleSubmit_openAIRE = (): void => {
     setReviewOutput(submission)
     console.log('Submission JSON:', JSON.stringify(submission, null, 2))
 
-    // To immediately submit data to the backend,
-    // call your submission API here (or wait until the user confirms on the review page).
+  }
+
+  // Helper function to get CSRF token from cookies.
+  function getCookie(name: string): string | null {
+    let cookieValue: string | null = null
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';')
+      for (let cookie of cookies) {
+        cookie = cookie.trim()
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+          break
+        }
+      }
+    }
+    return cookieValue
+  }
+
+  const handleVerifyAndSubmit = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:8000/drt/api/submission/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') || ''
+          },
+          body: JSON.stringify(reviewOutput)
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error(`Submission failed with status ${response.status}`)
+      }
+
+      const data = await response.json()
+      console.log('Submission successful:', data)
+      //show a success message or redirect the user to the html output of jinja2 from the backend.
+    } catch (error) {
+      console.error('Error during submission:', error)
+      //show an error message to the user.
+    }
   }
 
   const handleNavigate = useCallback(
@@ -1111,6 +1146,7 @@ const handleSubmit_openAIRE = (): void => {
     deleteChild,
     isNewChild,
     setIsNewChild,
-    editExistingChild
+    editExistingChild,
+    handleVerifyAndSubmit
   }
 }

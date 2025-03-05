@@ -63,7 +63,8 @@ export default function Form() {
     deleteChild,
     editExistingChild,
     setIsNewChild,
-    isNewChild
+    isNewChild,
+    handleVerifyAndSubmit
   } = useDynamicForm(parsedSteps)
 
   const { parentFormData } = useFormData()
@@ -279,13 +280,20 @@ export default function Form() {
               </div>
             ))}
           </div>
-          <div className='mt-8 flex justify-center'>
+          <div className='mt-8 flex justify-center space-x-4'>
             <button
               type='button'
               onClick={() => setReviewOutput(null)}
-              className='rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600'
+              className='rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white shadow transition duration-200 hover:bg-blue-600'
             >
               Back to Form
+            </button>
+            <button
+              type='button'
+              onClick={handleVerifyAndSubmit}
+              className='rounded-lg bg-green-500 px-6 py-2 font-semibold text-white shadow transition duration-200 hover:bg-green-600'
+            >
+              Verify and Submit
             </button>
           </div>
         </main>
