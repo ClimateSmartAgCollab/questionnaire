@@ -140,7 +140,7 @@ export default function Form() {
                           }
                           const childAnswer = child.data[cField.id]
                           return (
-                            <div key={cField.id} className='mb-1 ml-4'>
+                            <div key={cField.id} className='mb-1 ml-4 break-words'>
                               <strong>
                                 {cField.labels[language]?.[cField.id] ||
                                   cField.labels.eng?.[cField.id] ||
@@ -260,7 +260,7 @@ export default function Form() {
                                   {field.labels[language]?.[field.id] ||
                                     field.labels.eng?.[field.id]}
                                 </label>
-                                <div className='mt-1 rounded border bg-gray-50 p-2 text-gray-900'>
+                                <div className='mt-1 rounded border bg-gray-50 p-2 text-gray-900 break-words'>
                                   {Array.isArray(fieldAnswer)
                                     ? fieldAnswer.join(', ')
                                     : fieldAnswer?.toString() || (
@@ -297,7 +297,7 @@ export default function Form() {
             </button>
           </div>
         </main>
-        <Footer currentPage={currentStep} />
+        <Footer />
       </section>
     )
   }
@@ -863,7 +863,7 @@ export default function Form() {
 
       {/* Footer */}
       <div className={styles.footer}>
-        <Footer currentPage={currentStep} />
+        <Footer />
         <p className='text-center text-gray-600'>
           © 2025 University of Guelph. All rights reserved.
         </p>

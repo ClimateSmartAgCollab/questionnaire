@@ -269,8 +269,6 @@ export interface Submission {
       creators: {
         name: string;
         nameType: string;
-        givenName: string | null;
-        familyName: string | null;
         affiliation: { name: string }[];
         nameIdentifiers: {
           schemeUri: string | null;
@@ -297,8 +295,6 @@ export interface Submission {
       contributors: {
         name: string;
         nameType: string;
-        givenName: string | null;
-        familyName: string | null;
         affiliation: { name: string }[];
         contributorType: string;
         nameIdentifiers: {

@@ -15,6 +15,7 @@ import {
   validateField
 } from '../utils/steps'
 import { useFormData } from '../context/FormDataContext'
+import { useRouter } from 'next/navigation'
 
 type FieldErrors = Record<string, string>
 
@@ -408,18 +409,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
   //   //call submission API here (or wait until the user confirms on the review page).
   // }
 
-  const parseName = (
-    fullName: string
-  ): { familyName: string | null; givenName: string | null } => {
-    const parts = fullName.split(',')
-    if (parts.length >= 2) {
-      return {
-        familyName: parts[0].trim(),
-        givenName: parts[1].trim()
-      }
-    }
-    return { familyName: null, givenName: null }
-  }
 
   type MappingFunction = (
     q: Question
@@ -457,7 +446,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
         q.children?.map(child => {
           const creatorName =
             child.questions.find(cq => cq.id === 'creatorName')?.answer || ''
-          const { familyName, givenName } = parseName(creatorName)
           const affiliation =
             child.questions.find(cq => cq.id === 'affiliation')?.answer || ''
           const nameIdentifier =
@@ -470,8 +458,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
           return {
             name: creatorName,
             nameType: 'Personal', // default
-            givenName,
-            familyName,
             affiliation: [{ name: affiliation }],
             nameIdentifiers: [
               {
@@ -490,7 +476,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
           const contributorName =
             child.questions.find(cq => cq.id === 'contributorName')?.answer ||
             ''
-          const { familyName, givenName } = parseName(contributorName)
+          
           const contributorType =
             child.questions.find(cq => cq.id === 'contributorType')?.answer ||
             ''
@@ -506,8 +492,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
           return {
             name: contributorName,
             nameType: 'Organizational', // default
-            givenName,
-            familyName,
             affiliation: [{ name: affiliation }],
             contributorType,
             nameIdentifiers: [
@@ -824,7 +808,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
 
     setReviewOutput(submission)
     console.log('Submission JSON:', JSON.stringify(submission, null, 2))
-
   }
 
   // Helper function to get CSRF token from cookies.
@@ -842,6 +825,8 @@ export function useDynamicForm(parsedSteps: Step[]) {
     }
     return cookieValue
   }
+
+  const router = useRouter()
 
   const handleVerifyAndSubmit = async () => {
     try {
@@ -861,8 +846,14 @@ export function useDynamicForm(parsedSteps: Step[]) {
         throw new Error(`Submission failed with status ${response.status}`)
       }
 
-      const data = await response.json()
-      console.log('Submission successful:', data)
+      const html = await response.text()
+      console.log('Received HTML:', html)
+
+      // Store the HTML in sessionStorage so the review page can access it.
+      sessionStorage.setItem('submissionHtml', html)
+
+      router.push('/submission-review')
+
       //show a success message or redirect the user to the html output of jinja2 from the backend.
     } catch (error) {
       console.error('Error during submission:', error)

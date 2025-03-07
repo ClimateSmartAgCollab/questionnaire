@@ -4,11 +4,8 @@ import logoG from '../assets/R.jpg'
 import logoOntarioG from '../assets/OIP.png'
 import { Stack, Divider, Box, Typography } from '@mui/material'
 
-interface FooterProps {
-  currentPage: number
-}
 
-const Footer: React.FC<FooterProps> = ({ currentPage }) => {
+const Footer = () => {
   return (
     <>
       <Divider orientation='horizontal' flexItem />
