@@ -409,7 +409,6 @@ export function useDynamicForm(parsedSteps: Step[]) {
   //   //call submission API here (or wait until the user confirms on the review page).
   // }
 
-
   type MappingFunction = (
     q: Question
   ) => Partial<Submission['data']['attributes']>
@@ -476,7 +475,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
           const contributorName =
             child.questions.find(cq => cq.id === 'contributorName')?.answer ||
             ''
-          
+
           const contributorType =
             child.questions.find(cq => cq.id === 'contributorType')?.answer ||
             ''
@@ -713,97 +712,9 @@ export function useDynamicForm(parsedSteps: Step[]) {
       })
     })
 
-    // todo: how to order the attributes?
-    const dataAttributes: Submission['data']['attributes'] = {
-      doi: '',
-      prefix: '',
-      suffix: '',
-      identifiers: [],
-      alternateIdentifiers: [],
-      creators: [],
-      contributors: [],
-      titles: [],
-      publisher: { name: '' },
-      container: {},
-      publicationYear: 0,
-      subjects: [],
-      dates: [],
-      language: null,
-      types: {
-        ris: 'DATA',
-        bibtex: 'misc',
-        citeproc: 'dataset',
-        schemaOrg: 'Dataset',
-        resourceTypeGeneral: ''
-      },
-      relatedIdentifiers: [],
-      relatedItems: [],
-      sizes: [],
-      formats: [],
-      version: '',
-      rightsList: [],
-      descriptions: [],
-      geoLocations: [],
-      fundingReferences: [],
-      xml: '',
-      url: null,
-      contentUrl: null,
-      metadataVersion: 5,
-      schemaVersion: 'http://datacite.org/schema/kernel-4',
-      source: 'fabricaForm',
-      isActive: true,
-      state: 'findable',
-      reason: null,
-      viewCount: 0,
-      viewsOverTime: [],
-      downloadCount: 0,
-      downloadsOverTime: [],
-      referenceCount: 0,
-      citationCount: 0,
-      citationsOverTime: [],
-      partCount: 0,
-      partOfCount: 0,
-      versions: { data: [] },
-      versionOf: { data: [] },
-      created: null,
-      registered: null,
-      published: '',
-      updated: ''
-    }
-
-    let doiValue = ''
-
-    questions.forEach(q => {
-      const mapper = fieldMapping[q.id]
-      if (mapper) {
-        const result = mapper(q)
-        Object.keys(result).forEach(key => {
-          const value = (result as any)[key]
-          if (Array.isArray(value)) {
-            ;(dataAttributes as any)[key] = (dataAttributes as any)[key].concat(
-              value
-            )
-          } else {
-            ;(dataAttributes as any)[key] = value
-          }
-        })
-      }
-      if (q.id === 'identifier') {
-        doiValue = q.answer
-      }
-    })
-
-    dataAttributes.published = dataAttributes.publicationYear.toString()
-    dataAttributes.updated = new Date().toISOString()
-
-    const submission: Submission = {
-      data: {
-        id: doiValue,
-        type: 'dois',
-        attributes: {
-          ...dataAttributes
-        }
-      }
+    const submission = {
+      submittedAt: new Date().toISOString(),
+      questions
     }
 
     setReviewOutput(submission)
@@ -846,18 +757,23 @@ export function useDynamicForm(parsedSteps: Step[]) {
         throw new Error(`Submission failed with status ${response.status}`)
       }
 
-      const html = await response.text()
-      console.log('Received HTML:', html)
 
-      // Store the HTML in sessionStorage so the review page can access it.
-      sessionStorage.setItem('submissionHtml', html)
+      const blob = await response.blob()
 
-      router.push('/submission-review')
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'standardized.json'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
 
-      //show a success message or redirect the user to the html output of jinja2 from the backend.
+      window.URL.revokeObjectURL(url)
+
+      // show a success message or perform additional actions
     } catch (error) {
       console.error('Error during submission:', error)
-      //show an error message to the user.
+      // Display an error message to the user
     }
   }
 
