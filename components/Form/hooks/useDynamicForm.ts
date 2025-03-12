@@ -742,7 +742,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
   const handleVerifyAndSubmit = async () => {
     try {
       const response = await fetch(
-        'http://localhost:8000/drt/api/submission/',
+        'https://drt-design-document-new.onrender.com/drt/api/submission/',
         {
           method: 'POST',
           headers: {

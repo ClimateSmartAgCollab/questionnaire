@@ -1,4 +1,6 @@
 // src/components/Form/Form.tsx
+/* eslint-disable react/no-unescaped-entities */
+
 'use client'
 
 import { motion } from 'framer-motion'
@@ -293,7 +295,7 @@ export default function Form() {
               onClick={handleVerifyAndSubmit}
               className='rounded-lg bg-green-500 px-6 py-2 font-semibold text-white shadow transition duration-200 hover:bg-green-600'
             >
-              Verify and Submit
+              Verify and generate OpenAIRE JSON
             </button>
           </div>
         </main>
