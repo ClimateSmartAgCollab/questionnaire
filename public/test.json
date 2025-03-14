@@ -128,14 +128,7 @@
           "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
           "type": "spec/overlays/entry_code/1.0",
           "attribute_entry_codes": {
-            "identifierType": [
-              "ARK",
-              "DOI",
-              "Handle",
-              "PURL",
-              "URL",
-              "URN"
-            ]
+            "identifierType": ["ARK", "DOI", "Handle", "PURL", "URL", "URN"]
           }
         },
         "information": [
@@ -486,10 +479,7 @@
             "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
             "type": "spec/overlays/entry_code/1.0",
             "attribute_entry_codes": {
-              "nameIdentifierScheme": [
-                "ISNI",
-                "ORCID"
-              ]
+              "nameIdentifierScheme": ["ISNI", "ORCID"]
             }
           },
           "format": {
@@ -1381,11 +1371,7 @@
             "capture_base": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
             "type": "spec/overlays/entry_code/1.0",
             "attribute_entry_codes": {
-              "titleType": [
-                "AlternativeTitle",
-                "Subtitle",
-                "TranslatedTitle"
-              ]
+              "titleType": ["AlternativeTitle", "Subtitle", "TranslatedTitle"]
             }
           },
           "information": [
@@ -1460,14 +1446,7 @@
             "geoLocation"
           ],
           "entry_code_ordering": {
-            "identifierType": [
-              "ARK",
-              "DOI",
-              "Handle",
-              "PURL",
-              "URL",
-              "URN"
-            ]
+            "identifierType": ["ARK", "DOI", "Handle", "PURL", "URL", "URN"]
           }
         }
       }
@@ -1477,9 +1456,7 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EIC9__U1uCn0UaREPwlM7h2gYJ4J0EW042qzpjlMVUqC",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
@@ -1511,9 +1488,7 @@
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: OpenAIRE Application Profile Parent"
@@ -1547,59 +1522,42 @@
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "affiliation",
-                  "contributorName"
-                ]
+                "showing_attribute": ["affiliation", "contributorName"]
               },
               "creator": {
                 "type": "reference",
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "affiliation",
-                  "creatorName"
-                ]
+                "showing_attribute": ["affiliation", "creatorName"]
               },
               "date": {
                 "type": "reference",
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "date",
-                  "dateType"
-                ]
+                "showing_attribute": ["date", "dateType"]
               },
               "description": {
                 "type": "reference",
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "description",
-                  "descriptionType"
-                ]
+                "showing_attribute": ["description", "descriptionType"]
               },
               "format": {
                 "type": "reference",
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "format"
-                ]
+                "showing_attribute": ["format"]
               },
               "geoLocation": {
                 "type": "reference",
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "geoLocationBox",
-                  "geoLocationPlace"
-                ]
+                "showing_attribute": ["geoLocationBox", "geoLocationPlace"]
               },
               "identifier": {
                 "type": "textarea",
@@ -1608,7 +1566,8 @@
                 }
               },
               "identifierType": {
-                "type": "textarea",
+                "type": "dropdown",
+                "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
                 }
@@ -1643,49 +1602,35 @@
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "resourceType",
-                  "resourceTypeGeneral"
-                ]
+                "showing_attribute": ["resourceType", "resourceTypeGeneral"]
               },
               "rights": {
                 "type": "reference",
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "rights",
-                  "rightsURI"
-                ]
+                "showing_attribute": ["rights", "rightsURI"]
               },
               "size": {
                 "type": "reference",
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "size"
-                ]
+                "showing_attribute": ["size"]
               },
               "subject": {
                 "type": "reference",
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "schemeURI",
-                  "subject"
-                ]
+                "showing_attribute": ["schemeURI", "subject"]
               },
               "title": {
                 "type": "reference",
                 "reference_button_text": {
                   "eng": "default"
                 },
-                "showing_attribute": [
-                  "title",
-                  "titleType"
-                ]
+                "showing_attribute": ["title", "titleType"]
               },
               "version": {
                 "type": "textarea",
@@ -1704,9 +1649,7 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EDSz07MuHT8BKIm_8zXLPgV-zbNF3UAEBEXcfDdDdWpg",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
@@ -1721,9 +1664,7 @@
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: AlternateIdentifier"
@@ -1762,9 +1703,7 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EMkpL_3wtT3Py7YKk-FMFfFRk5VwFFDfkBLf7M_kmCS5",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
@@ -1783,9 +1722,7 @@
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: Contributor"
@@ -1817,7 +1754,8 @@
                 }
               },
               "contributorType": {
-                "type": "textarea",
+                "type": "dropdown",
+                "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
                 }
@@ -1829,7 +1767,8 @@
                 }
               },
               "nameIdentifierScheme": {
-                "type": "textarea",
+                "type": "dropdown",
+                "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
                 }
@@ -1848,9 +1787,7 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EE5Kw0j0FpUk8E38gGSMB5doQYzvGN7IkbMlFdtXSLdH",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
@@ -1868,9 +1805,7 @@
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: Creator"
@@ -1927,26 +1862,19 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EHmpjufBdAdm6YPD91xmNw88VwYqGqrJZ-iQfig3M2by",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
             "attribute_order": [
               {
                 "named_section": "section-1",
-                "attribute_order": [
-                  "date",
-                  "dateType"
-                ]
+                "attribute_order": ["date", "dateType"]
               }
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: Date"
@@ -1969,7 +1897,8 @@
                 "type": "DateTime"
               },
               "dateType": {
-                "type": "textarea",
+                "type": "dropdown",
+                "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
                 }
@@ -1982,26 +1911,19 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EH0NhXGFPdJm26c2enMfJCxA_jUdLnmLbnMtZnQ5jVeq",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
             "attribute_order": [
               {
                 "named_section": "section-1",
-                "attribute_order": [
-                  "description",
-                  "descriptionType"
-                ]
+                "attribute_order": ["description", "descriptionType"]
               }
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: Description"
@@ -2027,7 +1949,8 @@
                 }
               },
               "descriptionType": {
-                "type": "textarea",
+                "type": "dropdown",
+                "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
                 }
@@ -2040,25 +1963,19 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EEXeQGZ_hAgLxBjKd6frIV4GDhswBoO6wsojXG7sYbSP",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
             "attribute_order": [
               {
                 "named_section": "section-1",
-                "attribute_order": [
-                  "format"
-                ]
+                "attribute_order": ["format"]
               }
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: Format"
@@ -2091,9 +2008,7 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "ELuKIZZJ2QXa6fF0ytTEIpHOH_cIYUKVE4LvkOAgk0_c",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
@@ -2109,9 +2024,7 @@
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: GeoLocation"
@@ -2156,9 +2069,7 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EN1tp-W1Xm9Gy_gsb0z8nT2rXDwWiB2NERJJ7VFEE19J",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
@@ -2177,9 +2088,7 @@
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: RelatedIdentifier"
@@ -2205,7 +2114,8 @@
                 }
               },
               "relatedIdentifierType": {
-                "type": "textarea",
+                "type": "dropdown",
+                "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
                 }
@@ -2242,26 +2152,19 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "ELOtwjtCdWqOvNd-yNFCYhoq5jPwC-jAObFp0dS1Gs7b",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
             "attribute_order": [
               {
                 "named_section": "section-1",
-                "attribute_order": [
-                  "resourceType",
-                  "resourceTypeGeneral"
-                ]
+                "attribute_order": ["resourceType", "resourceTypeGeneral"]
               }
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: ResourceType"
@@ -2287,7 +2190,8 @@
                 }
               },
               "resourceTypeGeneral": {
-                "type": "textarea",
+                "type": "dropdown",
+                "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
                 }
@@ -2300,26 +2204,19 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EG4F5F-ZAWP-Pk3sjCQSezReEwRtcQNSqZZAkRZydeb6",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
             "attribute_order": [
               {
                 "named_section": "section-1",
-                "attribute_order": [
-                  "rights",
-                  "rightsURI"
-                ]
+                "attribute_order": ["rights", "rightsURI"]
               }
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: Rights"
@@ -2358,25 +2255,19 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EMBvdywONxYedkEFSwRDtQQNgqWgKo9s7P1xWuoZiL3b",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
             "attribute_order": [
               {
                 "named_section": "section-1",
-                "attribute_order": [
-                  "size"
-                ]
+                "attribute_order": ["size"]
               }
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: Size"
@@ -2409,27 +2300,19 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "EM1v137QT176gEjZBFQzFg2grKCdyaeDuxtcJ6lxx99f",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
             "attribute_order": [
               {
                 "named_section": "section-1",
-                "attribute_order": [
-                  "schemeURI",
-                  "subject",
-                  "subjectScheme"
-                ]
+                "attribute_order": ["schemeURI", "subject", "subjectScheme"]
               }
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: Subject"
@@ -2474,26 +2357,19 @@
         "d": "###presentationDigest###",
         "type": "###presentationType###",
         "capture_base": "ECsiFKfAJaSLBXh79PW5hPmlj5FuP3Fm735nyA-B8YOD",
-        "language": [
-          "eng"
-        ],
+        "language": ["eng"],
         "pages": [
           {
             "named_section": "page-1",
             "attribute_order": [
               {
                 "named_section": "section-1",
-                "attribute_order": [
-                  "title",
-                  "titleType"
-                ]
+                "attribute_order": ["title", "titleType"]
               }
             ]
           }
         ],
-        "page_order": [
-          "page-1"
-        ],
+        "page_order": ["page-1"],
         "page_labels": {
           "eng": {
             "page-1": "Page 1: Title"
@@ -2519,7 +2395,8 @@
                 }
               },
               "titleType": {
-                "type": "textarea",
+                "type": "dropdown",
+                "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
                 }
