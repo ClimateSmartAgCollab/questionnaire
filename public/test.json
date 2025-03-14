@@ -1566,7 +1566,7 @@
                 }
               },
               "identifierType": {
-                "type": "dropdown",
+                "type": "radio",
                 "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
@@ -1754,7 +1754,7 @@
                 }
               },
               "contributorType": {
-                "type": "dropdown",
+                "type": "radio",
                 "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
@@ -1767,7 +1767,7 @@
                 }
               },
               "nameIdentifierScheme": {
-                "type": "dropdown",
+                "type": "radio",
                 "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
@@ -1897,7 +1897,7 @@
                 "type": "DateTime"
               },
               "dateType": {
-                "type": "dropdown",
+                "type": "radio",
                 "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
@@ -1949,7 +1949,7 @@
                 }
               },
               "descriptionType": {
-                "type": "dropdown",
+                "type": "radio",
                 "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
@@ -2114,7 +2114,7 @@
                 }
               },
               "relatedIdentifierType": {
-                "type": "dropdown",
+                "type": "radio",
                 "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
@@ -2190,7 +2190,7 @@
                 }
               },
               "resourceTypeGeneral": {
-                "type": "dropdown",
+                "type": "radio",
                 "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
@@ -2395,7 +2395,7 @@
                 }
               },
               "titleType": {
-                "type": "dropdown",
+                "type": "radio",
                 "orientation": "vertical",
                 "placeholder": {
                   "eng": "Enter ...(customize place holder)"
