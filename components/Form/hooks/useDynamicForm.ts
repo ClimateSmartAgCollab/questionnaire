@@ -763,7 +763,7 @@ export function useDynamicForm(parsedSteps: Step[]) {
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = 'standardized.json'
+      a.download = 'standardized_openAIRE.json'
       document.body.appendChild(a)
       a.click()
       a.remove()

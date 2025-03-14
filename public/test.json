@@ -1487,25 +1487,25 @@
               {
                 "named_section": "section-1",
                 "attribute_order": [
-                  "alternateIdentifier",
-                  "contributor",
-                  "creator",
-                  "date",
-                  "description",
-                  "format",
-                  "geoLocation",
                   "identifier",
                   "identifierType",
-                  "language",
-                  "publicationYear",
-                  "publisher",
-                  "relatedIdentifier",
-                  "resourceType",
-                  "rights",
-                  "size",
-                  "subject",
+                  "creator",
                   "title",
-                  "version"
+                  "publisher",
+                  "publicationYear",
+                  "subject",
+                  "contributor",
+                  "date",
+                  "language",
+                  "resourceType",
+                  "alternateIdentifier",
+                  "relatedIdentifier",
+                  "size",
+                  "format",
+                  "version",
+                  "rights",
+                  "description",
+                  "geoLocation"
                 ]
               }
             ]
@@ -1604,19 +1604,19 @@
               "identifier": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "identifierType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "language": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "publicationYear": {
@@ -1625,7 +1625,7 @@
               "publisher": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "relatedIdentifier": {
@@ -1690,7 +1690,7 @@
               "version": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -1745,13 +1745,13 @@
               "alternateIdentifier": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "alternateIdentifierType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -1807,37 +1807,37 @@
               "affiliation": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "contributorName": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "contributorType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "nameIdentifier": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "nameIdentifierScheme": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "schemeURI": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -1892,31 +1892,31 @@
               "affiliation": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "creatorName": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "nameIdentifier": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "nameIdentifierScheme": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "schemeURI": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -1971,7 +1971,7 @@
               "dateType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -2023,13 +2023,13 @@
               "description": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "descriptionType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -2080,7 +2080,7 @@
               "format": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -2133,19 +2133,19 @@
               "geoLocationBox": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "geoLocationPlace": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "geoLocationPoint": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -2201,37 +2201,37 @@
               "relatedIdentifier": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "relatedIdentifierType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "relatedMetadataScheme": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "relationType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "schemeType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "schemeURI": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -2283,13 +2283,13 @@
               "resourceType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "resourceTypeGeneral": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -2341,13 +2341,13 @@
               "rights": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "rightsURI": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -2398,7 +2398,7 @@
               "size": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -2451,19 +2451,19 @@
               "schemeURI": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "subject": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "subjectScheme": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
@@ -2515,13 +2515,13 @@
               "title": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               },
               "titleType": {
                 "type": "textarea",
                 "placeholder": {
-                  "eng": "Enter ...(customize the example as the place holder)"
+                  "eng": "Enter ...(customize place holder)"
                 }
               }
             }
