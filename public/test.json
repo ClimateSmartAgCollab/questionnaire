@@ -113,7 +113,7 @@
             "language": "eng",
             "attribute_entries": {
               "identifierType": {
-                "ARK": "Archival Resource Key",
+                "ARK": "Archival Resource Key the big ARK",
                 "DOI": "Digital Object Identifier",
                 "Handle": "Handle System",
                 "PURL": "Persistent Uniform Resource Locator",
